@@ -12,43 +12,51 @@ from torch.distributions import Categorical
 
 class Actor(nn.Module):
 
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size: int, action_size: int, config: list):
         super(Actor, self).__init__()
-        self.linear_1 = nn.Linear(state_size, 64)
-        self.linear_2 = nn.Linear(64, action_size)
-        torch.nn.init.xavier_uniform_(self.linear_1.weight)
-        torch.nn.init.xavier_uniform_(self.linear_2.weight)
+        self.linears = nn.ModuleList()
+        input_size = state_size
+        for layer_config in config:
+            self.linears.append(nn.Linear(input_size, layer_config))
+            input_size = layer_config
+        self.linears.append(nn.Linear(input_size, action_size))
+        for layer in self.linears:
+            torch.nn.init.xavier_uniform_(layer.weight)
 
     def forward(self, x):
-        x = torch.tanh(self.linear_1(x))
-        x = F.softmax(self.linear_2(x), dim=-1)
+        for layer in self.linears[:-1]:
+            x = torch.tanh(layer(x))
+        x = F.softmax(self.linears [-1](x), dim=-1)
         return x
 
 
 class Critic(nn.Module):
 
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size: int, config: list):
         super(Critic, self).__init__()
-        self.linear_1 = nn.Linear(state_size, 64)
-        self.linear_2 = nn.Linear(64, 64)
-        self.linear_3 = nn.Linear(64, 1)
-        torch.nn.init.xavier_uniform_(self.linear_1.weight)
-        torch.nn.init.xavier_uniform_(self.linear_2.weight)
-        torch.nn.init.xavier_uniform_(self.linear_3.weight, gain=0.1)
+        self.linears = nn.ModuleList()
+        input_size = state_size
+        for layer_config in config:
+            self.linears.append(nn.Linear(input_size, layer_config))
+            input_size = layer_config
+        self.linears.append(nn.Linear(input_size, 1))
+        for layer in self.linears[:-1]:
+            torch.nn.init.xavier_uniform_(layer.weight)
+        torch.nn.init.xavier_uniform_(self.linears[-1].weight, gain=0.1)
 
     def forward(self, x):
-        x = torch.tanh(self.linear_1(x))
-        x = torch.tanh(self.linear_2(x))
-        x = self.linear_3(x)
+        for layer in self.linears[:-1]:
+            x = torch.tanh(layer(x))
+        x = self.linears[-1](x)
         return x
 
 
 class ActorCritic(nn.Module):
 
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size, action_size, actor_config, critic_config):
         super(ActorCritic, self).__init__()
-        self.actor = Actor(state_size, action_size)
-        self.critic = Critic(state_size, action_size)
+        self.actor = Actor(state_size, action_size, actor_config)
+        self.critic = Critic(state_size, critic_config)
 
     def forward(self, x):
         return self.actor(x), self.critic(x)
@@ -85,6 +93,10 @@ def ppo(config):
     gradient_norm_clipping = config['gradient_norm_clipping']
     max_kl_div = config['max_kl_div']
 
+    actor_config = config['actor_config']
+    critic_config = config['critic_config']
+
+    # TODO remove for our problem can alter performance
     min_reward = -10
     max_reward = 10
 
@@ -100,7 +112,7 @@ def ppo(config):
     torch.manual_seed(seed)
     random.seed(seed)
     np.random.seed(seed)
-    model = ActorCritic(env_infos.observation_space.shape[0], env_infos.action_space.n)
+    model = ActorCritic(env_infos.observation_space.shape[0], env_infos.action_space.n, actor_config, critic_config)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # training loop
@@ -193,7 +205,7 @@ def ppo(config):
 
                 surrogate_non_clipp = (ratio * advantage_indicies).mean()
                 surrogate_clipp = (
-                            torch.clamp(ratio, 1 - clipping_param, 1 + clipping_param) * advantage_indicies).mean()
+                        torch.clamp(ratio, 1 - clipping_param, 1 + clipping_param) * advantage_indicies).mean()
                 actor_loss = -torch.min(surrogate_non_clipp, surrogate_clipp)
 
                 # non clipped advantage
@@ -249,5 +261,3 @@ def ppo(config):
     mean_last_eval_scores = total_reward / 100.0
     torch.save(model.state_dict(), 'model.pt')
     return episode_nb, mean_last_eval_scores
-
-

@@ -16,4 +16,6 @@ config = {
     'minibatch_size': 32,
     'gradient_norm_clipping': 0.5,
     'max_kl_div': None,
+    'actor_config': [64],
+    'critic_config': [64, 64],
 }
