@@ -1,5 +1,5 @@
-import default_ppo_config
-from ppo import *
+from JSS import default_ppo_config
+from JSS.ppo import ppo
 
 if __name__ == "__main__":
     config = default_ppo_config.config

@@ -5,9 +5,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from multiprocessing_env import SubprocVecEnv
-from max_step_wrapper import MaxStepWrapper
 from torch.distributions import Categorical
+
+from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
+from JSS.multiprocessing_env import SubprocVecEnv
 
 
 class Actor(nn.Module):
@@ -24,9 +25,18 @@ class Actor(nn.Module):
             torch.nn.init.xavier_uniform_(layer.weight)
 
     def forward(self, x):
+        mask = torch.FloatTensor(np.array([i['action_mask'] for i in x]))
+        obs = np.array([i['real_obs'].flatten() for i in x])
+        x = torch.FloatTensor(obs)
         for layer in self.linears[:-1]:
             x = torch.tanh(layer(x))
-        x = F.softmax(self.linears [-1](x), dim=-1)
+        x = self.linears[-1](x)
+        # We mask the action by making the probability to take illegal action really small
+        #inf_mask = torch.clamp(torch.log(mask), min=-1e10)
+        #x = x + inf_mask
+        x[mask == 0] = -1e10
+        #print(x)
+        x = F.softmax(x, dim=-1)
         return x
 
 
@@ -45,6 +55,8 @@ class Critic(nn.Module):
         torch.nn.init.xavier_uniform_(self.linears[-1].weight, gain=0.1)
 
     def forward(self, x):
+        obs = np.array([i['real_obs'].flatten() for i in x])
+        x = torch.FloatTensor(obs)
         for layer in self.linears[:-1]:
             x = torch.tanh(layer(x))
         x = self.linears[-1](x)
@@ -62,12 +74,12 @@ class ActorCritic(nn.Module):
         return self.actor(x), self.critic(x)
 
 
-def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int):
+def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int, env_config: dict = {}):
     def _anon():
         if max_steps_per_episode is None:
-            env = gym.make(env_name)
+            env = BestActionsWrapper(gym.make(env_name, env_config=env_config))
         else:
-            env = MaxStepWrapper(gym.make(env_name), max_steps_per_episode)
+            env = BestActionsWrapper(MaxStepWrapper(gym.make(env_name, env_config=env_config), max_steps_per_episode))
         env.seed(seed + i)
         return env
 
@@ -86,6 +98,7 @@ def ppo(config):
     entropy_regularization = config['entropy_regularization']
     nb_actors = config['nb_actors']
     env_name = config['env_name']
+    env_config = config['env_config']
     ppo_epoch = config['ppo_epoch']
     clipping_param = config['clipping_param']
     clipping_param_vf = config['clipping_param_vf']
@@ -103,22 +116,23 @@ def ppo(config):
     STEP_BATCH = nb_actors * n_steps
     assert minibatch_size <= STEP_BATCH
 
-    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode) for i in range(nb_actors)]
+    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
-    env_infos = gym.make(env_name)
+    env_infos = gym.make(env_name, env_config=env_config)
 
     env_infos.seed(seed)
     torch.manual_seed(seed)
     random.seed(seed)
     np.random.seed(seed)
-    model = ActorCritic(env_infos.observation_space.shape[0], env_infos.action_space.n, actor_config, critic_config)
+    model = ActorCritic(env_infos.observation_space['real_obs'].shape[0] * env_infos.observation_space['real_obs'].shape[1], env_infos.action_space.n, actor_config, critic_config)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # training loop
     states = envs.reset()
 
     episode_nb = 0
+    total_steps = 0
 
     while episode_nb < number_episodes:
 
@@ -132,8 +146,7 @@ def ppo(config):
         for step in range(n_steps):
             # we compute the state value and the probability distribution
             with torch.no_grad():
-                states_tensor = torch.FloatTensor(states)
-                prob_state, value_state = model(states_tensor)
+                prob_state, value_state = model(states)
                 categorical = Categorical(prob_state)
                 actions_sampled = categorical.sample()
                 log_prob = categorical.log_prob(actions_sampled)
@@ -150,7 +163,7 @@ def ppo(config):
                 rewards = rewards / statistics.stdev(reward_scaler)
             '''
             # we store the datas
-            states_reps.append(states_tensor)
+            states_reps.append(states)
             actions_used.append(actions_sampled)
             states_values.append(value_state)
             state_rewards.append(torch.FloatTensor(rewards).unsqueeze(1))
@@ -159,8 +172,8 @@ def ppo(config):
 
         with torch.no_grad():
             # we also compute the next_state value
-            states_tensor = torch.FloatTensor(states)
-            _, next_value = model(states_tensor)
+            #states_tensor = torch.FloatTensor(states)
+            _, next_value = model(states)
             states_values.append(next_value)
             gae = 0
             for step in reversed(range(n_steps)):
@@ -169,7 +182,7 @@ def ppo(config):
                 gae = current_step + (gamma * tau * (1 - state_dones[step]) * gae)
                 state_rewards[step] = gae
 
-        states_reps = torch.cat(states_reps)
+        states_reps = np.concatenate(states_reps)
         states_values = torch.cat(states_values[:-1])
         state_rewards = torch.cat(state_rewards)
         state_dones = torch.cat(state_dones)
@@ -236,28 +249,15 @@ def ppo(config):
             episode_nb += number_episodes
             break
 
+        total_steps += n_steps
         episode_nb += torch.sum(state_dones).item()
-        print('\rEpisode {}'.format(episode_nb), end="")
+        print('\rEpisode {}\tSteps {}'.format(episode_nb, total_steps), end="")
 
-    # to check that it's a new episode
-    total_reward = 0
-    for i in range(100):
-        done = False
-        state = env_infos.reset()
-        ep = 0
-        while not done:
-            with torch.no_grad():
-                state_tensor = torch.FloatTensor(state)
-                distribution, _ = model(state_tensor)
-                categorical = Categorical(distribution)
-                action = categorical.sample().numpy()
-            if i % 33 == 0:
-                env_infos.render()
-            state, reward, done, _ = env_infos.step(action)
-            total_reward += reward
-            ep += 1
-            if done:
-                env_infos.close()
-    mean_last_eval_scores = total_reward / 100.0
-    torch.save(model.state_dict(), 'model.pt')
-    return episode_nb, mean_last_eval_scores
+    all_best_score = 0
+    avg_best_score = 0
+    '''
+    for env in envs:
+        # TODO keep the best score and average
+        pass
+    '''
+    return episode_nb, all_best_score, avg_best_score, model.state_dict()
