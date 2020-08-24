@@ -25,6 +25,8 @@ def worker(remote, parent_remote, env_fn_wrapper):
             break
         elif cmd == 'get_spaces':
             remote.send((env.observation_space, env.action_space))
+        elif cmd == 'get_best_actions':
+            remote.send((env.best_score, env.best_actions))
         else:
             raise NotImplementedError
 

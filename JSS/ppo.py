@@ -253,11 +253,16 @@ def ppo(config):
         episode_nb += torch.sum(state_dones).item()
         print('\rEpisode {}\tSteps {}'.format(episode_nb, total_steps), end="")
 
-    all_best_score = 0
+    sum_best_scores = 0
+    all_best_score = float('-inf')
     avg_best_score = 0
-    '''
-    for env in envs:
+    all_best_actions = []
+    for remote in envs.remotes:
         # TODO keep the best score and average
-        pass
-    '''
-    return episode_nb, all_best_score, avg_best_score, model.state_dict()
+        remote.send(('get_best_actions', None))
+        best_score, best_actions = remote.recv()
+        sum_best_scores += best_score
+        if best_score > all_best_score:
+            all_best_score = best_score
+            all_best_actions = best_actions
+    return episode_nb, all_best_score, sum_best_scores / len(envs.remotes), all_best_actions, model.state_dict()

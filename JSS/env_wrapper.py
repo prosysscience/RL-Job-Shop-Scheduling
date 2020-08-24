@@ -26,8 +26,8 @@ class BestActionsWrapper(gym.Wrapper):
         super(BestActionsWrapper, self).__init__(env)
         self.best_actions = []
         self.current_actions = []
-        self.best_score = 0
-        self.current_score = 0
+        self.best_score = float('-inf')
+        self.current_score = float('-inf')
 
     def reset(self, **kwargs):
         observation = super(BestActionsWrapper, self).reset(**kwargs)
