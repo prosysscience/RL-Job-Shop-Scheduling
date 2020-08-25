@@ -40,5 +40,6 @@ class BestActionsWrapper(gym.Wrapper):
 
     def step(self, action):
         observation, reward, done, info = super(BestActionsWrapper, self).step(action)
+        self.current_actions.append(action)
         self.current_score += reward
         return observation, reward, done, info
