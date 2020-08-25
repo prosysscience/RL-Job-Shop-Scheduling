@@ -6,7 +6,7 @@ config = {
     'n_steps': 128,
     'tau': 0.98,
     'gamma': 0.999,
-    'number_episodes': 50,
+    'running_sec_time': 600, # 10 minutes
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-3,
@@ -18,7 +18,7 @@ config = {
     'minibatch_size': 32,
     'gradient_norm_clipping': 0.5,
     'max_kl_div': None,
-    'actor_config': [256],
-    'critic_config': [256, 256],
+    'actor_config': [64],
+    'critic_config': [64, 64],
     'env_config': {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS_Scratch/JSS/env/instances/ta71'},
 }

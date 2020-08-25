@@ -1,4 +1,5 @@
 import gym
+import time
 import random
 import numpy as np
 import torch
@@ -6,6 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.distributions import Categorical
+from ray import tune
 
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
@@ -86,13 +88,13 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def ppo(config):
+def ppo(config, checkpoint_dir=None):
+    start = time.time()
     seed = config['seed']
     learning_rate = config['learning_rate']
     n_steps = config['n_steps']
     tau = config['tau']
     gamma = config['gamma']
-    number_episodes = config['number_episodes']
     max_steps_per_episode = config['max_steps_per_episode']
     value_coefficient = config['value_coefficient']
     entropy_regularization = config['entropy_regularization']
@@ -105,6 +107,7 @@ def ppo(config):
     minibatch_size = config['minibatch_size']
     gradient_norm_clipping = config['gradient_norm_clipping']
     max_kl_div = config['max_kl_div']
+    running_sec_time = config['running_sec_time']
 
     actor_config = config['actor_config']
     critic_config = config['critic_config']
@@ -134,7 +137,7 @@ def ppo(config):
     episode_nb = 0
     total_steps = 0
 
-    while episode_nb < number_episodes:
+    while time.time() < start + running_sec_time:
 
         states_reps = []
         state_rewards = []
@@ -246,16 +249,15 @@ def ppo(config):
 
         if max_kl_div is not None and sum(kl_divergeance) / len(kl_divergeance) > max_kl_div:
             print("We have exceed the maximum KL divergeance alowed, we risk to have a policy crash")
-            episode_nb += number_episodes
+            running_sec_time = 0
             break
 
         total_steps += n_steps
         episode_nb += torch.sum(state_dones).item()
-        print('\rEpisode {}\tSteps {}'.format(episode_nb, total_steps), end="")
+        #print('\rEpisode {}\tSteps {}'.format(episode_nb, total_steps), end="")
 
     sum_best_scores = 0
     all_best_score = float('-inf')
-    avg_best_score = 0
     all_best_actions = []
     for remote in envs.remotes:
         # TODO keep the best score and average
@@ -265,4 +267,6 @@ def ppo(config):
         if best_score > all_best_score:
             all_best_score = best_score
             all_best_actions = best_actions
-    return episode_nb, all_best_score, sum_best_scores / len(envs.remotes), all_best_actions, model.state_dict()
+    avg_best_result = sum_best_scores / len(envs.remotes)
+    tune.report(nb_episodes=episode_nb, avg_best=avg_best_result, best_episode=all_best_score)
+    return episode_nb, all_best_score, avg_best_result, all_best_actions, model.state_dict()
