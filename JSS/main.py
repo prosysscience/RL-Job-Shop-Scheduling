@@ -43,5 +43,5 @@ if __name__ == "__main__":
     print("Checkpoint :", checkpoints)
     # Get a dataframe for analyzing trial results.
     df = analysis.dataframe()
-    print(df)
+    df.to_csv('results.csv', index=False, header=True)
     #print('\rEpisode {}\tAll time best score: {:.2f}\tAvg best score: {:.2f},\tAll best actions: {}'.format(episode_nb, all_best_score, avg_best_score, all_best_actions), end="")
