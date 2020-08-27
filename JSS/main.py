@@ -17,8 +17,6 @@ if __name__ == "__main__":
     config['entropy_regularization'] = tune.grid_search([0, 1e-4])
     config['n_steps'] = tune.grid_search([32, 64, 128])
     config['clipping_param'] = tune.grid_search([0.3, 0.2, 0.1])
-    config['clipping_param_vf'] = tune.grid_search([None, 1])
-
 
     reporter = CLIReporter(max_progress_rows=15)
     reporter.add_metric_column("avg_best_result")

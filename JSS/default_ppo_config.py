@@ -10,7 +10,7 @@ config = {
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-3,
-    'nb_actors': mp.cpu_count(),
+    'nb_actors': 32,
     'env_name': 'job-shop-v0',
     'ppo_epoch': 10,
     'clipping_param': 0.2,
@@ -20,5 +20,5 @@ config = {
     'max_kl_div': None,
     'actor_config': [64],
     'critic_config': [64, 64],
-    'env_config': {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS_Scratch/JSS/env/instances/ta71'},
+    'env_config': {'instance_path': '/root/JSS/JSS/env/instances/ta71'},
 }
