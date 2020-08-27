@@ -6,11 +6,11 @@ config = {
     'n_steps': 128,
     'tau': 0.98,
     'gamma': 0.999,
-    'running_sec_time': 600, # 10 minutes
+    'running_sec_time': 5 * 60, # 10 minutes
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-4,
-    'nb_actors': 16,
+    'nb_actors': mp.cpu_count(),
     'env_name': 'job-shop-v0',
     'ppo_epoch': 10,
     'clipping_param': 0.2,

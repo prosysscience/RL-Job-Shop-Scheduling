@@ -8,7 +8,6 @@ from ray import tune
 
 if __name__ == "__main__":
     ray.init(local_mode=True, num_cpus=1)
-    print("I've detected {} cpu in this machine, I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     config = default_ppo_config.config
     config['learning_rate'] = tune.grid_search([1e-4, 5e-5, 1e-5])
     config['actor_config'] = tune.grid_search([[64], [128], [64, 64], [128, 128]])
