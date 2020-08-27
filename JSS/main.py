@@ -32,7 +32,7 @@ if __name__ == "__main__":
         checkpoint_at_end=True)
     best_trained_config = analysis.get_best_config(metric="avg_best_result")
     print("Best config: ", best_trained_config)
-    save_config = open("{}_{}.json".format(time.time(), config['env_config']['instance_path']), "w+")
+    save_config = open("/root/JSS/JSS/{}_{}.json".format(time.time(), config['env_config']['instance_path']), "w+")
     pickle.dump(best_trained_config, save_config)
     save_config.close()
     best_trial = analysis.get_best_trial(metric="episode_reward_max")
