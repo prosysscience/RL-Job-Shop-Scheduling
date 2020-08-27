@@ -11,13 +11,14 @@ from ray import tune
 if __name__ == "__main__":
     print("I've detected {} cpu in this machine, I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     config = default_ppo_config.config
+    '''
     config['learning_rate'] = tune.grid_search([1e-4, 5e-5, 1e-5])
     config['actor_config'] = tune.grid_search([[64], [128], [64, 64], [128, 128]])
     config['critic_config'] = tune.grid_search([[64, 64], [128, 128], [256, 256]])
     config['entropy_regularization'] = tune.grid_search([0, 1e-4])
     config['n_steps'] = tune.grid_search([32, 64, 128])
     config['clipping_param'] = tune.grid_search([0.3, 0.2, 0.1])
-
+'''
     reporter = CLIReporter(max_progress_rows=15)
     reporter.add_metric_column("avg_best_result")
     reporter.add_metric_column("best_episode")

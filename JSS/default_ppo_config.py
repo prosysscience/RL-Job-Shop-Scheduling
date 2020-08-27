@@ -10,7 +10,7 @@ config = {
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-3,
-    'nb_actors': 32,
+    'nb_actors': 8,
     'env_name': 'job-shop-v0',
     'ppo_epoch': 10,
     'clipping_param': 0.2,
