@@ -27,7 +27,7 @@ class Actor(nn.Module):
             torch.nn.init.xavier_uniform_(layer.weight)
 
     def forward(self, x):
-        mask = torch.FloatTensor(np.array([i['action_mask'] for i in x]))
+        mask = torch.IntTensor(np.array([i['action_mask'] for i in x]))
         obs = np.array([i['real_obs'].flatten() for i in x])
         x = torch.FloatTensor(obs)
         for layer in self.linears[:-1]:

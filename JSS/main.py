@@ -1,5 +1,5 @@
 import multiprocessing as mp
-
+import ray
 from ray.tune import CLIReporter
 
 from JSS import default_ppo_config
@@ -7,22 +7,21 @@ from JSS.ppo import ppo
 from ray import tune
 
 if __name__ == "__main__":
+    ray.init(local_mode=True, num_cpus=1)
     print("I've detected {} cpu in this machine, I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     config = default_ppo_config.config
     config['learning_rate'] = tune.grid_search([1e-4, 5e-5, 1e-5])
     config['actor_config'] = tune.grid_search([[64], [128], [64, 64], [128, 128]])
     config['critic_config'] = tune.grid_search([[64, 64], [128, 128], [256, 256]])
-    config['entropy_regularization'] = tune.grid_search([0, 1e-4])
     config['n_steps'] = tune.grid_search([32, 64, 128])
     config['clipping_param'] = tune.grid_search([0.3, 0.2, 0.1])
+    config['entropy_regularization'] = tune.grid_search([0, 1e-3, 1e-4])
     reporter = CLIReporter(max_progress_rows=15)
     reporter.add_metric_column("avg_best_result")
     reporter.add_metric_column("best_episode")
     reporter.add_metric_column("nb_episodes")
-
     analysis = tune.run(
         ppo,
-        resources_per_trial={"cpu": 16},
         config=config,
         progress_reporter=reporter,
         fail_fast=True,
