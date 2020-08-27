@@ -21,4 +21,9 @@ config = {
     'actor_config': [64],
     'critic_config': [64, 64],
     'env_config': {'instance_path': '/root/JSS/JSS/env/instances/ta71'},
+    'wandb': {
+        "project": "jss_ppo",
+        "api_key": "3487a01956bf67cc7882bca2a38f70c8c95f8463",
+        "log_config": True
+    }
 }
