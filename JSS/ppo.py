@@ -88,7 +88,7 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def ppo(config, checkpoint_dir=None):
+def ppo(config):
     start = time.time()
     seed = config['seed']
     learning_rate = config['learning_rate']
@@ -260,7 +260,6 @@ def ppo(config, checkpoint_dir=None):
     all_best_score = float('-inf')
     all_best_actions = []
     for remote in envs.remotes:
-        # TODO keep the best score and average
         remote.send(('get_best_actions', None))
         best_score, best_actions = remote.recv()
         sum_best_scores += best_score
