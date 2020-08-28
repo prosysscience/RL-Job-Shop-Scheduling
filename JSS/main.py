@@ -9,12 +9,12 @@ from ray import tune
 if __name__ == "__main__":
     ray.init(local_mode=True, num_cpus=1)
     config = default_ppo_config.config
-    config['learning_rate'] = tune.grid_search([1e-4, 5e-5, 1e-5])
-    config['actor_config'] = tune.grid_search([[64], [128], [64, 64], [128, 128]])
-    config['critic_config'] = tune.grid_search([[64, 64], [128, 128], [256, 256]])
-    config['n_steps'] = tune.grid_search([32, 64, 128])
+    config['learning_rate'] = tune.grid_search([5e-4, 1e-4, 5e-5])
+    config['actor_config'] = tune.grid_search([[64, 64], [128, 128], [256, 256]])
+    config['critic_config'] = tune.grid_search([[256, 256], [512, 512]])
+    config['n_steps'] = 8
     config['clipping_param'] = tune.grid_search([0.3, 0.2, 0.1])
-    config['entropy_regularization'] = tune.grid_search([0, 1e-3, 1e-4])
+    config['entropy_regularization'] = tune.grid_search([0, 1e-4])
     reporter = CLIReporter(max_progress_rows=15)
     reporter.add_metric_column("avg_best_result")
     reporter.add_metric_column("best_episode")

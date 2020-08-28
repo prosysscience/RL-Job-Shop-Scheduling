@@ -113,10 +113,6 @@ def ppo(config):
     actor_config = config['actor_config']
     critic_config = config['critic_config']
 
-    # TODO remove for our problem can alter performance
-    min_reward = -10
-    max_reward = 10
-
     STEP_BATCH = nb_actors * n_steps
     assert minibatch_size <= STEP_BATCH
 
@@ -159,7 +155,6 @@ def ppo(config):
 
             # we act in the environments
             states, rewards, dones, _ = envs.step(actions)
-            rewards = np.array([max(min(max_reward, reward), min_reward) for reward in rewards])
 
             '''
             reward_scaler.extend(rewards)
@@ -268,5 +263,5 @@ def ppo(config):
             all_best_score = best_score
             all_best_actions = best_actions
     avg_best_result = sum_best_scores / len(envs.remotes)
-    tune.report(nb_episodes=episode_nb, avg_best=avg_best_result, best_episode=all_best_score)
+    tune.report(nb_episodes=episode_nb, avg_best_result=avg_best_result, best_episode=all_best_score)
     return episode_nb, all_best_score, avg_best_result, all_best_actions, model.state_dict()

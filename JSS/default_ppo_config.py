@@ -6,7 +6,7 @@ config = {
     'n_steps': 128,
     'tau': 0.98,
     'gamma': 0.999,
-    'running_sec_time': 5 * 60, # 10 minutes
+    'running_sec_time': 10 * 60, # 10 minutes
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-4,
@@ -20,9 +20,9 @@ config = {
     'max_kl_div': None,
     'actor_config': [64],
     'critic_config': [64, 64],
-    'env_config': {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta71'},
+    'env_config': {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51'},
     'wandb': {
-        "project": "jss_ppo",
+        "project": "jss_ppo_small",
         "api_key": "3487a01956bf67cc7882bca2a38f70c8c95f8463",
         "log_config": True
     },
