@@ -7,7 +7,7 @@ import wandb
 
 
 if __name__ == "__main__":
-    print("I have detected {} CPUs here", mp.cpu_count())
+    print("I have detected {} CPUs here, so I'm going to create {} actors", mp.cpu_count(), 2 * mp.cpu_count())
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_ppo_config.config
     sweep_config = {
