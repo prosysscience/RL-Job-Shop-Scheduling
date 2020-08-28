@@ -1,38 +1,55 @@
+import os
 import multiprocessing as mp
-import ray
+
 from ray.tune import CLIReporter
 
 from JSS import default_ppo_config
 from JSS.ppo import ppo
-from ray import tune
+import wandb
+
 
 if __name__ == "__main__":
-    ray.init(local_mode=True, num_cpus=1)
+    print("I have detected {} CPUs here", mp.cpu_count())
+    os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_ppo_config.config
-    config['learning_rate'] = tune.grid_search([5e-4, 1e-4, 5e-5])
-    config['actor_config'] = tune.grid_search([[64, 64], [128, 128], [256, 256]])
-    config['critic_config'] = tune.grid_search([[256, 256], [512, 512]])
-    config['n_steps'] = 8
-    config['clipping_param'] = tune.grid_search([0.3, 0.2, 0.1])
-    config['entropy_regularization'] = tune.grid_search([0, 1e-4])
-    reporter = CLIReporter(max_progress_rows=15)
-    reporter.add_metric_column("avg_best_result")
-    reporter.add_metric_column("best_episode")
-    reporter.add_metric_column("nb_episodes")
-    analysis = tune.run(
-        ppo,
-        config=config,
-        progress_reporter=reporter,
-        fail_fast=True,
-        checkpoint_at_end=True)
-    best_trained_config = analysis.get_best_config(metric="avg_best_result")
-    print("Best config: ", best_trained_config)
-    best_trial = analysis.get_best_trial(metric="episode_reward_max")
-    print("Best acc reward: ", best_trial.metric_analysis['episode_reward_max']['max'])
-    checkpoints = analysis.get_trial_checkpoints_paths(trial=best_trial,
-                                                       metric='episode_reward_max')
-    print("Checkpoint :", checkpoints)
-    # Get a dataframe for analyzing trial results.
-    df = analysis.dataframe()
-    df.to_csv('results.csv', index=False, header=True)
+    sweep_config = {
+        'method': 'grid',
+        'parameters': {
+            'learning_rate': {
+                'values': [5e-4, 1e-4, 5e-5]
+            },
+            'actor_layer_nb': {
+                'values': [1, 2]
+            },
+            'actor_layer_size': {
+                'values': [64, 128]
+            },
+            'critic_layer_size': {
+                'values': [64, 128, 256]
+            },
+            'clipping_param': {
+                'values': [0.3, 0.2, 0.1]
+            },
+            'entropy_regularization': {
+                'values': [0, 1e-4]
+            }
+        }
+    }
+    sweep_id = wandb.sweep(sweep_config, project="ppo_sweep")
+    wandb.agent(sweep_id,  function=lambda: ppo(config))
+
+    '''
+    all_configs = generate_variants(config)
+    best_avg = float('-inf')
+    best_config = {}
+    for candidate_config in all_configs:
+        fix_config = candidate_config[1]
+        grid_config = candidate_config[0]
+        for attribute in grid_config.keys():
+            fix_config[attribute[0]] = grid_config[attribute]
+        wandb.config.update(fix_config)
+        episode_nb, all_best_score, avg_best_result, all_best_actions = ppo(fix_config)
+        if best_avg < avg_best_result:
+            best_config = candidate_config
+    print("the best config is:\n{}".format(best_config))'''
     #print('\rEpisode {}\tAll time best score: {:.2f}\tAvg best score: {:.2f},\tAll best actions: {}'.format(episode_nb, all_best_score, avg_best_score, all_best_actions), end="")

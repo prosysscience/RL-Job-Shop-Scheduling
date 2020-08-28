@@ -100,11 +100,12 @@ class JSS(gym.Env):
             -Current operation %
             -Total left over time
             -When next machine available
+            -Number of other jobs who need the same machine
             -Time since IDLE: 0 if not available, time otherwise
             -Total IDLE time in the schedule
         '''
         self.observation_space = gym.spaces.Dict({
-            'real_obs': gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7, 1), dtype=np.float),
+            'real_obs': gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 8, 1), dtype=np.float),
             'action_mask': gym.spaces.Box(low=0, high=1, shape=(self.action_space.n, ), dtype=np.int),
         })
 
@@ -120,8 +121,9 @@ class JSS(gym.Env):
                 self.state[job][4] = 1.0
             else:
                 self.state[job][4] = self.time_until_available_machine[self.needed_machine_jobs[job]] / self.max_time_op
-            self.state[job][5] = self.state[job][1] * (self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs))
-            self.state[job][6] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
+            self.state[job][5] = ((self.needed_machine_jobs == self.needed_machine_jobs[job]).sum() - 1) / (self.jobs - 1)
+            self.state[job][6] = self.state[job][1] * (self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs))
+            self.state[job][7] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
         output = {
             'real_obs': self.state,
             'action_mask': self.legal_actions
@@ -149,7 +151,7 @@ class JSS(gym.Env):
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
-        self.state = np.zeros((self.jobs, 7, 1), dtype=np.float)
+        self.state = np.zeros((self.jobs, 8, 1), dtype=np.float)
         return self._get_current_state_representation()
 
     def step(self, action: int):
@@ -252,5 +254,3 @@ class JSS(gym.Env):
             fig = ff.create_gantt(df, index_col='Resource', reverse_colors=True,
                                   show_colorbar=True, group_tasks=True)
             fig.show()
-
-

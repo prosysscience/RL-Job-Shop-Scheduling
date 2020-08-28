@@ -18,12 +18,9 @@ config = {
     'minibatch_size': 32,
     'gradient_norm_clipping': 0.5,
     'max_kl_div': None,
-    'actor_config': [64],
-    'critic_config': [64, 64],
+    'actor_layer_nb' : 1,
+    'actor_layer_size': 64,
+    'critic_layer_nb' : 2,
+    'critic_layer_size': 64,
     'env_config': {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51'},
-    'wandb': {
-        "project": "jss_ppo_small",
-        "api_key": "3487a01956bf67cc7882bca2a38f70c8c95f8463",
-        "log_config": True
-    },
 }

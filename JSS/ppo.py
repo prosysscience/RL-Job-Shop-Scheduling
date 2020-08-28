@@ -7,6 +7,9 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import multiprocessing as mp
+
+import wandb
+from JSS import default_ppo_config
 from torch.distributions import Categorical
 from ray import tune
 
@@ -90,7 +93,19 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
 
 
 def ppo(config):
+    config_defaults = default_ppo_config.config
+
+    wandb.init(config=config_defaults)
+
+    config = wandb.config
+    '''
+    print(hyper_config)
     start = time.time()
+    for key_config in hyper_config:
+        config[key_config] = hyper_config[key_config]
+    '''
+    start = time.time()
+
     seed = config['seed']
     learning_rate = config['learning_rate']
     n_steps = config['n_steps']
@@ -110,8 +125,8 @@ def ppo(config):
     max_kl_div = config['max_kl_div']
     running_sec_time = config['running_sec_time']
 
-    actor_config = config['actor_config']
-    critic_config = config['critic_config']
+    actor_config = [config['actor_layer_size'] for _ in range(config['actor_layer_nb'])]
+    critic_config = [config['critic_layer_size'] for _ in range(config['critic_layer_nb'])]
 
     STEP_BATCH = nb_actors * n_steps
     assert minibatch_size <= STEP_BATCH
@@ -127,7 +142,7 @@ def ppo(config):
     np.random.seed(seed)
     model = ActorCritic(env_infos.observation_space['real_obs'].shape[0] * env_infos.observation_space['real_obs'].shape[1], env_infos.action_space.n, actor_config, critic_config)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-
+    wandb.watch(model)
     # training loop
     states = envs.reset()
 
@@ -237,7 +252,7 @@ def ppo(config):
                 advantage[indices] = new_advantage.detach()
 
                 loss = actor_loss + value_coefficient * critic_loss - entropy_regularization * entropy
-
+                wandb.log({"loss": loss})
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), gradient_norm_clipping)
                 optimizer.step()
@@ -263,5 +278,5 @@ def ppo(config):
             all_best_score = best_score
             all_best_actions = best_actions
     avg_best_result = sum_best_scores / len(envs.remotes)
-    tune.report(nb_episodes=episode_nb, avg_best_result=avg_best_result, best_episode=all_best_score)
-    return episode_nb, all_best_score, avg_best_result, all_best_actions, model.state_dict()
+    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score})
+    return episode_nb, all_best_score, avg_best_result, all_best_actions
