@@ -6,16 +6,15 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-import multiprocessing as mp
 
 import wandb
 from JSS import default_ppo_config
 from torch.distributions import Categorical
-from ray import tune
 
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # We train on a GPU if available
 
 class Actor(nn.Module):
 
