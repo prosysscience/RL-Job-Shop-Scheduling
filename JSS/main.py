@@ -1,8 +1,6 @@
 import os
 import multiprocessing as mp
 
-from ray.tune import CLIReporter
-
 from JSS import default_ppo_config
 from JSS.ppo import ppo
 import wandb
@@ -14,6 +12,10 @@ if __name__ == "__main__":
     config = default_ppo_config.config
     sweep_config = {
         'method': 'grid',
+        'metric': {
+            'name': 'avg_best_result',
+            'goal': 'maximize',
+        },
         'parameters': {
             'learning_rate': {
                 'values': [5e-4, 1e-4, 5e-5]
