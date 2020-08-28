@@ -28,14 +28,23 @@ if __name__ == "__main__":
                 'values': [64, 128, 256]
             },
             'clipping_param': {
-                'values': [0.3, 0.2, 0.1]
+                'values': [0.5, 0.2]
             },
             'entropy_regularization': {
                 'values': [0, 1e-4]
+            },
+            'ppo_epoch': {
+                'values': [8, 16]
+            },
+            'n_steps': {
+                'values': [32, 64, 128]
+            },
+            'minibatch_size': {
+                'values': [16, 32]
             }
         }
     }
-    sweep_id = wandb.sweep(sweep_config, project="ppo_sweep")
+    sweep_id = wandb.sweep(sweep_config, project="SWEEP_BIG_PPO")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
 
     '''
