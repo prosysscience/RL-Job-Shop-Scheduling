@@ -25,7 +25,7 @@ class JSS(gym.Env):
         :param env_config: Ray dictionary of config parameter
         """
         if env_config is None:
-            env_config = {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/rl_job_shop/instances/ta80'}
+            env_config = {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta80'}
         instance_path = env_config['instance_path']
 
         # initial values for variables used for instance
@@ -113,17 +113,7 @@ class JSS(gym.Env):
         # TODO see if we can keep the state representation and do only minor changes
         for job in range(self.jobs):
             self.state[job][0] = self.legal_actions[job]
-            self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
-            self.state[job][2] = self.todo_time_step_job[job] / self.machines
-            self.state[job][3] = (self.jobs_length[job] - self.total_perform_op_time_jobs[job]) / self.max_time_jobs
-            # this allow to have 1 is job is over (not 0 because, 0 strongly indicate that the job is a good candidate)
-            if self.needed_machine_jobs[job] != -1:
-                self.state[job][4] = 1.0
-            else:
-                self.state[job][4] = self.time_until_available_machine[self.needed_machine_jobs[job]] / self.max_time_op
             self.state[job][5] = ((self.needed_machine_jobs == self.needed_machine_jobs[job]).sum() - 1) / (self.jobs - 1)
-            self.state[job][6] = self.state[job][1] * (self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs))
-            self.state[job][7] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
         output = {
             'real_obs': self.state,
             'action_mask': self.legal_actions
@@ -152,6 +142,8 @@ class JSS(gym.Env):
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 8, 1), dtype=np.float)
+        for job in range(self.jobs):
+            self.state[job][3] = self.jobs_length[job] / self.max_time_jobs
         return self._get_current_state_representation()
 
     def step(self, action: int):
@@ -171,6 +163,7 @@ class JSS(gym.Env):
             reward += time_needed
             self.time_until_available_machine[machine_needed] = time_needed
             self.time_until_finish_current_op_jobs[action] = time_needed
+            self.state[action][1] = time_needed / self.max_time_op
             bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
             # the NOPE action becomes legal has we have a next time step
             self.legal_actions[self.jobs] = 1
@@ -208,19 +201,29 @@ class JSS(gym.Env):
             performed_op_job = min(difference, was_left_time)
             self.time_until_finish_current_op_jobs[job] = max(0, self.time_until_finish_current_op_jobs[
                 job] - difference)
+            self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
             if was_left_time > 0:
                 self.total_perform_op_time_jobs[job] += performed_op_job
+                self.state[job][3] -= (performed_op_job / self.max_time_jobs)
                 if self.time_until_finish_current_op_jobs[job] == 0:
                     self.total_idle_time_jobs[job] += (difference - was_left_time)
+                    self.state[job][7] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
                     self.idle_time_jobs_last_op[job] = (difference - was_left_time)
+                    self.state[job][6] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
                     self.todo_time_step_job[job] += 1
+                    self.state[job][2] += (1.0 / self.machines)
                     if self.todo_time_step_job[job] < self.machines:
                         self.needed_machine_jobs[job] = self.instance_matrix[job][self.todo_time_step_job[job]][0]
+                        self.state[job][4] = max(0, self.time_until_available_machine[
+                                                 self.needed_machine_jobs[job]] - difference) / self.max_time_op
                     else:
                         self.needed_machine_jobs[job] = -1
+                        # this allow to have 1 is job is over (not 0 because, 0 strongly indicate that the job is a good candidate)
+                        self.state[job][4] = 1.0
             else:
                 self.total_idle_time_jobs[job] += (difference - was_left_time)
                 self.idle_time_jobs_last_op[job] += difference
+                self.state[job][6] += (difference / (self.max_time_jobs * self.jobs))
         for machine in range(self.machines):
             if self.time_until_available_machine[machine] < difference:
                 empty = difference - self.time_until_available_machine[machine]

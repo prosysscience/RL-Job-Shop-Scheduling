@@ -1,15 +1,28 @@
 import os
 import multiprocessing as mp
+import numpy as np
 
 from JSS import default_ppo_config
+from JSS.env import JSS
 from JSS.ppo import ppo
 import wandb
 
 
 if __name__ == "__main__":
-    print("I have detected {} CPUs here, so I'm going to create {} actors", mp.cpu_count(), 2 * mp.cpu_count())
+    print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), 2 * mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
-    config = default_ppo_config.config
+    env = JSS()
+    done = False
+    state = env.reset()
+    legal_actions = state['action_mask']
+    while not done:
+        proba = legal_actions/np.sum(legal_actions)
+        action = np.random.choice(env.action_space.n, 1, p=proba)[0]
+        state, reward, done, infos = env.step(action)
+        legal_actions = state['action_mask']
+    #config = default_ppo_config.config
+    #ppo(config)
+    '''
     sweep_config = {
         'method': 'grid',
         'metric': {
@@ -46,9 +59,11 @@ if __name__ == "__main__":
             }
         }
     }
+    '''
+    '''
     sweep_id = wandb.sweep(sweep_config, project="SWEEP_BIG_PPO")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
-
+'''
     '''
     all_configs = generate_variants(config)
     best_avg = float('-inf')
