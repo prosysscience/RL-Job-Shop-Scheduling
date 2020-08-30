@@ -27,6 +27,9 @@ def worker(remote, parent_remote, env_fn_wrapper):
             remote.send((env.observation_space, env.action_space))
         elif cmd == 'get_best_actions':
             remote.send((env.best_score, env.best_actions))
+        elif cmd == 'get_legal_actions':
+            ob = env.get_legal_actions()
+            remote.send(ob)
         else:
             raise NotImplementedError
 
@@ -132,6 +135,11 @@ class SubprocVecEnv(VecEnv):
     def reset(self):
         for remote in self.remotes:
             remote.send(('reset', None))
+        return np.stack([remote.recv() for remote in self.remotes])
+
+    def get_legal_actions(self):
+        for remote in self.remotes:
+            remote.send(('get_legal_actions', None))
         return np.stack([remote.recv() for remote in self.remotes])
 
     def reset_task(self):

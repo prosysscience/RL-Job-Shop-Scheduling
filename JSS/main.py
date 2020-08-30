@@ -62,7 +62,7 @@ if __name__ == "__main__":
             }
         }
     }
-    sweep_id = wandb.sweep(sweep_config, project="SWEEP_MINI_PPO")
+    sweep_id = wandb.sweep(sweep_config, project="SWEEP_DEBUG_PPO")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
     '''
     all_configs = generate_variants(config)

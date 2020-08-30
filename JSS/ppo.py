@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import gym
 import time
 import random
@@ -21,50 +23,48 @@ class Actor(nn.Module):
 
     def __init__(self, state_size: int, action_size: int, config: list):
         super(Actor, self).__init__()
-        self.linears = nn.ModuleList()
+        self.layers = []
         input_size = state_size
-        for layer_config in config:
-            self.linears.append(nn.Linear(input_size, layer_config))
-            input_size = layer_config
-        self.linears.append(nn.Linear(input_size, action_size))
-        for layer in self.linears:
+        for i, layer_config in enumerate(config):
+            layer = nn.Linear(input_size, layer_config)
             torch.nn.init.xavier_uniform_(layer.weight)
+            self.layers.append(('layer_{}'.format(i), layer))
+            self.layers.append(('tanh_{}'.format(i), nn.Tanh()))
+            input_size = layer_config
+        layer = nn.Linear(input_size, action_size)
+        torch.nn.init.xavier_uniform_(layer.weight)
+        self.layers.append(('layer_{}'.format(len(config)), layer))
+        self.actor_model = nn.Sequential(OrderedDict(self.layers))
 
-    def forward(self, x):
-        mask = torch.IntTensor([i['action_mask'] for i in x])
-        x = torch.FloatTensor([i['real_obs'].reshape(-1) for i in x])
-        for layer in self.linears[:-1]:
-            x = torch.tanh(layer(x))
-        x = self.linears[-1](x)
+    def forward(self, x, legal_actions):
+        x = self.actor_model(x)
         # We mask the action by making the probability to take illegal action really small
         #inf_mask = torch.clamp(torch.log(mask), min=-1e10)
         #x = x + inf_mask
-        x[mask == 0] = -1e10
+        x[legal_actions == 0] = -1e10
         #print(x)
-        x = F.softmax(x, dim=-1)
-        return x
+        return F.softmax(x, dim=-1)
 
 
 class Critic(nn.Module):
 
     def __init__(self, state_size: int, config: list):
         super(Critic, self).__init__()
-        self.linears = nn.ModuleList()
+        self.layers = []
         input_size = state_size
-        for layer_config in config:
-            self.linears.append(nn.Linear(input_size, layer_config))
-            input_size = layer_config
-        self.linears.append(nn.Linear(input_size, 1))
-        for layer in self.linears[:-1]:
+        for i, layer_config in enumerate(config):
+            layer = nn.Linear(input_size, layer_config)
             torch.nn.init.xavier_uniform_(layer.weight)
-        torch.nn.init.xavier_uniform_(self.linears[-1].weight, gain=0.1)
+            self.layers.append(('layer_{}'.format(i), layer))
+            self.layers.append(('tanh_{}'.format(i), nn.Tanh()))
+            input_size = layer_config
+        layer = nn.Linear(input_size, 1)
+        torch.nn.init.xavier_uniform_(layer.weight, gain=0.1)
+        self.layers.append(('layer_{}'.format(len(config)), layer))
+        self.critic_model = nn.Sequential(OrderedDict(self.layers))
 
     def forward(self, x):
-        x = torch.FloatTensor([i['real_obs'].reshape(-1) for i in x])
-        for layer in self.linears[:-1]:
-            x = torch.tanh(layer(x))
-        x = self.linears[-1](x)
-        return x
+        return self.critic_model(x)
 
 
 class ActorCritic(nn.Module):
@@ -74,8 +74,8 @@ class ActorCritic(nn.Module):
         self.actor = Actor(state_size, action_size, actor_config)
         self.critic = Critic(state_size, critic_config)
 
-    def forward(self, x):
-        return self.actor(x), self.critic(x)
+    def forward(self, state, legal_actions):
+        return self.actor.forward(state, legal_actions), self.critic.forward(state)
 
 
 def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int, env_config: dict = {}):
@@ -140,11 +140,12 @@ def ppo(config):
     torch.manual_seed(seed)
     random.seed(seed)
     np.random.seed(seed)
-    model = ActorCritic(env_infos.observation_space['real_obs'].shape[0] * env_infos.observation_space['real_obs'].shape[1], env_infos.action_space.n, actor_config, critic_config)
+    model = ActorCritic(env_infos.observation_space.shape[0], env_infos.action_space.n, actor_config, critic_config)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     wandb.watch(model)
     # training loop
     states = envs.reset()
+    legal_actions = envs.get_legal_actions()
 
     episode_nb = 0
     total_steps = 0
@@ -152,6 +153,7 @@ def ppo(config):
     while time.time() < start + running_sec_time:
 
         states_reps = []
+        states_legal_actions = []
         state_rewards = []
         state_dones = []
         log_probabilities = []
@@ -161,7 +163,9 @@ def ppo(config):
         for step in range(n_steps):
             # we compute the state value and the probability distribution
             with torch.no_grad():
-                prob_state, value_state = model(states)
+                states_tensor = torch.FloatTensor(states)
+                legal_actions_tensor = torch.IntTensor(legal_actions)
+                prob_state, value_state = model(states_tensor, legal_actions_tensor)
                 categorical = Categorical(prob_state)
                 actions_sampled = categorical.sample()
                 log_prob = categorical.log_prob(actions_sampled)
@@ -170,6 +174,7 @@ def ppo(config):
 
             # we act in the environments
             states, rewards, dones, _ = envs.step(actions)
+            legal_actions = envs.get_legal_actions()
 
             '''
             reward_scaler.extend(rewards)
@@ -177,6 +182,7 @@ def ppo(config):
                 rewards = rewards / statistics.stdev(reward_scaler)
             '''
             # we store the datas
+            states_legal_actions.append(legal_actions)
             states_reps.append(states)
             actions_used.append(actions_sampled)
             states_values.append(value_state)
@@ -186,8 +192,8 @@ def ppo(config):
 
         with torch.no_grad():
             # we also compute the next_state value
-            #states_tensor = torch.FloatTensor(states)
-            _, next_value = model(states)
+            states_tensor = torch.FloatTensor(states)
+            next_value = model.critic(states_tensor)
             states_values.append(next_value)
             gae = 0
             for step in reversed(range(n_steps)):
@@ -196,7 +202,8 @@ def ppo(config):
                 gae = current_step + (gamma * tau * (1 - state_dones[step]) * gae)
                 state_rewards[step] = gae
 
-        states_reps = np.concatenate(states_reps)
+        states_reps = torch.FloatTensor(np.concatenate(states_reps))
+        all_legal_action_state = torch.IntTensor(np.concatenate(states_legal_actions))
         states_values = torch.cat(states_values[:-1])
         state_rewards = torch.cat(state_rewards)
         state_dones = torch.cat(state_dones)
@@ -222,7 +229,7 @@ def ppo(config):
 
                 advantage_indicies = advantage[indices]
 
-                new_probabilities, new_states_values = model(states_reps[indices])
+                new_probabilities, new_states_values = model(states_reps[indices], all_legal_action_state[indices])
                 categorical = Categorical(new_probabilities)
                 new_probabilities = categorical.log_prob(actions_used[indices])
 

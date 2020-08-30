@@ -103,18 +103,14 @@ class JSS(gym.Env):
             -Time since IDLE: 0 if not available, time otherwise
             -Total IDLE time in the schedule
         '''
-        self.observation_space = gym.spaces.Dict({
-            'real_obs': gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=np.float),
-            'action_mask': gym.spaces.Box(low=0, high=1, shape=(self.action_space.n, ), dtype=np.int),
-        })
+        self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float)
 
     def _get_current_state_representation(self):
         self.state[:, 0] = self.legal_actions[:-1]
-        output = {
-            'real_obs': self.state,
-            'action_mask': self.legal_actions
-        }
-        return output
+        return self.state.reshape(-1)
+
+    def get_legal_actions(self):
+        return self.legal_actions
 
     def reset(self):
         if self.current_time_step is not None and self.current_time_step < self.min_time_step:
