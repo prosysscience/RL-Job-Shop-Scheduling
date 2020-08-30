@@ -100,20 +100,16 @@ class JSS(gym.Env):
             -Current operation %
             -Total left over time
             -When next machine available
-            -Number of other jobs who need the same machine
             -Time since IDLE: 0 if not available, time otherwise
             -Total IDLE time in the schedule
         '''
         self.observation_space = gym.spaces.Dict({
-            'real_obs': gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 8, 1), dtype=np.float),
+            'real_obs': gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=np.float),
             'action_mask': gym.spaces.Box(low=0, high=1, shape=(self.action_space.n, ), dtype=np.int),
         })
 
     def _get_current_state_representation(self):
-        # TODO see if we can keep the state representation and do only minor changes
-        for job in range(self.jobs):
-            self.state[job][0] = self.legal_actions[job]
-            self.state[job][5] = ((self.needed_machine_jobs == self.needed_machine_jobs[job]).sum() - 1) / (self.jobs - 1)
+        self.state[:, 0] = self.legal_actions[:-1]
         output = {
             'real_obs': self.state,
             'action_mask': self.legal_actions
@@ -141,7 +137,7 @@ class JSS(gym.Env):
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
-        self.state = np.zeros((self.jobs, 8, 1), dtype=np.float)
+        self.state = np.zeros((self.jobs, 7), dtype=np.float)
         for job in range(self.jobs):
             self.state[job][3] = self.jobs_length[job] / self.max_time_jobs
         return self._get_current_state_representation()
@@ -207,9 +203,9 @@ class JSS(gym.Env):
                 self.state[job][3] -= (performed_op_job / self.max_time_jobs)
                 if self.time_until_finish_current_op_jobs[job] == 0:
                     self.total_idle_time_jobs[job] += (difference - was_left_time)
-                    self.state[job][7] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
+                    self.state[job][6] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
                     self.idle_time_jobs_last_op[job] = (difference - was_left_time)
-                    self.state[job][6] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
+                    self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
                     self.todo_time_step_job[job] += 1
                     self.state[job][2] += (1.0 / self.machines)
                     if self.todo_time_step_job[job] < self.machines:
@@ -223,7 +219,7 @@ class JSS(gym.Env):
             else:
                 self.total_idle_time_jobs[job] += (difference - was_left_time)
                 self.idle_time_jobs_last_op[job] += difference
-                self.state[job][6] += (difference / (self.max_time_jobs * self.jobs))
+                self.state[job][5] += (difference / (self.max_time_jobs * self.jobs))
         for machine in range(self.machines):
             if self.time_until_available_machine[machine] < difference:
                 empty = difference - self.time_until_available_machine[machine]

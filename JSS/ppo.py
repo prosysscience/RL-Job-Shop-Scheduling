@@ -30,9 +30,8 @@ class Actor(nn.Module):
             torch.nn.init.xavier_uniform_(layer.weight)
 
     def forward(self, x):
-        mask = torch.IntTensor(np.array([i['action_mask'] for i in x]))
-        obs = np.array([i['real_obs'].flatten() for i in x])
-        x = torch.FloatTensor(obs)
+        mask = torch.IntTensor([i['action_mask'] for i in x])
+        x = torch.FloatTensor([i['real_obs'].reshape(-1) for i in x])
         for layer in self.linears[:-1]:
             x = torch.tanh(layer(x))
         x = self.linears[-1](x)
@@ -60,8 +59,7 @@ class Critic(nn.Module):
         torch.nn.init.xavier_uniform_(self.linears[-1].weight, gain=0.1)
 
     def forward(self, x):
-        obs = np.array([i['real_obs'].flatten() for i in x])
-        x = torch.FloatTensor(obs)
+        x = torch.FloatTensor([i['real_obs'].reshape(-1) for i in x])
         for layer in self.linears[:-1]:
             x = torch.tanh(layer(x))
         x = self.linears[-1](x)
@@ -94,9 +92,9 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
 def ppo(config):
     config_defaults = default_ppo_config.config
 
-    #wandb.init(config=config_defaults)
+    wandb.init(config=config_defaults)
 
-    #config = wandb.config
+    config = wandb.config
     '''
     print(hyper_config)
     start = time.time()
@@ -141,7 +139,7 @@ def ppo(config):
     np.random.seed(seed)
     model = ActorCritic(env_infos.observation_space['real_obs'].shape[0] * env_infos.observation_space['real_obs'].shape[1], env_infos.action_space.n, actor_config, critic_config)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    #wandb.watch(model)
+    wandb.watch(model)
     # training loop
     states = envs.reset()
 
@@ -251,7 +249,7 @@ def ppo(config):
                 advantage[indices] = new_advantage.detach()
 
                 loss = actor_loss + value_coefficient * critic_loss - entropy_regularization * entropy
-                #wandb.log({"loss": loss})
+                wandb.log({"loss": loss})
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), gradient_norm_clipping)
                 optimizer.step()
@@ -277,5 +275,5 @@ def ppo(config):
             all_best_score = best_score
             all_best_actions = best_actions
     avg_best_result = sum_best_scores / len(envs.remotes)
-    #wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score})
+    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score})
     return episode_nb, all_best_score, avg_best_result, all_best_actions
