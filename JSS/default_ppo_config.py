@@ -11,7 +11,7 @@ config = {
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-4,
     #'nb_actors': 32,
-    'nb_actors': 2 * mp.cpu_count(),
+    'actors_per_cpu': 1,
     'env_name': 'job-shop-v0',
     'ppo_epoch': 10,
     'clipping_param': 0.2,

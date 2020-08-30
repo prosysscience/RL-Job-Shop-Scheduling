@@ -30,6 +30,9 @@ if __name__ == "__main__":
             'goal': 'maximize',
         },
         'parameters': {
+            'actors_per_cpu': {
+                'values': [1, 2, 3]
+            },
             'learning_rate': {
                 'values': [5e-4, 1e-4, 5e-5]
             },
@@ -49,7 +52,7 @@ if __name__ == "__main__":
                 'values': [0, 1e-4]
             },
             'ppo_epoch': {
-                'values': [8, 16]
+                'values': [4, 8]
             },
             'n_steps': {
                 'values': [32, 64, 128]

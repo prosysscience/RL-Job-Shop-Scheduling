@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+import multiprocessing as mp
 
 import wandb
 from JSS import default_ppo_config
@@ -111,7 +112,7 @@ def ppo(config):
     max_steps_per_episode = config['max_steps_per_episode']
     value_coefficient = config['value_coefficient']
     entropy_regularization = config['entropy_regularization']
-    nb_actors = config['nb_actors']
+    actor_per_cpu = config['actors_per_cpu']
     env_name = config['env_name']
     env_config = config['env_config']
     ppo_epoch = config['ppo_epoch']
@@ -125,6 +126,8 @@ def ppo(config):
     actor_config = [config['actor_layer_size'] for _ in range(config['actor_layer_nb'])]
     critic_config = [config['critic_layer_size'] for _ in range(config['critic_layer_nb'])]
 
+
+    nb_actors = actor_per_cpu * mp.cpu_count()
     STEP_BATCH = nb_actors * n_steps
     assert minibatch_size <= STEP_BATCH
 
