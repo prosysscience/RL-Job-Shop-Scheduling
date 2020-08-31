@@ -1,8 +1,8 @@
-import gym
 import bisect
 import datetime
-import numpy as np
 
+import gym
+import numpy as np
 import plotly.figure_factory as ff
 
 
@@ -36,6 +36,7 @@ class JSS(gym.Env):
         self.max_time_op = 0
         self.max_time_jobs = 0
         self.max_action_step = 0
+        self.nb_legal_actions = 0
         # initial values for variables used for solving (to reinitialize when reset() is called)
         self.solution = None
         self.current_time_step = None
@@ -50,8 +51,6 @@ class JSS(gym.Env):
         self.total_idle_time_jobs = None
         self.idle_time_jobs_last_op = None
         self.state = None
-        # allows to know the best solution
-        self.min_time_step = float('inf')
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
         instance_file = open(instance_path, 'r')
@@ -92,7 +91,7 @@ class JSS(gym.Env):
         assert self.max_action_step > 0
         assert self.instance_matrix is not None
         # allocate a job + one to wait
-        self.action_space = gym.spaces.Discrete(self.jobs + 1)
+        self.action_space = gym.spaces.Discrete(self.jobs)
         '''
         matrix with the following attributes for each job:
             -Legal job
@@ -106,24 +105,21 @@ class JSS(gym.Env):
         self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float)
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.legal_actions[:-1]
+        self.state[:, 0] = self.legal_actions
         return self.state.reshape(-1)
 
     def get_legal_actions(self):
         return self.legal_actions
 
     def reset(self):
-        if self.current_time_step is not None and self.current_time_step < self.min_time_step:
-            self.min_time_step = self.current_time_step
         self.action_step = 0
         self.current_time_step = 0
         self.next_time_step = list()
+        self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs + 1, dtype=np.int)
-        # at the beginning the NOPE action is illegal
-        self.legal_actions[self.jobs] = 0
+        self.legal_actions = np.ones(self.jobs, dtype=np.int)
         # used to represent the solution
-        self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
+        self.solution = np.empty((self.jobs, self.machines), dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
         self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=np.int)
         self.todo_time_step_job = np.zeros(self.jobs, dtype=np.int)
@@ -131,41 +127,41 @@ class JSS(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        for job in range(self.jobs):
-            self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
+        self.needed_machine_jobs = self.instance_matrix[:, 0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
-        for job in range(self.jobs):
-            self.state[job][3] = self.jobs_length[job] / self.max_time_jobs
+        self.state[:, 3] = self.jobs_length / self.max_time_jobs
         return self._get_current_state_representation()
 
     def step(self, action: int):
-        assert 0 <= action <= self.jobs, 'Illegal action {} played, out of range'.format(action)
-        assert self.legal_actions[action] == 1, 'Illegal action {} played'.format(action)
+        #assert 0 <= action <= self.jobs, 'Illegal action {} played, out of range'.format(action)
+        #assert self.legal_actions[action] == 1, 'Illegal action {} played'.format(action)
         reward = 0
-        if action == self.jobs:
-            reward -= self._increase_time_step()
-        else:
-            self.action_step += 1
-            current_time_step_job = self.todo_time_step_job[action]
-            assert current_time_step_job < self.machines, 'We have already done all the requested operation on job {}'.format(action)
-            machine_needed = self.instance_matrix[action][current_time_step_job][0]
-            time_needed = self.instance_matrix[action][current_time_step_job][1]
-            assert self.time_until_available_machine[machine_needed] == 0, 'Machine {} is not available'.format(machine_needed)
-            assert self.time_until_finish_current_op_jobs[action] == 0, 'Job {} is not finished yet'.format(action)
-            reward += time_needed
-            self.time_until_available_machine[machine_needed] = time_needed
-            self.time_until_finish_current_op_jobs[action] = time_needed
-            self.state[action][1] = time_needed / self.max_time_op
-            bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
-            # the NOPE action becomes legal has we have a next time step
-            self.legal_actions[self.jobs] = 1
-            self.solution[action][current_time_step_job] = self.current_time_step
-            for action in range(self.jobs):
-                if self.needed_machine_jobs[action] == machine_needed:
-                    self.legal_actions[action] = 0
-            # until we don't have another legal action than NOPE and we have other time step available
-            while self.legal_actions[:self.jobs].sum() == 0 and len(self.next_time_step) > 0:
+        self.action_step += 1
+        current_time_step_job = self.todo_time_step_job[action]
+        #assert current_time_step_job < self.machines, 'We have already done all the requested operation on job {}'.format(action)
+        machine_needed = self.instance_matrix[action][current_time_step_job][0]
+        time_needed = self.instance_matrix[action][current_time_step_job][1]
+        #assert self.time_until_available_machine[machine_needed] == 0, 'Machine {} is not available'.format(machine_needed)
+        #assert self.time_until_finish_current_op_jobs[action] == 0, 'Job {} is not finished yet'.format(action)
+        reward += time_needed
+        self.time_until_available_machine[machine_needed] = time_needed
+        self.time_until_finish_current_op_jobs[action] = time_needed
+        self.state[action][1] = time_needed / self.max_time_op
+        bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
+        self.solution[action][current_time_step_job] = self.current_time_step
+        for action in range(self.jobs):
+            if self.needed_machine_jobs[action] == machine_needed and self.legal_actions[action] == 1:
+                self.legal_actions[action] = 0
+                self.nb_legal_actions -= 1
+        # until we don't have another legal action than NOPE and we have other time step available
+        if self.nb_legal_actions == 0:
+            while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
+        if self.nb_legal_actions == 1:
+            current_legal_actions = np.where(self.legal_actions == 1)[0]
+            scaled_reward = self._reward_scaler(reward)
+            state, next_step_reward, done, _ = self.step(current_legal_actions[0])
+            return state, next_step_reward + scaled_reward, done, {}
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -183,9 +179,6 @@ class JSS(gym.Env):
         assert len(self.next_time_step) > 0, 'There is no available next time-step'
         hole_planning = 0
         next_time_step = self.next_time_step.pop(0)
-        # if we don't have next time step, we make the NOPE action illegal
-        if len(self.next_time_step) == 0:
-            self.legal_actions[self.jobs] = 0
         difference = next_time_step - self.current_time_step
         self.current_time_step = next_time_step
         for job in range(self.jobs):
@@ -224,8 +217,9 @@ class JSS(gym.Env):
                 machine] - difference)
             if self.time_until_available_machine[machine] == 0:
                 for job in range(self.jobs):
-                    if self.needed_machine_jobs[job] == machine:
+                    if self.needed_machine_jobs[job] == machine and self.legal_actions[job] == 0:
                         self.legal_actions[job] = 1
+                        self.nb_legal_actions += 1
         return hole_planning
 
     def _is_done(self):
@@ -235,6 +229,7 @@ class JSS(gym.Env):
         df = []
         for job in range(self.jobs):
             i = 0
+            # TODO modify to take into consideration current time step
             while i < self.machines and self.solution[job][i] != -1:
                 dict_op = dict()
                 dict_op["Task"] = 'Job {}'.format(job)

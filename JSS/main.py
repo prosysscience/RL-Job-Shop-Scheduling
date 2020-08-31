@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 'values': [64, 128]
             },
             'critic_layer_size': {
-                'values': [64, 128, 256]
+                'values': [64, 128, 256]\
             },
             'clipping_param': {
                 'values': [0.5, 0.2]

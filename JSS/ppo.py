@@ -175,7 +175,6 @@ def ppo(config):
             # we act in the environments
             states, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
-
             '''
             reward_scaler.extend(rewards)
             if len(reward_scaler) > 2:
