@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 'values': [64, 128]
             },
             'critic_layer_size': {
-                'values': [64, 128, 256]\
+                'values': [64, 128, 256]
             },
             'clipping_param': {
                 'values': [0.5, 0.2]
@@ -49,13 +49,13 @@ if __name__ == "__main__":
                 'values': [0, 1e-4]
             },
             'ppo_epoch': {
-                'values': [4, 8]
+                'values': [2, 4, 6]
             },
             'n_steps': {
                 'values': [32, 64, 128]
             },
             'minibatch_size': {
-                'values': [16, 32]
+                'values': [8, 16]
             }
         }
     }
