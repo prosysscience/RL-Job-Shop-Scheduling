@@ -153,10 +153,10 @@ class JSS(gym.Env):
             if self.needed_machine_jobs[action] == machine_needed and self.legal_actions[action] == 1:
                 self.legal_actions[action] = 0
                 self.nb_legal_actions -= 1
-        # until we don't have another legal action than NOPE and we have other time step available
-        if self.nb_legal_actions == 0:
-            while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
-                reward -= self._increase_time_step()
+        # if we can't allocate new job in the current timestep, we pass to the next one
+        while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+            reward -= self._increase_time_step()
+        # if there is only one legal action, we perform it
         if self.nb_legal_actions == 1:
             current_legal_actions = np.where(self.legal_actions == 1)[0]
             scaled_reward = self._reward_scaler(reward)
