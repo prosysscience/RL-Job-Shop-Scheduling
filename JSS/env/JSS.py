@@ -127,7 +127,8 @@ class JSS(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.needed_machine_jobs = self.instance_matrix[:, 0][0]
+        for job in range(self.jobs):
+            self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
         self.state[:, 3] = self.jobs_length / self.max_time_jobs
         return self._get_current_state_representation()
@@ -230,11 +231,14 @@ class JSS(gym.Env):
         for job in range(self.jobs):
             i = 0
             # TODO modify to take into consideration current time step
-            while i < self.machines and self.solution[job][i] != -1:
+            rendering_current_time_step = self.start_timestamp
+            while i < self.machines and rendering_current_time_step <= self.current_time_step:
                 dict_op = dict()
                 dict_op["Task"] = 'Job {}'.format(job)
                 start_sec = self.start_timestamp + self.solution[job][i]
                 finish_sec = start_sec + self.instance_matrix[job][i][1]
+                if start_sec > rendering_current_time_step:
+                    rendering_current_time_step = start_sec
                 dict_op["Start"] = datetime.datetime.fromtimestamp(start_sec)
                 dict_op["Finish"] = datetime.datetime.fromtimestamp(finish_sec)
                 dict_op["Resource"] = "Machine {}".format(self.instance_matrix[job][i][0])
