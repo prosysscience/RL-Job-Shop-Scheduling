@@ -54,11 +54,8 @@ if __name__ == "__main__":
             'n_steps': {
                 'values': [32, 64]
             },
-            'minibatch_size': {
-                'values': [8, 16]
-            },
             'gradient_norm_clipping': {
-                'values': [1.0, 0.5, 0.2]
+                'values': [1.0, 0.5]
             },
         }
     }
