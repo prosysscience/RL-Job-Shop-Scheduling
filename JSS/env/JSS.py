@@ -39,7 +39,7 @@ class JSS(gym.Env):
         self.nb_legal_actions = 0
         # initial values for variables used for solving (to reinitialize when reset() is called)
         self.solution = None
-        self.current_time_step = None
+        self.current_time_step = float('inf')
         self.next_time_step = list()
         self.legal_actions = None
         self.action_step = 0
@@ -134,16 +134,11 @@ class JSS(gym.Env):
         return self._get_current_state_representation()
 
     def step(self, action: int):
-        #assert 0 <= action <= self.jobs, 'Illegal action {} played, out of range'.format(action)
-        #assert self.legal_actions[action] == 1, 'Illegal action {} played'.format(action)
         reward = 0
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
-        #assert current_time_step_job < self.machines, 'We have already done all the requested operation on job {}'.format(action)
         machine_needed = self.instance_matrix[action][current_time_step_job][0]
         time_needed = self.instance_matrix[action][current_time_step_job][1]
-        #assert self.time_until_available_machine[machine_needed] == 0, 'Machine {} is not available'.format(machine_needed)
-        #assert self.time_until_finish_current_op_jobs[action] == 0, 'Job {} is not finished yet'.format(action)
         reward += time_needed
         self.time_until_available_machine[machine_needed] = time_needed
         self.time_until_finish_current_op_jobs[action] = time_needed
@@ -161,11 +156,11 @@ class JSS(gym.Env):
         if self.nb_legal_actions == 1:
             current_legal_actions = np.where(self.legal_actions)[0]
             scaled_reward = self._reward_scaler(reward)
-            state, next_step_reward, done, _ = self.step(current_legal_actions[0])
-            return state, next_step_reward + scaled_reward, done, {}
+            state, next_step_reward, done, next_action_performed = self.step(current_legal_actions[0])
+            return state, next_step_reward + scaled_reward, done, [action] + next_action_performed
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
-        return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+        return self._get_current_state_representation(), scaled_reward, self._is_done(), [action]
 
     def _reward_scaler(self, reward):
         reward = reward / self.max_time_op

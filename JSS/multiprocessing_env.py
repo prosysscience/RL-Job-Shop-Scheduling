@@ -2,36 +2,44 @@
 #https://github.com/openai/baselines/tree/master/baselines/common/vec_env
 
 import numpy as np
+import cloudpickle
+import multiprocessing
 from multiprocessing import Process, Pipe
 
 def worker(remote, parent_remote, env_fn_wrapper):
     parent_remote.close()
     env = env_fn_wrapper.x()
     while True:
-        cmd, data = remote.recv()
-        if cmd == 'step':
-            ob, reward, done, info = env.step(data)
-            if done:
+        try:
+            cmd, data = remote.recv()
+            if cmd == 'step':
+                ob, reward, done, info = env.step(data)
+                if done:
+                    ob = env.reset()
+                remote.send((ob, reward, done, info))
+            elif cmd == 'reset':
                 ob = env.reset()
-            remote.send((ob, reward, done, info))
-        elif cmd == 'reset':
-            ob = env.reset()
-            remote.send(ob)
-        elif cmd == 'reset_task':
-            ob = env.reset_task()
-            remote.send(ob)
-        elif cmd == 'close':
-            remote.close()
+                remote.send(ob)
+            elif cmd == 'reset_task':
+                ob = env.reset_task()
+                remote.send(ob)
+            elif cmd == 'close':
+                remote.close()
+                break
+            elif cmd == 'get_spaces':
+                remote.send((env.observation_space, env.action_space))
+            elif cmd == 'get_best_actions':
+                remote.send((env.best_score, env.best_actions))
+            elif cmd == 'get_best_timestep':
+                remote.send(env.best_time_step)
+            elif cmd == 'get_legal_actions':
+                ob = env.get_legal_actions()
+                remote.send(ob)
+            else:
+                raise NotImplementedError
+        except EOFError:
             break
-        elif cmd == 'get_spaces':
-            remote.send((env.observation_space, env.action_space))
-        elif cmd == 'get_best_actions':
-            remote.send((env.best_score, env.best_actions))
-        elif cmd == 'get_legal_actions':
-            ob = env.get_legal_actions()
-            remote.send(ob)
-        else:
-            raise NotImplementedError
+
 
 class VecEnv(object):
     """
@@ -91,33 +99,43 @@ class CloudpickleWrapper(object):
     """
     def __init__(self, x):
         self.x = x
+
     def __getstate__(self):
-        import cloudpickle
         return cloudpickle.dumps(self.x)
+
     def __setstate__(self, ob):
-        import pickle
-        self.x = pickle.loads(ob)
+        self.x = cloudpickle.loads(ob)
 
         
 class SubprocVecEnv(VecEnv):
-    def __init__(self, env_fns, spaces=None):
+    def __init__(self, env_fns, spaces=None, start_method=None):
         """
         envs: list of gym environments to run in subprocesses
         """
         self.waiting = False
         self.closed = False
-        nenvs = len(env_fns)
-        self.nenvs = nenvs
-        self.remotes, self.work_remotes = zip(*[Pipe() for _ in range(nenvs)])
-        self.ps = [Process(target=worker, args=(work_remote, remote, CloudpickleWrapper(env_fn)))
-            for (work_remote, remote, env_fn) in zip(self.work_remotes, self.remotes, env_fns)]
-        for p in self.ps:
-            p.daemon = True # if the main process crashes, we should not cause things to hang
-            p.start()
-        for remote in self.work_remotes:
-            remote.close()
+        n_envs = len(env_fns)
+        self.nenvs = n_envs
 
-        self.remotes[0].send(('get_spaces', None))
+        if start_method is None:
+            # Fork is not a thread safe method (see issue #217)
+            # but is more user friendly (does not require to wrap the code in
+            # a `if __name__ == "__main__":`)
+            forkserver_available = "forkserver" in multiprocessing.get_all_start_methods()
+            start_method = "forkserver" if forkserver_available else "spawn"
+        ctx = multiprocessing.get_context(start_method)
+
+        self.remotes, self.work_remotes = zip(*[ctx.Pipe() for _ in range(n_envs)])
+        self.processes = []
+        for work_remote, remote, env_fn in zip(self.work_remotes, self.remotes, env_fns):
+            args = (work_remote, remote, CloudpickleWrapper(env_fn))
+            # daemon=True: if the main process crashes, we should not cause things to hang
+            process = ctx.Process(target=worker, args=args, daemon=True)  # pytype:disable=attribute-error
+            process.start()
+            self.processes.append(process)
+            work_remote.close()
+
+        self.remotes[0].send(("get_spaces", None))
         observation_space, action_space = self.remotes[0].recv()
         VecEnv.__init__(self, len(env_fns), observation_space, action_space)
 
@@ -157,7 +175,7 @@ class SubprocVecEnv(VecEnv):
             remote.send(('close', None))
         for p in self.ps:
             p.join()
-            self.closed = True
+        self.closed = True
             
     def __len__(self):
         return self.nenvs

@@ -276,6 +276,7 @@ def ppo(config):
     sum_best_scores = 0
     all_best_score = float('-inf')
     all_best_actions = []
+    all_best_time_step = float('inf')
     for remote in envs.remotes:
         remote.send(('get_best_actions', None))
         best_score, best_actions = remote.recv()
@@ -283,6 +284,10 @@ def ppo(config):
         if best_score > all_best_score:
             all_best_score = best_score
             all_best_actions = best_actions
+        remote.send(('get_best_timestep', None))
+        best_time_step = remote.recv()
+        if best_time_step < all_best_time_step:
+            all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
-    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score})
+    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score, "best_timestep": all_best_time_step})
     return episode_nb, all_best_score, avg_best_result, all_best_actions
