@@ -13,7 +13,7 @@ config = {
     #'nb_actors': 32,
     'actors_per_cpu': 1,
     'env_name': 'job-shop-v0',
-    'ppo_epoch': 10,
+    'ppo_epoch': 4,
     'clipping_param': 0.2,
     'clipping_param_vf': None,  # None to avoid clipping the value estimation
     'minibatch_size': 32,

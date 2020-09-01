@@ -117,7 +117,7 @@ class JSS(gym.Env):
         self.next_time_step = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs, dtype=np.int)
+        self.legal_actions = np.ones(self.jobs, dtype=np.bool)
         # used to represent the solution
         self.solution = np.empty((self.jobs, self.machines), dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -151,15 +151,15 @@ class JSS(gym.Env):
         bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
         self.solution[action][current_time_step_job] = self.current_time_step
         for action in range(self.jobs):
-            if self.needed_machine_jobs[action] == machine_needed and self.legal_actions[action] == 1:
-                self.legal_actions[action] = 0
+            if self.needed_machine_jobs[action] == machine_needed and self.legal_actions[action]:
+                self.legal_actions[action] = False
                 self.nb_legal_actions -= 1
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
         # if there is only one legal action, we perform it
         if self.nb_legal_actions == 1:
-            current_legal_actions = np.where(self.legal_actions == 1)[0]
+            current_legal_actions = np.where(self.legal_actions)[0]
             scaled_reward = self._reward_scaler(reward)
             state, next_step_reward, done, _ = self.step(current_legal_actions[0])
             return state, next_step_reward + scaled_reward, done, {}
@@ -218,8 +218,8 @@ class JSS(gym.Env):
                 machine] - difference)
             if self.time_until_available_machine[machine] == 0:
                 for job in range(self.jobs):
-                    if self.needed_machine_jobs[job] == machine and self.legal_actions[job] == 0:
-                        self.legal_actions[job] = 1
+                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job]:
+                        self.legal_actions[job] = True
                         self.nb_legal_actions += 1
         return hole_planning
 

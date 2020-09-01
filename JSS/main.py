@@ -43,23 +43,26 @@ if __name__ == "__main__":
                 'values': [64, 128, 256]
             },
             'clipping_param': {
-                'values': [0.5, 0.2]
+                'values': [0.5, 0.2, 0.1]
             },
             'entropy_regularization': {
                 'values': [0, 1e-4]
             },
             'ppo_epoch': {
-                'values': [2, 4, 6]
+                'values': [2, 4]
             },
             'n_steps': {
-                'values': [32, 64, 128]
+                'values': [32, 64]
             },
             'minibatch_size': {
                 'values': [8, 16]
-            }
+            },
+            'gradient_norm_clipping': {
+                'values': [1.0, 0.5, 0.2]
+            },
         }
     }
-    sweep_id = wandb.sweep(sweep_config, project="SWEEP_DEBUG_PPO")
+    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_PPO_CPU")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
     '''
     all_configs = generate_variants(config)

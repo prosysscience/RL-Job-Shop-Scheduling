@@ -164,7 +164,7 @@ def ppo(config):
             # we compute the state value and the probability distribution
             with torch.no_grad():
                 states_tensor = torch.FloatTensor(states)
-                legal_actions_tensor = torch.IntTensor(legal_actions)
+                legal_actions_tensor = torch.BoolTensor(legal_actions)
                 prob_state, value_state = model(states_tensor, legal_actions_tensor)
                 categorical = Categorical(prob_state)
                 actions_sampled = categorical.sample()
@@ -202,7 +202,7 @@ def ppo(config):
                 state_rewards[step] = gae
 
         states_reps = torch.FloatTensor(np.concatenate(states_reps))
-        all_legal_action_state = torch.IntTensor(np.concatenate(states_legal_actions))
+        all_legal_action_state = torch.BoolTensor(np.concatenate(states_legal_actions))
         states_values = torch.cat(states_values[:-1])
         state_rewards = torch.cat(state_rewards)
         state_dones = torch.cat(state_dones)
