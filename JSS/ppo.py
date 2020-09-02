@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+from PIL import Image
+import io
 import gym
 import time
 import random
@@ -18,6 +20,7 @@ from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # We train on a GPU if available
+
 
 class Actor(nn.Module):
 
@@ -287,5 +290,21 @@ def ppo(config):
         if best_time_step < all_best_time_step:
             all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
-    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score, "best_timestep": all_best_time_step})
+
+    env_gantt = gym.make(config['env_name'], env_config=config['env_config'])
+    state = env_gantt.reset()
+    done = False
+    legal_actions = env_gantt.get_legal_actions()
+    current_step = 0
+    # we can't just iterate throught all the actions because of the automatic action taking
+    while current_step < len(all_best_actions):
+        action = all_best_actions[current_step]
+        assert legal_actions[action]
+        state, reward, done, action_performed = env_gantt.step(action)
+        current_step += len(action_performed)
+    assert done
+    figure = env_gantt.render()
+    img_bytes = figure.to_image(format="png")
+    image = Image.open(io.BytesIO(img_bytes))
+    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score, "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
     return episode_nb, all_best_score, avg_best_result, all_best_actions

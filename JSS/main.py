@@ -65,9 +65,6 @@ def random_worker(config):
                "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
 
 if __name__ == "__main__":
-    config = default_ppo_config.config
-    random_worker(config)
-    '''
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_ppo_config.config
@@ -126,4 +123,3 @@ if __name__ == "__main__":
     wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_PPO_CPU")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
-    '''
