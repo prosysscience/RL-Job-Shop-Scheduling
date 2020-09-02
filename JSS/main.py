@@ -14,7 +14,7 @@ import wandb
 
 
 def random_worker(config):
-    wandb.init(name='random')
+    wandb.init(name='random', project='JSS_FCN_PPO_CPU')
     np.random.seed(0)
     envs = [make_seeded_env(i, config['env_name'], 0, None, config['env_config']) for i in range(mp.cpu_count())]
     envs = SubprocVecEnv(envs)
@@ -23,7 +23,7 @@ def random_worker(config):
     start_time = time.time()
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
-    while time.time() < start_time + 30:
+    while time.time() < start_time + config['running_sec_time']:
         actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] for legal_action in
                    legal_actions]
         states, rewards, dones, _ = envs.step(actions)
