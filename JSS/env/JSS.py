@@ -1,10 +1,12 @@
 import bisect
 import datetime
+import random
 
+import pandas as pd
 import gym
 import numpy as np
+import plotly.express as px
 import plotly.figure_factory as ff
-
 
 class JSS(gym.Env):
 
@@ -145,9 +147,9 @@ class JSS(gym.Env):
         self.state[action][1] = time_needed / self.max_time_op
         bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
         self.solution[action][current_time_step_job] = self.current_time_step
-        for action in range(self.jobs):
-            if self.needed_machine_jobs[action] == machine_needed and self.legal_actions[action]:
-                self.legal_actions[action] = False
+        for job_id in range(self.jobs):
+            if self.needed_machine_jobs[job_id] == machine_needed and self.legal_actions[job_id]:
+                self.legal_actions[job_id] = False
                 self.nb_legal_actions -= 1
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
@@ -204,7 +206,7 @@ class JSS(gym.Env):
             else:
                 self.total_idle_time_jobs[job] += (difference - was_left_time)
                 self.idle_time_jobs_last_op[job] += difference
-                self.state[job][5] += (difference / (self.max_time_jobs * self.jobs))
+                self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
         for machine in range(self.machines):
             if self.time_until_available_machine[machine] < difference:
                 empty = difference - self.time_until_available_machine[machine]
@@ -225,21 +227,23 @@ class JSS(gym.Env):
         df = []
         for job in range(self.jobs):
             i = 0
-            # TODO modify to take into consideration current time step
-            rendering_current_time_step = self.start_timestamp
-            while i < self.machines and rendering_current_time_step <= self.current_time_step:
+            # TODO for the moment, only allow full solved env to be printed
+            while i < self.machines:
                 dict_op = dict()
                 dict_op["Task"] = 'Job {}'.format(job)
                 start_sec = self.start_timestamp + self.solution[job][i]
                 finish_sec = start_sec + self.instance_matrix[job][i][1]
-                if start_sec > rendering_current_time_step:
-                    rendering_current_time_step = start_sec
                 dict_op["Start"] = datetime.datetime.fromtimestamp(start_sec)
                 dict_op["Finish"] = datetime.datetime.fromtimestamp(finish_sec)
                 dict_op["Resource"] = "Machine {}".format(self.instance_matrix[job][i][0])
                 df.append(dict_op)
                 i += 1
         if len(df) > 0:
-            fig = ff.create_gantt(df, index_col='Resource', reverse_colors=True,
-                                  show_colorbar=True, group_tasks=True)
-            fig.show()
+            df = pd.DataFrame(df)
+            colors = [
+                tuple([random.random() for i in range(3)]) for _ in range(self.machines)
+            ]
+            fig = ff.create_gantt(df, index_col='Resource', colors=colors, show_colorbar=True,
+                                  group_tasks=True)
+            fig.update_yaxes(autorange="reversed")  # otherwise tasks are listed from the bottom up
+        return fig

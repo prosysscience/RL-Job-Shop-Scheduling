@@ -1,7 +1,10 @@
 import os
 import multiprocessing as mp
 import time
+from PIL import Image
+import io
 
+import gym
 import numpy as np
 
 from JSS import default_ppo_config
@@ -10,7 +13,7 @@ from JSS.ppo import ppo, make_seeded_env
 import wandb
 
 
-def random_worker():
+def random_worker(config):
     wandb.init(name='random')
     np.random.seed(0)
     envs = [make_seeded_env(i, config['env_name'], 0, None, config['env_config']) for i in range(mp.cpu_count())]
@@ -20,7 +23,7 @@ def random_worker():
     start_time = time.time()
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
-    while time.time() < start_time + config['running_sec_time']:
+    while time.time() < start_time + 30:
         actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] for legal_action in
                    legal_actions]
         states, rewards, dones, _ = envs.step(actions)
@@ -43,10 +46,28 @@ def random_worker():
         if best_time_step < all_best_time_step:
             all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
+    env_gantt = gym.make(config['env_name'], env_config=config['env_config'])
+    state = env_gantt.reset()
+    done = False
+    legal_actions = env_gantt.get_legal_actions()
+    current_step = 0
+    # we can't just iterate throught all the actions because of the automatic action taking
+    while current_step < len(all_best_actions):
+        action = all_best_actions[current_step]
+        assert legal_actions[action]
+        state, reward, done, action_performed = env_gantt.step(action)
+        current_step += len(action_performed)
+    assert done
+    figure = env_gantt.render()
+    img_bytes = figure.to_image(format="png")
+    image = Image.open(io.BytesIO(img_bytes))
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
-               "best_timestep": all_best_time_step})
+               "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
 
 if __name__ == "__main__":
+    config = default_ppo_config.config
+    random_worker(config)
+    '''
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_ppo_config.config
@@ -101,7 +122,8 @@ if __name__ == "__main__":
         }
     }
 
-    sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_PPO_CPU", )
-    wandb.agent(sweep_id, function=lambda: random_worker())
+    sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_PPO_CPU")
+    wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_PPO_CPU")
     wandb.agent(sweep_id,  function=lambda: ppo(config))
+    '''
