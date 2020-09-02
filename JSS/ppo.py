@@ -175,11 +175,10 @@ def ppo(config):
             # we act in the environments
             states, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
-            '''
-            reward_scaler.extend(rewards)
-            if len(reward_scaler) > 2:
-                rewards = rewards / statistics.stdev(reward_scaler)
-            '''
+
+            total_steps += n_steps
+            episode_nb += sum(dones)
+
             # we store the datas
             states_legal_actions.append(legal_actions)
             states_reps.append(states)
@@ -269,8 +268,7 @@ def ppo(config):
             running_sec_time = 0
             break
 
-        total_steps += n_steps
-        episode_nb += torch.sum(state_dones).item()
+
         #print('\rEpisode {}\tSteps {}'.format(episode_nb, total_steps), end="")
 
     sum_best_scores = 0
