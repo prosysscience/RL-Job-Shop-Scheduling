@@ -58,8 +58,8 @@ if __name__ == "__main__":
             'goal': 'maximize',
         },
         'parameters': {
-            'fake_val': {
-                'values': [0]
+            'random_agent': {
+                'values': [1]
             },
         }
     }
