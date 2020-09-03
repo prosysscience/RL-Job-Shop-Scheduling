@@ -101,52 +101,53 @@ def dqn(config):
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
-    env = BestActionsWrapper(gym.make(env_name, env_config=env_config))
+    env_info = gym.make(env_name, env_config=env_config)
 
-    env.seed(seed)
+    env_info.seed(seed)
     torch.manual_seed(seed)
     random.seed(seed)
     np.random.seed(seed)
 
 
-    local_net = QNetwork(env.observation_space.shape[0], env.action_space.n)
+    local_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n)
     #local_net = local_net.to(device)
-    target_net = QNetwork(env.observation_space.shape[0], env.action_space.n)
+    target_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n)
     #target_net = target_net.to(device)
     optimizer = optim.Adam(local_net.parameters(), lr=learning_rate)
     memory = PrioritizedReplayBuffer(replay_buffer_size)
+    wandb.watch(local_net)
 
 
     episode_nb = 0
+    previous_nb_episode = 0
     total_steps = 0
 
-
-    state = env.reset()
-    legal_actions = env.get_legal_actions()
-    mask = (1 - legal_actions) * -1e10
-    done = False
-    state_tensor = torch.FloatTensor(state)
+    states = envs.reset()
+    legal_actions = envs.get_legal_actions()
+    masks = (1 - legal_actions) * -1e10
+    state_tensor = torch.FloatTensor(states)
     with torch.no_grad():
-        action_values = local_net(state_tensor) + mask
-        value_current_state = torch.max(action_values).item()
+        action_values = local_net(state_tensor) + masks
+        value_current_states, actions = torch.max(action_values, dim=-1)
     while time.time() < start + running_sec_time:
-        experience_stack = []
+        experience_stack = [[] for _ in range(nb_actors)]
         for step in range(nb_steps):
-            total_steps += 1
-            if random.random() > epsilon:
-                with torch.no_grad():
-                    action = torch.argmax(action_values, dim=0).item()
-            else:
-                #actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] for legal_action in legal_actions]
-                #action = env.action_space.sample()
-                action = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
-            next_state, reward, done, _ = env.step(action)
-            legal_actions = env.get_legal_actions()
-            mask = (1 - legal_actions) * -1e10
+            actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] if random.random() <= epsilon else actions[actor_nb] for actor_nb, legal_action in enumerate(legal_actions)]
+            next_states_env, rewards, dones, _ = envs.step(actions)
+            legal_actions = envs.get_legal_actions()
+            masks = (1 - legal_actions) * -1e10
 
-            experience = Experience(state, action, reward, next_state, done, mask)
-            experience.current_state_value = value_current_state
-            experience_stack.append(experience)
+            for actor_nb in range(nb_actors):
+                state = states[actor_nb]
+                action = actions[actor_nb]
+                reward = rewards[actor_nb]
+                done = dones[actor_nb]
+                next_state = next_states_env[actor_nb]
+                mask = masks[actor_nb]
+                value = value_current_states[actor_nb]
+                experience = Experience(state, action, reward, next_state, done, mask)
+                experience.current_state_value = value
+                experience_stack[actor_nb].append(experience)
 
             if total_steps % update_network_step == 0 and len(memory) > batch_size:
                 optimizer.zero_grad()
@@ -165,6 +166,7 @@ def dqn(config):
                     q_pred_next = local_net(next_states).gather(1, action_next)
                     td = rewards + ((gamma ** steps) * q_pred_next * (1 - dones))
                 loss = (torch.FloatTensor(weights) * loss_fn(td, q_pred)).mean()
+                wandb.log({"loss": loss})
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(local_net.parameters(), clipping_gradient)
                 optimizer.step()
@@ -173,68 +175,68 @@ def dqn(config):
                 with torch.no_grad():
                     errors = td - q_pred
                 memory.update(indices, errors)
-
-            state = next_state
-            if done:
-                episode_nb += 1
-                state = env.reset()
-                done = False
-                legal_actions = env.get_legal_actions()
+            total_steps += nb_actors
+            episode_nb += sum(dones)
+            if previous_nb_episode != episode_nb:
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
-                clipping_gradient = max(minimal_clipping, clipping_gradient * clipping_decay)
-            state_tensor = torch.FloatTensor(state)
+                previous_nb_episode = episode_nb
+
+            states = next_states_env
+            state_tensor = torch.FloatTensor(states)
             with torch.no_grad():
-                action_values = local_net(state_tensor) + mask
-                value_current_state = torch.max(action_values).item()
+                action_values = local_net(state_tensor) + masks
+                value_current_states, actions = torch.max(action_values, dim=-1)
 
         acc_return = 0
         step = 1
-        done = 0
-        while len(experience_stack) > 0:
-            experience = experience_stack.pop()
-            acc_return = experience.reward + (gamma * acc_return * (1 - experience.done))
-            if experience.done == 1:
-                done = 1
-            experience.done = done
-            experience.reward = acc_return
-            experience.next_state = state
-            experience.step = step
-            with torch.no_grad():
-                td = experience.reward + ((gamma ** experience.step) * value_current_state * (1 - experience.done))
-                error = experience.current_state_value - td
-            experience.error = error
-            memory.add(experience, error)
-            step += 1
+        done_exp = 0
+        for actor_nb in range(nb_actors):
+            while len(experience_stack[actor_nb]) > 0:
+                experience = experience_stack[actor_nb].pop()
+                acc_return = experience.reward + (gamma * acc_return * (1 - experience.done))
+                if experience.done == 1:
+                    done_exp = 1
+                experience.done = done_exp
+                experience.reward = acc_return
+                experience.next_state = states[actor_nb]
+                experience.step = step
+                with torch.no_grad():
+                    td = experience.reward + ((gamma ** experience.step) * value_current_states[actor_nb] * (1 - experience.done))
+                    error = experience.current_state_value - td
+                experience.error = error
+                memory.add(experience, error)
+                step += 1
 
     sum_best_scores = 0
     all_best_score = float('-inf')
     all_best_actions = []
     all_best_time_step = float('inf')
-    best_score = env.best_score
-    best_actions = env.best_actions
-    sum_best_scores += best_score
-    if best_score > all_best_score:
-        all_best_score = best_score
-        all_best_actions = best_actions
-    best_time_step = env.best_time_step
-    if best_time_step < all_best_time_step:
-        all_best_time_step = best_time_step
+    for remote in envs.remotes:
+        remote.send(('get_best_actions', None))
+        best_score, best_actions = remote.recv()
+        sum_best_scores += best_score
+        if best_score > all_best_score:
+            all_best_score = best_score
+            all_best_actions = best_actions
+        remote.send(('get_best_timestep', None))
+        best_time_step = remote.recv()
+        if best_time_step < all_best_time_step:
+            all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
 
 
-    env_test = gym.make(env_name, env_config=env_config)
-    state = env_test.reset()
+    state = env_info.reset()
     done = False
-    legal_actions = env_test.get_legal_actions()
+    legal_actions = env_info.get_legal_actions()
     current_step = 0
     # we can't just iterate throught all the actions because of the automatic action taking
     while current_step < len(all_best_actions):
         action = all_best_actions[current_step]
         assert legal_actions[action]
-        state, reward, done, action_performed = env_test.step(action)
+        state, reward, done, action_performed = env_info.step(action)
         current_step += len(action_performed)
     assert done
-    figure = env.render()
+    figure = env_info.render()
     img_bytes = figure.to_image(format="png")
     image = Image.open(io.BytesIO(img_bytes))
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,

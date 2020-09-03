@@ -174,7 +174,7 @@ def ppo(config):
             states, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
 
-            total_steps += n_steps
+            total_steps += nb_actors
             episode_nb += sum(dones)
 
             # we store the datas
