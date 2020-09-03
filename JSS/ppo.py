@@ -99,12 +99,7 @@ def ppo(config):
     wandb.init(config=config_defaults)
 
     config = wandb.config
-    '''
-    print(hyper_config)
-    start = time.time()
-    for key_config in hyper_config:
-        config[key_config] = hyper_config[key_config]
-    '''
+
     start = time.time()
 
     seed = config['seed']
@@ -291,19 +286,18 @@ def ppo(config):
             all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
 
-    env_gantt = gym.make(config['env_name'], env_config=config['env_config'])
-    state = env_gantt.reset()
+    state = env_infos.reset()
     done = False
-    legal_actions = env_gantt.get_legal_actions()
+    legal_actions = env_infos.get_legal_actions()
     current_step = 0
     # we can't just iterate throught all the actions because of the automatic action taking
     while current_step < len(all_best_actions):
         action = all_best_actions[current_step]
         assert legal_actions[action]
-        state, reward, done, action_performed = env_gantt.step(action)
+        state, reward, done, action_performed = env_infos.step(action)
         current_step += len(action_performed)
     assert done
-    figure = env_gantt.render()
+    figure = env_infos.render()
     img_bytes = figure.to_image(format="png")
     image = Image.open(io.BytesIO(img_bytes))
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score, "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})

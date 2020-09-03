@@ -8,6 +8,7 @@ import gym
 import numpy as np
 
 from JSS import default_ppo_config
+from JSS.dqn import dqn
 from JSS.multiprocessing_env import SubprocVecEnv
 from JSS.ppo import ppo, make_seeded_env
 import wandb
@@ -69,6 +70,9 @@ if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_ppo_config.config
+    dqn(config)
+    '''
+    config = default_ppo_config.config
 
     fake_sweep = {
         'method': 'grid',
@@ -120,4 +124,4 @@ if __name__ == "__main__":
     sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_PPO_CPU")
     wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_PPO_CPU")
-    wandb.agent(sweep_id,  function=lambda: ppo(config))
+    wandb.agent(sweep_id,  function=lambda: ppo(config))'''

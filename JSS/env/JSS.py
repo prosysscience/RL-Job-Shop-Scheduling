@@ -132,7 +132,6 @@ class JSS(gym.Env):
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
-        self.state[:, 3] = self.jobs_length / self.max_time_jobs
         return self._get_current_state_representation()
 
     def step(self, action: int):
@@ -187,7 +186,7 @@ class JSS(gym.Env):
             self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
             if was_left_time > 0:
                 self.total_perform_op_time_jobs[job] += performed_op_job
-                self.state[job][3] -= (performed_op_job / self.max_time_jobs)
+                self.state[job][3] = self.total_perform_op_time_jobs[job] / self.max_time_jobs
                 if self.time_until_finish_current_op_jobs[job] == 0:
                     self.total_idle_time_jobs[job] += (difference - was_left_time)
                     self.state[job][6] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
