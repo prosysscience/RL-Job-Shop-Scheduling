@@ -19,7 +19,7 @@ config = {
     'minibatch_size': 32,
     'gradient_norm_clipping': 0.5,
     'max_kl_div': None,
-    'actor_layer_nb' : 1,
+    'actor_layer_nb' : 2,
     'actor_layer_size': 64,
     'critic_layer_nb' : 2,
     'critic_layer_size': 64,

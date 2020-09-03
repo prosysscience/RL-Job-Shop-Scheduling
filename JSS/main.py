@@ -64,6 +64,7 @@ def random_worker(config):
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
                "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
 
+
 if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
@@ -92,14 +93,11 @@ if __name__ == "__main__":
             'learning_rate': {
                 'values': [5e-4, 1e-4, 5e-5]
             },
-            'actor_layer_nb': {
-                'values': [1, 2]
-            },
             'actor_layer_size': {
                 'values': [64, 128]
             },
             'critic_layer_size': {
-                'values': [64, 128, 256]
+                'values': [128, 256]
             },
             'clipping_param': {
                 'values': [0.5, 0.2, 0.1]
@@ -108,7 +106,7 @@ if __name__ == "__main__":
                 'values': [0, 1e-4]
             },
             'ppo_epoch': {
-                'values': [2, 4]
+                'values': [2, 4, 8]
             },
             'n_steps': {
                 'values': [32, 64]
