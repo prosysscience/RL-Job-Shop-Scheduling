@@ -1,5 +1,3 @@
-import multiprocessing as mp
-
 config = {
     'seed': 0,
     'gamma': 0.999,

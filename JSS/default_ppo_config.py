@@ -1,5 +1,3 @@
-import multiprocessing as mp
-
 config = {
     'seed': 0,
     'learning_rate': 1e-4,

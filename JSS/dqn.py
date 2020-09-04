@@ -155,6 +155,9 @@ def dqn(config):
             legal_actions = envs.get_legal_actions()
             masks = (1 - legal_actions) * -1e10
 
+            total_steps += 1
+            episode_nb += sum(dones)
+
             for actor_nb in range(nb_actors):
                 state = states[actor_nb]
                 action = actions[actor_nb]
@@ -193,8 +196,6 @@ def dqn(config):
                 with torch.no_grad():
                     errors = td - q_pred
                 memory.update(indices, errors)
-            total_steps += 1
-            episode_nb += sum(dones)
             if previous_nb_episode != episode_nb:
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
                 previous_nb_episode = episode_nb
