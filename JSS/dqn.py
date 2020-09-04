@@ -206,6 +206,9 @@ def dqn(config):
                 action_values = local_net(state_tensor) + masks
                 value_current_states, actions = torch.max(action_values, dim=-1)
 
+            if time.time() >= start + running_sec_time:
+                break
+
         acc_return = 0
         step = 1
         done_exp = 0
