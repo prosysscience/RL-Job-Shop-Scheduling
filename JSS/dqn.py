@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import gym
 import torch
 import multiprocessing as mp
@@ -11,6 +13,7 @@ import wandb
 from PIL import Image
 import torch.nn.functional as F
 
+from JSS import default_dqn_config
 from JSS.PrioritizedReplayBuffer import PrioritizedReplayBuffer, Experience
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
@@ -22,34 +25,51 @@ loss_fn = nn.SmoothL1Loss()
 
 class QNetwork(nn.Module):
 
-    def __init__(self, state_size, action_size):
+    def __init__(self, state_size, action_size, config):
         super(QNetwork, self).__init__()
         self.action_size = action_size
         self.layer1 = nn.Linear(state_size, 64)
 
-        # value
-        self.layer1_value = nn.Linear(64, 64)
-        self.layer2_value = nn.Linear(64, 1)
+        self.common_layer = []
+        self.layers_advantage = []
+        self.layers_value = []
+        input_size = state_size
+        for i, layer_config in enumerate(config):
+            if i == 0:
+                layer = nn.Linear(input_size, layer_config)
+                torch.nn.init.xavier_uniform_(layer.weight)
+                self.common_layer.append(('layer_{}'.format(i), layer))
+                self.common_layer.append(('tanh_{}'.format(i), nn.Tanh()))
+            else:
+                layer = nn.Linear(input_size, layer_config)
+                torch.nn.init.xavier_uniform_(layer.weight)
+                self.layers_advantage.append(('layer_{}_advantage'.format(i), layer))
+                self.layers_advantage.append(('tanh_{}_advantage'.format(i), nn.Tanh()))
 
-        # advantage
-        self.layer1_advantage = nn.Linear(64, 64)
-        self.layer2_advantage = nn.Linear(64, action_size)
+                layer = nn.Linear(input_size, layer_config)
+                torch.nn.init.xavier_uniform_(layer.weight)
+                self.layers_value.append(('layer_{}_value'.format(i), layer))
+                self.layers_value.append(('tanh_{}_value'.format(i), nn.Tanh()))
+            input_size = layer_config
 
-        torch.nn.init.xavier_uniform_(self.layer1.weight)
-        torch.nn.init.xavier_uniform_(self.layer1_value.weight)
-        torch.nn.init.xavier_uniform_(self.layer2_value.weight)
-        torch.nn.init.xavier_uniform_(self.layer1_advantage.weight)
-        torch.nn.init.xavier_uniform_(self.layer2_advantage.weight)
+        layer = nn.Linear(input_size, action_size)
+        torch.nn.init.xavier_uniform_(layer.weight, gain=0.1)
+        self.layers_advantage.append(('layer_{}_advantage'.format(len(config)), layer))
+        self.advantage_model = nn.Sequential(OrderedDict(self.layers_advantage))
+
+        layer = nn.Linear(input_size, 1)
+        torch.nn.init.xavier_uniform_(layer.weight, gain=0.1)
+        self.layers_value.append(('layer_{}_value'.format(len(config)), layer))
+        self.value_model = nn.Sequential(OrderedDict(self.layers_value))
+
+        self.common_model = nn.Sequential(OrderedDict(self.common_layer))
 
     def forward(self, state):
         """Build a network that maps state -> action values."""
-        x = torch.tanh(self.layer1(state))
+        state = self.common_model(state)
 
-        value = torch.tanh(self.layer1_value(x))
-        value = self.layer2_value(value)
-
-        adv = torch.tanh(self.layer1_advantage(x))
-        adv = self.layer2_advantage(adv)
+        value = self.value_model(state)
+        adv = self.advantage_model(state)
 
         x = value + adv - adv.mean()
         return x
@@ -68,34 +88,33 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
 
 
 def dqn(config):
-    #config_defaults = default_ppo_config.config
+    config_defaults = default_dqn_config.config
 
-    wandb.init()
+    wandb.init(config=config_defaults)
 
-    #config = wandb.config
+    config = wandb.config
 
     start = time.time()
 
-    seed = 0
-    gamma = 0.99  # Discount rate
-    max_steps_per_episode = 1000
-    number_episodes = 2000
-    replay_buffer_size = 2000000
-    epsilon = 0.9  # Exploration vs Exploitation trade off
-    epsilon_decay = 0.995  # We reduce the epsilon parameter at each iteration
-    minimal_epsilon = 0.1
-    clipping_gradient = 1.0
-    minimal_clipping = 0.1
-    clipping_decay = 0.995
-    update_network_step = 1  # Update Q-Network periodicity
-    batch_size = 64  # Batch of experiences to get from the replay buffer
-    learning_rate = 5e-4
-    tau = 1e-3  # Define the step of the soft update
-    nb_steps = 3
+    seed = config['seed']
+    gamma = config['gamma']  # Discount rate
+    max_steps_per_episode = config['max_steps_per_episode']
+    replay_buffer_size = config['replay_buffer_size']
+    epsilon = config['epsilon'] # Exploration vs Exploitation trade off
+    epsilon_decay = config['epsilon_decay']  # We reduce the epsilon parameter at each iteration
+    minimal_epsilon = config['minimal_epsilon']
+    clipping_gradient = config['clipping_gradient']
+    update_network_step = config['update_network_step']  # Update Q-Network periodicity
+    batch_size = config['batch_size']  # Batch of experiences to get from the replay buffer
+    learning_rate = config['learning_rate']
+    tau = config['tau']
+    nb_steps = config['nb_steps']
+
     env_name = config['env_name']
     env_config = config['env_config']
     actor_per_cpu = config['actors_per_cpu']
     running_sec_time = config['running_sec_time']
+    network_config = [config['layer_size'] for _ in range(config['layer_nb'])]
 
     nb_actors = actor_per_cpu * mp.cpu_count()
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
@@ -109,14 +128,13 @@ def dqn(config):
     np.random.seed(seed)
 
 
-    local_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n)
+    local_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n, network_config)
     #local_net = local_net.to(device)
-    target_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n)
+    target_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n, network_config)
     #target_net = target_net.to(device)
     optimizer = optim.Adam(local_net.parameters(), lr=learning_rate)
     memory = PrioritizedReplayBuffer(replay_buffer_size)
     wandb.watch(local_net)
-
 
     episode_nb = 0
     previous_nb_episode = 0
@@ -175,7 +193,7 @@ def dqn(config):
                 with torch.no_grad():
                     errors = td - q_pred
                 memory.update(indices, errors)
-            total_steps += nb_actors
+            total_steps += 1
             episode_nb += sum(dones)
             if previous_nb_episode != episode_nb:
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)

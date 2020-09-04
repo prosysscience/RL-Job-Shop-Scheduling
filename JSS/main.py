@@ -7,7 +7,7 @@ import io
 import gym
 import numpy as np
 
-from JSS import default_ppo_config
+from JSS import default_ppo_config, default_dqn_config
 from JSS.dqn import dqn
 from JSS.multiprocessing_env import SubprocVecEnv
 from JSS.ppo import ppo, make_seeded_env
@@ -69,7 +69,7 @@ def random_worker(config):
 if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
-    config = default_ppo_config.config
+    config = default_dqn_config.config
     dqn(config)
     '''
     config = default_ppo_config.config
