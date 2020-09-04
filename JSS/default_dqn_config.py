@@ -6,7 +6,7 @@ config = {
     'max_steps_per_episode': 1000,
     'replay_buffer_size': 9999999,
     'epsilon': 0.9,
-    'epsilon_decay':  0.995, # 10 minutes
+    'epsilon_decay':  0.995,
     'minimal_epsilon': 0.1,
     'clipping_gradient': 1.0,
     'update_network_step': 1,

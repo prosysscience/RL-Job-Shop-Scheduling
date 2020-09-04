@@ -70,9 +70,6 @@ if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_dqn_config.config
-    dqn(config)
-    '''
-    config = default_ppo_config.config
 
     fake_sweep = {
         'method': 'grid',
@@ -97,31 +94,27 @@ if __name__ == "__main__":
             'learning_rate': {
                 'values': [5e-4, 1e-4, 5e-5]
             },
-            'actor_layer_size': {
-                'values': [64, 128]
+            'clipping_gradient': {
+                'values': [1.0, 10.0]
             },
-            'critic_layer_size': {
-                'values': [128, 256]
+            'update_network_step': {
+                'values': [1, 8]
             },
-            'clipping_param': {
-                'values': [0.5, 0.2, 0.1]
-            },
-            'entropy_regularization': {
-                'values': [0, 1e-4]
-            },
-            'ppo_epoch': {
-                'values': [2, 4, 8]
-            },
-            'n_steps': {
+            'batch_size': {
                 'values': [32, 64]
             },
-            'gradient_norm_clipping': {
-                'values': [1.0, 0.5]
+            'tau': {
+                'values': [1e-3, 1e-4]
+            },
+            'nb_steps': {
+                'values': [4, 8, 16]
+            },
+            'layer_size': {
+                'values': [64, 128, 256]
             },
         }
     }
-
-    sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_PPO_CPU")
+    sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU")
     wandb.agent(sweep_id, function=lambda: random_worker(config))
-    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_PPO_CPU")
-    wandb.agent(sweep_id,  function=lambda: ppo(config))'''
+    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU")
+    wandb.agent(sweep_id,  function=lambda: dqn(config))
