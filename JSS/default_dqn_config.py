@@ -13,7 +13,7 @@ config = {
     'tau': 1e-3,  # None to avoid clipping the value estimation
     'nb_steps': 3,
     'actors_per_cpu': 1,
-    'running_sec_time': 60,
+    'running_sec_time': 10 * 60,
     'layer_nb': 2,
     'layer_size': 64,
     'env_name': 'job-shop-v0',

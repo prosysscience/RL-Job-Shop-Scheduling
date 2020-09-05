@@ -29,7 +29,6 @@ class PrioritizedReplayBuffer(object):
 
     def __init__(self, max_size: int=20000, epsilon: float=1e-2, alpha: float=0.6, beta: float=0.4, beta_step: float=1e-3):
         self.max_size = max_size
-        self.index = 0
         self.size = 0
         self.epsilon = epsilon
         self.priorities = np.zeros((self.max_size, ), dtype=float)
@@ -44,14 +43,14 @@ class PrioritizedReplayBuffer(object):
     def add(self, experience: Experience, error: float):
         priority = self._get_priority(error)
         if self.size < self.max_size:
-            self.experiences[self.index] = experience
-            self.priorities[self.index] = priority
-            self.index += 1
+            self.experiences[self.size] = experience
+            self.priorities[self.size] = priority
+            self.size += 1
         else:
-            self.index = np.random.randint(0, self.size)
-            self.priorities[self.index] = priority
-            self.experiences[self.index] = experience
-        self.size += 1
+            index = np.random.randint(0, self.size)
+            self.priorities[index] = priority
+            self.experiences[index] = experience
+
 
     def sample(self, batch_size: int):
         current_priorities = self.priorities[:self.size]

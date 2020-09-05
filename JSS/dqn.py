@@ -120,6 +120,8 @@ def dqn(config):
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
+
+    env_best = BestActionsWrapper(gym.make(env_name, env_config=env_config))
     env_info = gym.make(env_name, env_config=env_config)
 
     env_info.seed(seed)
@@ -150,7 +152,7 @@ def dqn(config):
     while time.time() < start + running_sec_time:
         experience_stack = [[] for _ in range(nb_actors)]
         for step in range(nb_steps):
-            actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] if random.random() <= epsilon else actions[actor_nb] for actor_nb, legal_action in enumerate(legal_actions)]
+            actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] if random.random() <= epsilon else actions[actor_nb].item() for actor_nb, legal_action in enumerate(legal_actions)]
             next_states_env, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
             masks = (1 - legal_actions) * -1e10
@@ -206,9 +208,6 @@ def dqn(config):
                 action_values = local_net(state_tensor) + masks
                 value_current_states, actions = torch.max(action_values, dim=-1)
 
-            if time.time() >= start + running_sec_time:
-                break
-
         acc_return = 0
         step = 1
         done_exp = 0
@@ -233,6 +232,7 @@ def dqn(config):
     all_best_score = float('-inf')
     all_best_actions = []
     all_best_time_step = float('inf')
+
     for remote in envs.remotes:
         remote.send(('get_best_actions', None))
         best_score, best_actions = remote.recv()
@@ -246,6 +246,23 @@ def dqn(config):
             all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
 
+    # We need to do an iteration without greedy
+    state = env_best.reset()
+    done = False
+    while not done:
+        legal_actions = env_best.get_legal_actions()
+        masks = (1 - legal_actions) * -1e10
+        state_tensor = torch.FloatTensor(state)
+        with torch.no_grad():
+            action_values = local_net(state_tensor) + masks
+            action = torch.argmax(action_values).item()
+        state, reward, done, action_performed = env_best.step(action)
+
+    if env_best.best_score > all_best_score:
+        all_best_score = env_best.best_score
+        all_best_actions = env_best.best_actions
+    if env_best.best_time_step < all_best_time_step:
+        all_best_time_step = best_time_step
 
     state = env_info.reset()
     done = False
@@ -256,6 +273,7 @@ def dqn(config):
         action = all_best_actions[current_step]
         assert legal_actions[action]
         state, reward, done, action_performed = env_info.step(action)
+        legal_actions = env_info.get_legal_actions()
         current_step += len(action_performed)
     assert done
     figure = env_info.render()
