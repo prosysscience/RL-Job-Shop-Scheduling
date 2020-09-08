@@ -36,6 +36,7 @@ class PrioritizedReplayBuffer(object):
         self.alpha = alpha
         self.beta = beta
         self.beta_step = beta_step
+        self.priority_sum = 0.0
 
     def _get_priority(self, error):
         return np.power(np.abs(error) + self.epsilon, self.alpha)

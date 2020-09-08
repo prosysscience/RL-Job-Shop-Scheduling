@@ -144,7 +144,7 @@ def dqn(config):
 
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
-    masks = (1 - legal_actions) * -1e10
+    masks = np.invert(legal_actions) * -1e10
     state_tensor = torch.FloatTensor(states)
     with torch.no_grad():
         action_values = local_net(state_tensor) + masks
@@ -155,7 +155,7 @@ def dqn(config):
             actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] if random.random() <= epsilon else actions[actor_nb].item() for actor_nb, legal_action in enumerate(legal_actions)]
             next_states_env, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
-            masks = (1 - legal_actions) * -1e10
+            masks = np.invert(legal_actions) * -1e10
 
             total_steps += 1
             episode_nb += sum(dones)
@@ -251,7 +251,7 @@ def dqn(config):
     done = False
     while not done:
         legal_actions = env_best.get_legal_actions()
-        masks = (1 - legal_actions) * -1e10
+        masks = np.invert(legal_actions) * -1e10
         state_tensor = torch.FloatTensor(state)
         with torch.no_grad():
             action_values = local_net(state_tensor) + masks
