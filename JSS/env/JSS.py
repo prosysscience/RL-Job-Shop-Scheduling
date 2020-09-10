@@ -108,7 +108,7 @@ class JSS(gym.Env):
 
     def _get_current_state_representation(self):
         self.state[:, 0] = self.legal_actions
-        return self.state.reshape(-1)
+        return np.expand_dims(self.state, axis=0)
 
     def get_legal_actions(self):
         return self.legal_actions

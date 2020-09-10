@@ -22,7 +22,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # We tr
 
 loss_fn = nn.SmoothL1Loss()
 
-
+'''
 class QNetwork(nn.Module):
 
     def __init__(self, state_size, action_size, config):
@@ -73,7 +73,46 @@ class QNetwork(nn.Module):
 
         x = value + adv - adv.mean()
         return x
+'''
 
+class QNetwork(nn.Module):
+
+    def __init__(self, state_size, action_size, config):
+        super(QNetwork, self).__init__()
+        self.action_size = action_size
+
+        self.conv1 = nn.Conv2d(1, 4, 4)
+        self.conv2 = nn.Conv2d(4, 8, 3)
+
+        self.value_fc1 = nn.Linear(720, 512)
+        self.value_fc2 = nn.Linear(512, 1)
+
+        self.adv_fc1 = nn.Linear(720, 512)
+        self.adv_fc2 = nn.Linear(512, action_size)
+
+
+    def forward(self, x):
+        """Build a network that maps state -> action values."""
+        x = F.relu(self.conv1(x))
+        # If the size is a square you can only specify a single number
+        x = F.relu(self.conv2(x))
+        x = x.view(-1, 720)
+
+        value = F.relu(self.value_fc1(x))
+        value = self.value_fc2(value)
+
+        adv = F.relu(self.adv_fc1(x))
+        adv = self.adv_fc2(adv)
+
+        x = value + adv - adv.mean()
+        return x
+
+    def num_flat_features(self, x):
+        size = x.size()[1:]  # all dimensions except the batch dimension
+        num_features = 1
+        for s in size:
+            num_features *= s
+        return num_features
 
 def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int, env_config: dict = {}):
     def _anon():
@@ -175,11 +214,11 @@ def dqn(config):
             if total_steps % update_network_step == 0 and len(memory) > batch_size:
                 optimizer.zero_grad()
                 experiences, indices, weights = memory.sample(batch_size)
-                states = torch.FloatTensor(np.vstack([e.state for e in experiences if e is not None]))
+                states = torch.FloatTensor(np.stack([e.state for e in experiences if e is not None], axis=0))
                 steps = torch.FloatTensor(np.vstack([e.step for e in experiences if e is not None]))
                 actions = torch.LongTensor(np.vstack([e.action for e in experiences if e is not None]))
                 rewards = torch.FloatTensor(np.vstack([e.reward for e in experiences if e is not None]))
-                next_states = torch.FloatTensor(np.vstack([e.next_state for e in experiences if e is not None]))
+                next_states = torch.FloatTensor(np.stack([e.state for e in experiences if e is not None], axis=0))
                 dones = torch.FloatTensor(np.vstack([int(e.done) for e in experiences if e is not None]))
                 all_masks = torch.FloatTensor(np.vstack([e.legal_actions for e in experiences if e is not None]))
                 q_pred = local_net(states).gather(1, actions)
@@ -252,7 +291,7 @@ def dqn(config):
     while not done:
         legal_actions = env_best.get_legal_actions()
         masks = np.invert(legal_actions) * -1e10
-        state_tensor = torch.FloatTensor(state)
+        state_tensor = torch.FloatTensor(state).unsqueeze(0)
         with torch.no_grad():
             action_values = local_net(state_tensor) + masks
             action = torch.argmax(action_values).item()

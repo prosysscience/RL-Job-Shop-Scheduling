@@ -69,8 +69,11 @@ def random_worker(config):
 if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
-    config = default_dqn_config.config
 
+    config = default_dqn_config.config
+    dqn(config)
+
+    '''
     fake_sweep = {
         'method': 'grid',
         'metric': {
@@ -118,3 +121,4 @@ if __name__ == "__main__":
     wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU")
     wandb.agent(sweep_id,  function=lambda: dqn(config))
+    '''
