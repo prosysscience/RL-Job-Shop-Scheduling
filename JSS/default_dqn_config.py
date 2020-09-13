@@ -10,7 +10,7 @@ config = {
     'batch_size': 64,
     'learning_rate': 5e-4,
     'tau': 1e-3,  # None to avoid clipping the value estimation
-    'nb_steps': 3,
+    'nb_steps': 8,
     'actors_per_cpu': 1,
     'running_sec_time': 5 * 60,
     'layer_nb': 2,

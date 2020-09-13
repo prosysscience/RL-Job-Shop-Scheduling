@@ -10,10 +10,9 @@ import plotly.io as pio
 pio.orca.config.use_xvfb = True
 
 
-from JSS import default_ppo_config, default_dqn_config
-from JSS.dqn import dqn
+from JSS import default_dqn_config
 from JSS.multiprocessing_env import SubprocVecEnv
-from JSS.ppo import ppo, make_seeded_env
+from JSS.ppo import make_seeded_env
 import wandb
 
 
@@ -77,8 +76,8 @@ if __name__ == "__main__":
     fake_sweep = {
         'method': 'grid',
         'metric': {
-            'name': 'avg_best_result',
-            'goal': 'maximize',
+            'name': 'best_timestep',
+            'goal': 'minimize',
         },
         'parameters': {
             'random_agent': {
@@ -88,30 +87,27 @@ if __name__ == "__main__":
     }
 
     sweep_config = {
+        'program': 'dqn.py',
         'method': 'grid',
         'metric': {
-            'name': 'avg_best_result',
-            'goal': 'maximize',
+            'name': 'best_timestep',
+            'goal': 'minimize',
         },
         'parameters': {
             'learning_rate': {
                 'values': [1e-3, 5e-4, 1e-4]
             },
+            'update_network_step': {
+                'values': [3, 5]
+            },
             'batch_size': {
-                'values': [32, 64]
-            },
-            'tau': {
-                'values': [1e-3, 1e-4]
-            },
-            'nb_steps': {
-                'values': [4, 8, 16]
+                'values': [32, 64, 128]
             },
             'layer_size': {
-                'values': [128, 256, 512]
+                'values': [512, 768, 1024, 1536, 2048]
             },
         }
     }
     sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU")
     wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU")
-    wandb.agent(sweep_id,  function=lambda: dqn(config))

@@ -14,8 +14,8 @@ import wandb
 from PIL import Image
 import torch.nn.functional as F
 import plotly.io as pio
-pio.orca.config.use_xvfb = True
 
+pio.orca.config.use_xvfb = True
 
 from JSS import default_dqn_config
 from JSS.PrioritizedReplayBuffer import PrioritizedReplayBuffer, Experience
@@ -91,7 +91,7 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def dqn(config):
+def dqn():
     config_defaults = default_dqn_config.config
 
     wandb.init(config=config_defaults)
@@ -104,7 +104,7 @@ def dqn(config):
     gamma = config['gamma']  # Discount rate
     max_steps_per_episode = config['max_steps_per_episode']
     replay_buffer_size = config['replay_buffer_size']
-    epsilon = config['epsilon'] # Exploration vs Exploitation trade off
+    epsilon = config['epsilon']  # Exploration vs Exploitation trade off
     epsilon_decay = config['epsilon_decay']  # We reduce the epsilon parameter at each iteration
     minimal_epsilon = config['minimal_epsilon']
     clipping_gradient = config['clipping_gradient']
@@ -124,7 +124,6 @@ def dqn(config):
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
-
     env_best = BestActionsWrapper(gym.make(env_name, env_config=env_config))
     env_info = gym.make(env_name, env_config=env_config)
 
@@ -133,11 +132,10 @@ def dqn(config):
     random.seed(seed)
     np.random.seed(seed)
 
-
     local_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n, network_config)
-    #local_net = local_net.to(device)
+    # local_net = local_net.to(device)
     target_net = QNetwork(env_info.observation_space.shape[0], env_info.action_space.n, network_config)
-    #target_net = target_net.to(device)
+    # target_net = target_net.to(device)
     optimizer = optim.Adam(local_net.parameters(), lr=learning_rate)
     memory = PrioritizedReplayBuffer(replay_buffer_size)
     wandb.watch(local_net)
@@ -156,7 +154,9 @@ def dqn(config):
     while time.time() < start + running_sec_time:
         experience_stack = [[] for _ in range(nb_actors)]
         for step in range(nb_steps):
-            actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[0] if random.random() <= epsilon else actions[actor_nb].item() for actor_nb, legal_action in enumerate(legal_actions)]
+            actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[
+                           0] if random.random() <= epsilon else actions[actor_nb].item() for actor_nb, legal_action in
+                       enumerate(legal_actions)]
             next_states_env, rewards, dones, _ = envs.step(actions)
             legal_actions = envs.get_legal_actions()
             masks = np.invert(legal_actions) * -1e10
@@ -226,7 +226,8 @@ def dqn(config):
                 experience.next_state = states[actor_nb]
                 experience.step = step
                 with torch.no_grad():
-                    td = experience.reward + ((gamma ** experience.step) * value_current_states[actor_nb] * (1 - experience.done))
+                    td = experience.reward + (
+                                (gamma ** experience.step) * value_current_states[actor_nb] * (1 - experience.done))
                     error = experience.current_state_value - td
                 experience.error = error
                 memory.add(experience, error)
@@ -266,7 +267,7 @@ def dqn(config):
         all_best_score = env_best.best_score
         all_best_actions = env_best.best_actions
     if env_best.best_time_step < all_best_time_step:
-        all_best_time_step = best_time_step
+        all_best_time_step = env_best.best_time_step
 
     state = env_info.reset()
     done = False
@@ -289,3 +290,5 @@ def dqn(config):
     return episode_nb, all_best_score, avg_best_result, all_best_actions
 
 
+if __name__ == "__main__":
+    dqn()
