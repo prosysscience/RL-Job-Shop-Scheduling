@@ -94,9 +94,8 @@ class QNetwork(nn.Module):
     def forward(self, x):
         """Build a network that maps state -> action values."""
         x = F.relu(self.conv1(x))
-        # If the size is a square you can only specify a single number
         x = F.relu(self.conv2(x))
-        x = x.view(-1, 720)
+        x = x.view(-1, self.num_flat_features(x))
 
         value = F.relu(self.value_fc1(x))
         value = self.value_fc2(value)
