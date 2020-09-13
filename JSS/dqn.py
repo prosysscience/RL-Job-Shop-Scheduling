@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+import os
 import gym
 import torch
 import multiprocessing as mp
@@ -12,6 +13,9 @@ import torch.optim as optim
 import wandb
 from PIL import Image
 import torch.nn.functional as F
+import plotly.io as pio
+pio.orca.config.use_xvfb = True
+
 
 from JSS import default_dqn_config
 from JSS.PrioritizedReplayBuffer import PrioritizedReplayBuffer, Experience
@@ -193,9 +197,9 @@ def dqn(config):
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(local_net.parameters(), clipping_gradient)
                 optimizer.step()
-                for target_param, local_param in zip(target_net.parameters(), local_net.parameters()):
-                    target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
                 with torch.no_grad():
+                    for target_param, local_param in zip(target_net.parameters(), local_net.parameters()):
+                        target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
                     errors = td - q_pred
                 memory.update(indices, errors)
             if previous_nb_episode != episode_nb:
@@ -281,6 +285,7 @@ def dqn(config):
     image = Image.open(io.BytesIO(img_bytes))
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
                "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
+    torch.save(local_net.state_dict(), os.path.join(wandb.run.dir, 'model.pt'))
     return episode_nb, all_best_score, avg_best_result, all_best_actions
 
 

@@ -6,6 +6,9 @@ import io
 
 import gym
 import numpy as np
+import plotly.io as pio
+pio.orca.config.use_xvfb = True
+
 
 from JSS import default_ppo_config, default_dqn_config
 from JSS.dqn import dqn
@@ -92,13 +95,7 @@ if __name__ == "__main__":
         },
         'parameters': {
             'learning_rate': {
-                'values': [5e-4, 1e-4, 5e-5]
-            },
-            'clipping_gradient': {
-                'values': [1.0, 10.0]
-            },
-            'update_network_step': {
-                'values': [8, 16]
+                'values': [1e-3, 5e-4, 1e-4]
             },
             'batch_size': {
                 'values': [32, 64]
@@ -110,7 +107,7 @@ if __name__ == "__main__":
                 'values': [4, 8, 16]
             },
             'layer_size': {
-                'values': [64, 128, 256]
+                'values': [128, 256, 512]
             },
         }
     }
