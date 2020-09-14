@@ -87,7 +87,6 @@ if __name__ == "__main__":
     }
 
     sweep_config = {
-        'program': 'dqn.py',
         'method': 'grid',
         'metric': {
             'name': 'best_timestep',
@@ -110,4 +109,4 @@ if __name__ == "__main__":
     }
     #sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU")
     #wandb.agent(sweep_id, function=lambda: random_worker(config))
-    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU")
+    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU_2")
