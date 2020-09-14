@@ -7,6 +7,9 @@ import io
 import gym
 import numpy as np
 import plotly.io as pio
+
+from JSS.dqn import dqn
+
 pio.orca.config.use_xvfb = True
 
 
@@ -108,6 +111,7 @@ if __name__ == "__main__":
             },
         }
     }
-    #sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU")
-    #wandb.agent(sweep_id, function=lambda: random_worker(config))
+    #sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU_2")
+    #wandb.agent(fake_sweep, function=lambda: dqn())
     sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU_2")
+    wandb.agent(sweep_id, function=lambda: dqn())

@@ -16,5 +16,5 @@ config = {
     'layer_nb': 2,
     'layer_size': 64,
     'env_name': 'job-shop-v0',
-    'env_config': {'instance_path': '/workspace/JSS/JSS/env/instances/ta51'},
+    'env_config': {'instance_path': 'env/instances/ta51'},
 }

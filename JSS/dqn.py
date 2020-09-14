@@ -12,19 +12,38 @@ import torch.nn as nn
 import torch.optim as optim
 import wandb
 from PIL import Image
-import torch.nn.functional as F
 import plotly.io as pio
 
-pio.orca.config.use_xvfb = True
-
-from JSS import default_dqn_config
-from JSS.PrioritizedReplayBuffer import PrioritizedReplayBuffer, Experience
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
+pio.orca.config.use_xvfb = True
+
+from JSS import *
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # We train on a GPU if available
 
 loss_fn = nn.SmoothL1Loss()
+
+default_config = {
+    'seed': 0,
+    'gamma': 0.999,
+    'max_steps_per_episode': 1000,
+    'replay_buffer_size': 100000,
+    'epsilon': 0.9,
+    'epsilon_decay':  0.995,
+    'minimal_epsilon': 0.1,
+    'update_network_step': 3,
+    'batch_size': 64,
+    'learning_rate': 5e-4,
+    'tau': 1e-3,  # None to avoid clipping the value estimation
+    'nb_steps': 8,
+    'actors_per_cpu': 1,
+    'running_sec_time': 5 * 60,
+    'layer_nb': 2,
+    'layer_size': 64,
+    'env_name': 'job-shop-v0',
+    'env_config': {'instance_path': 'env/instances/ta51'},
+}
 
 
 class QNetwork(nn.Module):
@@ -92,11 +111,10 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
 
 
 def dqn():
-    config_defaults = default_dqn_config.config
 
-    wandb.init(config=config_defaults)
+    wandb.init(config=default_config)
 
-    config = wandb.config
+    config = default_config
 
     start = time.time()
 
