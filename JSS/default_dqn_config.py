@@ -6,7 +6,6 @@ config = {
     'epsilon': 0.9,
     'epsilon_decay':  0.995,
     'minimal_epsilon': 0.1,
-    'clipping_gradient': 100.0,
     'update_network_step': 5,
     'batch_size': 64,
     'learning_rate': 5e-4,

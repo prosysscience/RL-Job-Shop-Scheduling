@@ -84,11 +84,11 @@ class QNetwork(nn.Module):
         self.conv1 = nn.Conv2d(1, 4, 4)
         self.conv2 = nn.Conv2d(4, 8, 3)
 
-        self.value_fc1 = nn.Linear(720, 512)
-        self.value_fc2 = nn.Linear(512, 1)
+        self.value_fc1 = nn.Linear(720, 1024)
+        self.value_fc2 = nn.Linear(1024, 1)
 
-        self.adv_fc1 = nn.Linear(720, 512)
-        self.adv_fc2 = nn.Linear(512, action_size)
+        self.adv_fc1 = nn.Linear(720, 1024)
+        self.adv_fc2 = nn.Linear(1024, action_size)
 
 
     def forward(self, x):
@@ -141,7 +141,6 @@ def dqn(config):
     epsilon = config['epsilon'] # Exploration vs Exploitation trade off
     epsilon_decay = config['epsilon_decay']  # We reduce the epsilon parameter at each iteration
     minimal_epsilon = config['minimal_epsilon']
-    clipping_gradient = config['clipping_gradient']
     update_network_step = config['update_network_step']  # Update Q-Network periodicity
     batch_size = config['batch_size']  # Batch of experiences to get from the replay buffer
     learning_rate = config['learning_rate']
@@ -229,11 +228,10 @@ def dqn(config):
                 loss = (torch.FloatTensor(weights) * loss_fn(td, q_pred)).mean()
                 wandb.log({"loss": loss})
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(local_net.parameters(), clipping_gradient)
                 optimizer.step()
-                for target_param, local_param in zip(target_net.parameters(), local_net.parameters()):
-                    target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
                 with torch.no_grad():
+                    for target_param, local_param in zip(target_net.parameters(), local_net.parameters()):
+                        target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
                     errors = td - q_pred
                 memory.update(indices, errors)
             if previous_nb_episode != episode_nb:
@@ -300,7 +298,7 @@ def dqn(config):
         all_best_score = env_best.best_score
         all_best_actions = env_best.best_actions
     if env_best.best_time_step < all_best_time_step:
-        all_best_time_step = best_time_step
+        all_best_time_step = env_best.best_time_step
 
     state = env_info.reset()
     done = False
