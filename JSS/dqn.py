@@ -107,7 +107,6 @@ def dqn():
     epsilon = config['epsilon']  # Exploration vs Exploitation trade off
     epsilon_decay = config['epsilon_decay']  # We reduce the epsilon parameter at each iteration
     minimal_epsilon = config['minimal_epsilon']
-    clipping_gradient = config['clipping_gradient']
     update_network_step = config['update_network_step']  # Update Q-Network periodicity
     batch_size = config['batch_size']  # Batch of experiences to get from the replay buffer
     learning_rate = config['learning_rate']
@@ -195,7 +194,6 @@ def dqn():
                 loss = (torch.FloatTensor(weights) * loss_fn(td, q_pred)).mean()
                 wandb.log({"loss": loss})
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(local_net.parameters(), clipping_gradient)
                 optimizer.step()
                 with torch.no_grad():
                     for target_param, local_param in zip(target_net.parameters(), local_net.parameters()):

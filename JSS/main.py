@@ -87,6 +87,7 @@ if __name__ == "__main__":
     }
 
     sweep_config = {
+        'program': 'dqn.py',
         'method': 'grid',
         'metric': {
             'name': 'best_timestep',
@@ -103,7 +104,7 @@ if __name__ == "__main__":
                 'values': [32, 64, 128]
             },
             'layer_size': {
-                'values': [512, 768, 1024, 1536, 2048]
+                'values': [512, 768, 1024, 2048, 4096]
             },
         }
     }
