@@ -24,28 +24,6 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # We tr
 
 loss_fn = nn.SmoothL1Loss()
 
-default_config = {
-    'seed': 0,
-    'gamma': 0.999,
-    'max_steps_per_episode': 1000,
-    'replay_buffer_size': 100000,
-    'epsilon': 0.9,
-    'epsilon_decay':  0.995,
-    'minimal_epsilon': 0.1,
-    'update_network_step': 3,
-    'batch_size': 64,
-    'learning_rate': 5e-4,
-    'tau': 1e-3,  # None to avoid clipping the value estimation
-    'nb_steps': 8,
-    'actors_per_cpu': 1,
-    'running_sec_time': 5 * 60,
-    'layer_nb': 2,
-    'layer_size': 64,
-    'env_name': 'job-shop-v0',
-    'env_config': {'instance_path': 'env/instances/ta51'},
-}
-
-
 class QNetwork(nn.Module):
 
     def __init__(self, state_size, action_size, config):
@@ -111,7 +89,7 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
 
 
 def dqn():
-
+    default_config = default_dqn_config.config
     wandb.init(config=default_config)
 
     config = default_config
