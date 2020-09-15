@@ -12,7 +12,7 @@ config = {
     'tau': 1e-3,  # None to avoid clipping the value estimation
     'nb_steps': 8,
     'actors_per_cpu': 1,
-    'running_sec_time': 2 * 60,
+    'running_sec_time': 5 * 60,
     'layer_nb': 2,
     'layer_size': 64,
     'activation': 'tanh',

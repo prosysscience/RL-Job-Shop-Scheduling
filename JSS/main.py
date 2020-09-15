@@ -107,9 +107,6 @@ if __name__ == "__main__":
             },
             'layer_size': {
                 'values': [512, 1024, 2048, 4096]
-            },
-            'activation': {
-                'values': [512, 1024, 2048, 4096]
             }
         }
     }
