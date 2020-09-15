@@ -1,10 +1,11 @@
-#This code is from openai baseline
-#https://github.com/openai/baselines/tree/master/baselines/common/vec_env
+# This code is from openai baseline
+# https://github.com/openai/baselines/tree/master/baselines/common/vec_env
 
 import numpy as np
 import cloudpickle
 import multiprocessing
 from multiprocessing import Process, Pipe
+
 
 def worker(remote, parent_remote, env_fn_wrapper):
     parent_remote.close()
@@ -45,6 +46,7 @@ class VecEnv(object):
     """
     An abstract asynchronous, vectorized environment.
     """
+
     def __init__(self, num_envs, observation_space, action_space):
         self.num_envs = num_envs
         self.observation_space = observation_space
@@ -92,11 +94,12 @@ class VecEnv(object):
         self.step_async(actions)
         return self.step_wait()
 
-    
+
 class CloudpickleWrapper(object):
     """
     Uses cloudpickle to serialize contents (otherwise multiprocessing tries to use pickle)
     """
+
     def __init__(self, x):
         self.x = x
 
@@ -106,7 +109,7 @@ class CloudpickleWrapper(object):
     def __setstate__(self, ob):
         self.x = cloudpickle.loads(ob)
 
-        
+
 class SubprocVecEnv(VecEnv):
     def __init__(self, env_fns, spaces=None, start_method=None):
         """
@@ -169,13 +172,13 @@ class SubprocVecEnv(VecEnv):
         if self.closed:
             return
         if self.waiting:
-            for remote in self.remotes:            
+            for remote in self.remotes:
                 remote.recv()
         for remote in self.remotes:
             remote.send(('close', None))
         for p in self.ps:
             p.join()
         self.closed = True
-            
+
     def __len__(self):
         return self.nenvs

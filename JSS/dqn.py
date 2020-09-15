@@ -88,11 +88,11 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def dqn():
-    default_config = default_dqn_config.config
+def dqn(default_config = default_dqn_config.config):
+
     wandb.init(config=default_config)
 
-    config = default_config
+    config = wandb.config
 
     start = time.time()
 
@@ -236,13 +236,13 @@ def dqn():
         remote.send(('get_best_actions', None))
         best_score, best_actions = remote.recv()
         sum_best_scores += best_score
-        if best_score > all_best_score:
-            all_best_score = best_score
-            all_best_actions = best_actions
         remote.send(('get_best_timestep', None))
         best_time_step = remote.recv()
+        print(best_time_step)
         if best_time_step < all_best_time_step:
             all_best_time_step = best_time_step
+            all_best_score = best_score
+            all_best_actions = best_actions
     avg_best_result = sum_best_scores / len(envs.remotes)
 
     # We need to do an iteration without greedy
@@ -256,11 +256,11 @@ def dqn():
             action_values = local_net(state_tensor) + masks
             action = torch.argmax(action_values).item()
         state, reward, done, action_performed = env_best.step(action)
+    state = env_best.reset()
 
-    if env_best.best_score > all_best_score:
+    if env_best.best_time_step < all_best_time_step:
         all_best_score = env_best.best_score
         all_best_actions = env_best.best_actions
-    if env_best.best_time_step < all_best_time_step:
         all_best_time_step = env_best.best_time_step
 
     state = env_info.reset()
