@@ -15,6 +15,7 @@ config = {
     'running_sec_time': 2 * 60,
     'layer_nb': 2,
     'layer_size': 64,
+    'activation': 'tanh',
     'env_name': 'job-shop-v0',
     'env_config': {'instance_path': 'env/instances/ta51'},
 }

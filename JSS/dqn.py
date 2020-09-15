@@ -38,28 +38,28 @@ class QNetwork(nn.Module):
         for i, layer_config in enumerate(config):
             if i == 0:
                 layer = nn.Linear(input_size, layer_config)
-                torch.nn.init.xavier_uniform_(layer.weight)
+                torch.nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
                 self.common_layer.append(('layer_{}'.format(i), layer))
                 self.common_layer.append(('tanh_{}'.format(i), nn.Tanh()))
             else:
                 layer = nn.Linear(input_size, layer_config)
-                torch.nn.init.xavier_uniform_(layer.weight)
+                torch.nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
                 self.layers_advantage.append(('layer_{}_advantage'.format(i), layer))
                 self.layers_advantage.append(('tanh_{}_advantage'.format(i), nn.Tanh()))
 
                 layer = nn.Linear(input_size, layer_config)
-                torch.nn.init.xavier_uniform_(layer.weight)
+                torch.nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
                 self.layers_value.append(('layer_{}_value'.format(i), layer))
                 self.layers_value.append(('tanh_{}_value'.format(i), nn.Tanh()))
             input_size = layer_config
 
         layer = nn.Linear(input_size, action_size)
-        torch.nn.init.xavier_uniform_(layer.weight, gain=0.1)
+        torch.nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh') * 0.1)
         self.layers_advantage.append(('layer_{}_advantage'.format(len(config)), layer))
         self.advantage_model = nn.Sequential(OrderedDict(self.layers_advantage))
 
         layer = nn.Linear(input_size, 1)
-        torch.nn.init.xavier_uniform_(layer.weight, gain=0.1)
+        torch.nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh') * 0.1)
         self.layers_value.append(('layer_{}_value'.format(len(config)), layer))
         self.value_model = nn.Sequential(OrderedDict(self.layers_value))
 
@@ -238,7 +238,6 @@ def dqn(default_config = default_dqn_config.config):
         sum_best_scores += best_score
         remote.send(('get_best_timestep', None))
         best_time_step = remote.recv()
-        print(best_time_step)
         if best_time_step < all_best_time_step:
             all_best_time_step = best_time_step
             all_best_score = best_score

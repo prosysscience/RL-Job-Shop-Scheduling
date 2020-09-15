@@ -100,14 +100,17 @@ if __name__ == "__main__":
                 'values': [1e-3, 5e-4, 1e-4]
             },
             'update_network_step': {
-                'values': [3, 5]
+                'values': [3, 5, 8]
             },
             'batch_size': {
-                'values': [32, 64, 128]
+                'values': [64, 128]
             },
             'layer_size': {
                 'values': [512, 1024, 2048, 4096]
             },
+            'activation': {
+                'values': [512, 1024, 2048, 4096]
+            }
         }
     }
     sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU_2")
