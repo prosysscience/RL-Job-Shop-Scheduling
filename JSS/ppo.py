@@ -19,8 +19,6 @@ from torch.distributions import Categorical
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # We train on a GPU if available
-
 
 class Actor(nn.Module):
 
@@ -42,10 +40,7 @@ class Actor(nn.Module):
     def forward(self, x, legal_actions):
         x = self.actor_model(x)
         # We mask the action by making the probability to take illegal action really small
-        #inf_mask = torch.clamp(torch.log(mask), min=-1e10)
-        #x = x + inf_mask
         x[legal_actions == 0] = -1e10
-        #print(x)
         return F.softmax(x, dim=-1)
 
 
@@ -93,9 +88,7 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def ppo(config):
-    config_defaults = default_ppo_config.config
-
+def ppo(config_defaults = default_ppo_config.config):
     wandb.init(config=config_defaults)
 
     config = wandb.config
@@ -202,7 +195,6 @@ def ppo(config):
         all_legal_action_state = torch.BoolTensor(np.concatenate(states_legal_actions))
         states_values = torch.cat(states_values[:-1])
         state_rewards = torch.cat(state_rewards)
-        state_dones = torch.cat(state_dones)
         log_probabilities = torch.cat(log_probabilities)
         actions_used = torch.cat(actions_used)
 
@@ -302,3 +294,7 @@ def ppo(config):
     image = Image.open(io.BytesIO(img_bytes))
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score, "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
     return episode_nb, all_best_score, avg_best_result, all_best_actions
+
+
+if __name__ == "__main__":
+    ppo()

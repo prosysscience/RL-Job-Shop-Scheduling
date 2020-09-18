@@ -37,6 +37,7 @@ class JSS(gym.Env):
         self.jobs_length = None
         self.max_time_op = 0
         self.max_time_jobs = 0
+        self.avg_time_jobs = 0
         self.max_action_step = 0
         self.nb_legal_actions = 0
         # initial values for variables used for solving (to reinitialize when reset() is called)
@@ -84,6 +85,7 @@ class JSS(gym.Env):
             line_cnt += 1
         instance_file.close()
         self.max_time_jobs = max(self.jobs_length)
+        self.avg_time_jobs = sum(self.jobs_length) / len(self.jobs_length)
         self.max_action_step = self.machines * self.jobs
         # check the parsed data are correct
         assert self.max_time_op > 0
@@ -156,6 +158,7 @@ class JSS(gym.Env):
         # if there is only one legal action, we perform it
         if self.nb_legal_actions == 1:
             current_legal_actions = np.where(self.legal_actions)[0]
+            # two cases, either we create a hole bigger than the avg job length or bigger than the time to complete the job
             scaled_reward = self._reward_scaler(reward)
             state, next_step_reward, done, next_action_performed = self.step(current_legal_actions[0])
             return state, next_step_reward + scaled_reward, done, [action] + next_action_performed

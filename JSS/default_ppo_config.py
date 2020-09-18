@@ -1,10 +1,10 @@
 config = {
     'seed': 0,
     'learning_rate': 1e-4,
-    'n_steps': 128,
+    'n_steps': 8,
     'tau': 0.98,
     'gamma': 0.999,
-    'running_sec_time': 10 * 60, # 10 minutes
+    'running_sec_time': 5 * 60, # 10 minutes
     'max_steps_per_episode': None,  # None if we don't want to limit the number of steps
     'value_coefficient': 1.0,
     'entropy_regularization': 1e-4,
