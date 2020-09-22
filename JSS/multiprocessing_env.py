@@ -1,10 +1,12 @@
 # This code is from openai baseline
 # https://github.com/openai/baselines/tree/master/baselines/common/vec_env
-
+import gym
 import numpy as np
 import cloudpickle
 import multiprocessing
 from multiprocessing import Process, Pipe
+
+from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 
 
 def worker(remote, parent_remote, env_fn_wrapper):
@@ -182,3 +184,15 @@ class SubprocVecEnv(VecEnv):
 
     def __len__(self):
         return self.nenvs
+
+
+def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int, env_config: dict = {}):
+    def _anon():
+        if max_steps_per_episode is None:
+            env = BestActionsWrapper(gym.make(env_name, env_config=env_config))
+        else:
+            env = BestActionsWrapper(MaxStepWrapper(gym.make(env_name, env_config=env_config), max_steps_per_episode))
+        env.seed(seed + i)
+        return env
+
+    return _anon

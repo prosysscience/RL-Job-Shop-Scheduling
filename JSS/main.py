@@ -111,11 +111,14 @@ if __name__ == "__main__":
             'goal': 'minimize',
         },
         'parameters': {
-            'random_agent': {
-                'values': [1]
+            'instance': {
+                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54', 'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58', 'env/instances/ta59', 'env/instances/ta60']
             },
         }
     }
+
+    sweep_id = wandb.sweep(fake_sweep, project="PAPER_JSS")
+    wandb.agent(sweep_id, function=lambda: random_worker(config))
 
     sweep_config = {
         'program': 'dqn.py',
@@ -125,21 +128,10 @@ if __name__ == "__main__":
             'goal': 'minimize',
         },
         'parameters': {
-            'reset_strategy': {
-                'values': [True, False]
+            'instance': {
+                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54', 'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58', 'env/instances/ta59', 'env/instances/ta60']
             },
-            'layer_size': {
-                'values': [1024, 1256]
-            },
-            'tau': {
-                'values': [1e-3, 5e-3, 1e-4]
-            },
-            'nb_steps': {
-                'values': [8, 16, 32, 64]
-            },
-            'update_network_step': {
-                'values': [3, 5, 8]
-            }
         }
     }
+    sweep_id = wandb.sweep(sweep_config, project="PAPER_JSS")
     FIFO_worker(config)

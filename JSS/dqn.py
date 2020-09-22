@@ -141,10 +141,6 @@ def dqn(default_config=default_dqn_config.config):
     previous_nb_episode = 0
     total_steps = 0
 
-    hard_reset = 1
-
-    loop_it = 1
-
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
     masks = np.invert(legal_actions) * -1e10

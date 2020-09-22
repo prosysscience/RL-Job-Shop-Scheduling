@@ -2,6 +2,7 @@ import gym
 
 
 class MaxStepWrapper(gym.Wrapper):
+
     def __init__(self, env, max_steps=1000):
         super(MaxStepWrapper, self).__init__(env)
         self.current_step = 0
