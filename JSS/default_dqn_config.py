@@ -14,7 +14,7 @@ config = {
     'actors_per_cpu': 1,
     'running_sec_time': 5 * 60,
     'layer_nb': 2,
-    'layer_size': 64,
+    'layer_size': 1024,
     'activation': 'tanh',
     'env_name': 'job-shop-v0',
     'env_config': {'instance_path': 'env/instances/ta51'},

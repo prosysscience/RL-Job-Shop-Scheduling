@@ -12,11 +12,11 @@ from JSS.dqn import dqn
 
 pio.orca.config.use_xvfb = True
 
-
 from JSS import default_dqn_config
 from JSS.multiprocessing_env import SubprocVecEnv
 from JSS.ppo import make_seeded_env
 import wandb
+
 
 
 def random_worker(config):
@@ -110,7 +110,4 @@ if __name__ == "__main__":
             }
         }
     }
-    sweep_id = wandb.sweep(fake_sweep, project="JSS_FCN_DQN_CPU_2")
-    wandb.agent(sweep_id, function=lambda: random_worker(config))
-    sweep_id = wandb.sweep(sweep_config, project="JSS_FCN_DQN_CPU_2")
-    wandb.agent(sweep_id, function=lambda: dqn(config))
+    dqn(config)

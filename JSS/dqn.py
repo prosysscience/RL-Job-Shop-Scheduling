@@ -14,15 +14,18 @@ import wandb
 from PIL import Image
 import plotly.io as pio
 
+from JSS import default_dqn_config
 from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
 pio.orca.config.use_xvfb = True
 
 from JSS import *
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # We train on a GPU if available
 
 loss_fn = nn.SmoothL1Loss()
+
 
 class QNetwork(nn.Module):
 
@@ -88,8 +91,7 @@ def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int
     return _anon
 
 
-def dqn(default_config = default_dqn_config.config):
-
+def dqn(default_config=default_dqn_config.config):
     wandb.init(config=default_config)
 
     config = wandb.config
@@ -114,6 +116,7 @@ def dqn(default_config = default_dqn_config.config):
     actor_per_cpu = config['actors_per_cpu']
     running_sec_time = config['running_sec_time']
     network_config = [config['layer_size'] for _ in range(config['layer_nb'])]
+    reset_strategy = config['reset_strategy']
 
     nb_actors = actor_per_cpu * mp.cpu_count()
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
@@ -138,6 +141,10 @@ def dqn(default_config = default_dqn_config.config):
     episode_nb = 0
     previous_nb_episode = 0
     total_steps = 0
+
+    hard_reset = 1
+
+    loop_it = 1
 
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
@@ -200,6 +207,12 @@ def dqn(default_config = default_dqn_config.config):
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
                 previous_nb_episode = episode_nb
 
+            if reset_strategy and loop_it % hard_reset == 0:
+                hard_reset += 1
+                loop_it = 1
+                next_states_env = envs.reset()
+                legal_actions = envs.get_legal_actions()
+
             states = next_states_env
             state_tensor = torch.FloatTensor(states)
             with torch.no_grad():
@@ -221,7 +234,7 @@ def dqn(default_config = default_dqn_config.config):
                 experience.step = step
                 with torch.no_grad():
                     td = experience.reward + (
-                                (gamma ** experience.step) * value_current_states[actor_nb] * (1 - experience.done))
+                            (gamma ** experience.step) * value_current_states[actor_nb] * (1 - experience.done))
                     error = experience.current_state_value - td
                 experience.error = error
                 memory.add(experience, error)
@@ -274,11 +287,15 @@ def dqn(default_config = default_dqn_config.config):
         legal_actions = env_info.get_legal_actions()
         current_step += len(action_performed)
     assert done
+    '''
     figure = env_info.render()
     img_bytes = figure.to_image(format="png")
     image = Image.open(io.BytesIO(img_bytes))
+    '''
+    # wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
+    #           "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
     wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
-               "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
+               "best_timestep": all_best_time_step})
     torch.save(local_net.state_dict(), os.path.join(wandb.run.dir, 'model.pt'))
     return episode_nb, all_best_score, avg_best_result, all_best_actions
 
