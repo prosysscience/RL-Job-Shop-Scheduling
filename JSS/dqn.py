@@ -116,10 +116,9 @@ def dqn(default_config=default_dqn_config.config):
     actor_per_cpu = config['actors_per_cpu']
     running_sec_time = config['running_sec_time']
     network_config = [config['layer_size'] for _ in range(config['layer_nb'])]
-    reset_strategy = config['reset_strategy']
 
     nb_actors = actor_per_cpu * mp.cpu_count()
-    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, env_config) for i in range(nb_actors)]
+    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, {'instance_path': config['instance']}) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
     env_best = BestActionsWrapper(gym.make(env_name, env_config=env_config))
@@ -206,12 +205,6 @@ def dqn(default_config=default_dqn_config.config):
             if previous_nb_episode != episode_nb:
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
                 previous_nb_episode = episode_nb
-
-            if reset_strategy and loop_it % hard_reset == 0:
-                hard_reset += 1
-                loop_it = 1
-                next_states_env = envs.reset()
-                legal_actions = envs.get_legal_actions()
 
             states = next_states_env
             state_tensor = torch.FloatTensor(states)

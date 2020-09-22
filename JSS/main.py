@@ -5,10 +5,12 @@ from PIL import Image
 import io
 
 import gym
+import random
 import numpy as np
 import plotly.io as pio
 
 from JSS.dqn import dqn
+from JSS.env_wrapper import BestActionsWrapper
 
 pio.orca.config.use_xvfb = True
 
@@ -18,11 +20,37 @@ from JSS.ppo import make_seeded_env
 import wandb
 
 
+def FIFO_worker(config):
+    wandb.init(name='FIFO')
+    env = BestActionsWrapper(gym.make(config['env_name'], env_config={'instance_path': config['instance']}))
+    env.seed(config['seed'])
+    random.seed(config['seed'])
+    np.random.seed(config['seed'])
+    done = False
+    states = env.reset()
+    legal_actions = env.get_legal_actions()
+    while not done:
+        waiting_time = np.reshape(states, (env.jobs, 7))[:, 5]
+        illegal_actions = np.invert(legal_actions)
+        mask = illegal_actions * -1e8
+        waiting_time += mask
+        fifo_action = np.argmax(waiting_time)
+        assert legal_actions[fifo_action]
+        state, reward, done, action_performed = env.step(fifo_action)
+        legal_actions = env.get_legal_actions()
+
+    env.reset()
+    all_best_score = env.best_score
+    all_best_actions = env.best_actions
+    all_best_time_step = env.best_time_step
+    wandb.log({"nb_episodes": 1, "avg_best_result": all_best_score, "best_episode": all_best_score,
+               "best_timestep": all_best_time_step})
 
 def random_worker(config):
     wandb.init(name='random')
-    np.random.seed(0)
-    envs = [make_seeded_env(i, config['env_name'], 0, None, config['env_config']) for i in range(mp.cpu_count())]
+    np.random.seed(config['seed'])
+    random.seed(config['seed'])
+    envs = [make_seeded_env(i, config['env_name'], config['seed'], None, {'instance_path': config['instance']}) for i in range(mp.cpu_count())]
     envs = SubprocVecEnv(envs)
     total_steps = 0
     episode_nb = 0
@@ -90,24 +118,28 @@ if __name__ == "__main__":
     }
 
     sweep_config = {
+        'program': 'dqn.py',
         'method': 'grid',
         'metric': {
             'name': 'best_timestep',
             'goal': 'minimize',
         },
         'parameters': {
-            'learning_rate': {
-                'values': [1e-3, 5e-4, 1e-4]
+            'reset_strategy': {
+                'values': [True, False]
+            },
+            'layer_size': {
+                'values': [1024, 1256]
+            },
+            'tau': {
+                'values': [1e-3, 5e-3, 1e-4]
+            },
+            'nb_steps': {
+                'values': [8, 16, 32, 64]
             },
             'update_network_step': {
                 'values': [3, 5, 8]
-            },
-            'batch_size': {
-                'values': [64, 128]
-            },
-            'layer_size': {
-                'values': [512, 1024, 2048, 4096]
             }
         }
     }
-    dqn(config)
+    FIFO_worker(config)
