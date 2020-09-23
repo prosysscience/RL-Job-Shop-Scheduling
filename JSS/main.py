@@ -15,8 +15,7 @@ from JSS.env_wrapper import BestActionsWrapper
 pio.orca.config.use_xvfb = True
 
 from JSS import default_dqn_config
-from JSS.multiprocessing_env import SubprocVecEnv
-from JSS.ppo import make_seeded_env
+from JSS.multiprocessing_env import SubprocVecEnv, make_seeded_env
 import wandb
 
 
@@ -103,7 +102,6 @@ if __name__ == "__main__":
     print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
     config = default_dqn_config.config
-
     fake_sweep = {
         'method': 'grid',
         'metric': {
@@ -112,13 +110,12 @@ if __name__ == "__main__":
         },
         'parameters': {
             'instance': {
-                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54', 'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58', 'env/instances/ta59', 'env/instances/ta60']
+                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54',
+                           'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58',
+                           'env/instances/ta59', 'env/instances/ta60']
             },
         }
     }
-
-    sweep_id = wandb.sweep(fake_sweep, project="PAPER_JSS")
-    wandb.agent(sweep_id, function=lambda: random_worker(config))
 
     sweep_config = {
         'program': 'dqn.py',
@@ -129,9 +126,15 @@ if __name__ == "__main__":
         },
         'parameters': {
             'instance': {
-                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54', 'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58', 'env/instances/ta59', 'env/instances/ta60']
+                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54',
+                           'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58',
+                           'env/instances/ta59', 'env/instances/ta60']
             },
         }
     }
+    sweep_id = wandb.sweep(fake_sweep, project="PAPER_JSS")
+    wandb.agent(sweep_id, function=lambda: FIFO_worker(config))
+    sweep_id = wandb.sweep(fake_sweep, project="PAPER_JSS")
+    wandb.agent(sweep_id, function=lambda: random_worker(config))
     sweep_id = wandb.sweep(sweep_config, project="PAPER_JSS")
-    FIFO_worker(config)
+    wandb.agent(sweep_id, function=lambda: dqn(config))
