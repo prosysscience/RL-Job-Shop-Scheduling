@@ -28,19 +28,21 @@ class BestActionsWrapper(gym.Wrapper):
         self.best_actions = []
         self.current_actions = []
         self.best_score = float('-inf')
-        self.current_score = float('-inf')
+        self.current_score = 0
         self.best_time_step = float('inf')
 
     def reset(self, **kwargs):
-        if self.current_time_step < self.best_time_step:
-            self.best_time_step = self.current_time_step
-        observation = super(BestActionsWrapper, self).reset(**kwargs)
-        if self.current_score > self.best_score:
-            self.best_score = self.current_score
-            self.best_actions = self.current_actions
-        self.current_score = 0
-        self.current_actions = []
-        return observation
+        if self.action_step >= self.max_action_step - 1:
+            if self.current_time_step < self.best_time_step:
+                self.best_time_step = self.current_time_step
+            observation = super(BestActionsWrapper, self).reset(**kwargs)
+            if self.current_score > self.best_score:
+                self.best_score = self.current_score
+                self.best_actions = self.current_actions
+            self.current_score = 0
+            self.current_actions = []
+            return observation
+        return super(BestActionsWrapper, self).reset(**kwargs)
 
     def step(self, action):
         observation, reward, done, real_action_performed = super(BestActionsWrapper, self).step(action)

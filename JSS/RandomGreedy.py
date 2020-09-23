@@ -35,18 +35,17 @@ def random_worker(default_config):
     all_best_actions = []
     all_best_time_step = float('inf')
     for remote in envs.remotes:
+        remote.send(('get_best_timestep', None))
+        best_time_step = remote.recv()
         remote.send(('get_best_actions', None))
         best_score, best_actions = remote.recv()
         sum_best_scores += best_score
-        if best_score > all_best_score:
+        if best_time_step < all_best_time_step:
             all_best_score = best_score
             all_best_actions = best_actions
-        remote.send(('get_best_timestep', None))
-        best_time_step = remote.recv()
-        if best_time_step < all_best_time_step:
             all_best_time_step = best_time_step
     avg_best_result = sum_best_scores / len(envs.remotes)
-    env_gantt = gym.make(config['env_name'], env_config=config['env_config'])
+    env_gantt = gym.make(config['env_name'], env_config={'instance_path': config['instance']})
     state = env_gantt.reset()
     done = False
     legal_actions = env_gantt.get_legal_actions()

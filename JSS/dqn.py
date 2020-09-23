@@ -112,7 +112,6 @@ def dqn(default_config=default_dqn_config.config):
     nb_steps = config['nb_steps']
 
     env_name = config['env_name']
-    env_config = config['env_config']
     actor_per_cpu = config['actors_per_cpu']
     running_sec_time = config['running_sec_time']
     network_config = [config['layer_size'] for _ in range(config['layer_nb'])]
@@ -121,8 +120,8 @@ def dqn(default_config=default_dqn_config.config):
     envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, {'instance_path': config['instance']}) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
-    env_best = BestActionsWrapper(gym.make(env_name, env_config=env_config))
-    env_info = gym.make(env_name, env_config=env_config)
+    env_best = BestActionsWrapper(gym.make(env_name, env_config={'instance_path': config['instance']}))
+    env_info = gym.make(env_name, env_config={'instance_path': config['instance']})
 
     env_info.seed(seed)
     torch.manual_seed(seed)

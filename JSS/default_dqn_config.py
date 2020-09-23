@@ -17,6 +17,5 @@ config = {
     'layer_size': 1024,
     'activation': 'tanh',
     'env_name': 'job-shop-v0',
-    'env_config': {'instance_path': 'env/instances/ta51'},
     'instance': 'env/instances/ta51',
 }
