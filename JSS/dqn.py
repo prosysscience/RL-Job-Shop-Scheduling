@@ -272,9 +272,9 @@ def dqn(default_config=default_dqn_config.config):
     while current_step < len(all_best_actions):
         action = all_best_actions[current_step]
         assert legal_actions[action]
-        state, reward, done, action_performed = env_info.step(action)
+        state, reward, done, _ = env_info.step(action)
         legal_actions = env_info.get_legal_actions()
-        current_step += len(action_performed)
+        current_step += 1
     assert done
     '''
     figure = env_info.render()

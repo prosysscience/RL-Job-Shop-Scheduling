@@ -56,7 +56,7 @@ def random_worker(default_config):
         action = all_best_actions[current_step]
         assert legal_actions[action]
         state, reward, done, action_performed = env_gantt.step(action)
-        current_step += len(action_performed)
+        current_step += 1
     assert done
     '''
     figure = env_gantt.render()

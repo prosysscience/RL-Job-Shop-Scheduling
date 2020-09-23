@@ -25,7 +25,7 @@ def FIFO_worker(default_config):
         waiting_time += mask
         fifo_action = np.argmax(waiting_time)
         assert legal_actions[fifo_action]
-        state, reward, done, action_performed = env.step(fifo_action)
+        state, reward, done, _ = env.step(fifo_action)
         legal_actions = env.get_legal_actions()
 
     env.reset()
