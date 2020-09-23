@@ -8,8 +8,9 @@ from JSS import default_dqn_config
 from JSS.env_wrapper import BestActionsWrapper
 
 
-def FIFO_worker(config):
-    wandb.init(name='FIFO')
+def FIFO_worker(default_config):
+    wandb.init(name='FIFO', config=default_config)
+    config = wandb.config
     env = BestActionsWrapper(gym.make(config['env_name'], env_config={'instance_path': config['instance']}))
     env.seed(config['seed'])
     random.seed(config['seed'])

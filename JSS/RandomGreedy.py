@@ -7,9 +7,12 @@ import wandb
 from JSS import default_dqn_config
 from JSS.multiprocessing_env import SubprocVecEnv, make_seeded_env
 
+import multiprocessing as mp
 
-def random_worker(config):
-    wandb.init(name='random')
+
+def random_worker(default_config):
+    wandb.init(name='random', config=default_config)
+    config = wandb.config
     np.random.seed(config['seed'])
     random.seed(config['seed'])
     envs = [make_seeded_env(i, config['env_name'], config['seed'], None, {'instance_path': config['instance']}) for i in range(mp.cpu_count())]
