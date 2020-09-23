@@ -157,11 +157,11 @@ class JSS(gym.Env):
         if self.nb_legal_actions == 1:
             current_legal_actions = np.where(self.legal_actions)[0]
             scaled_reward = self._reward_scaler(reward)
-            state, next_step_reward, done, next_action_performed = self.step(current_legal_actions[0])
-            return state, next_step_reward + scaled_reward, done, [action] + next_action_performed
+            state, next_step_reward, done, _ = self.step(current_legal_actions[0])
+            return state, next_step_reward + scaled_reward, done, {}
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
-        return self._get_current_state_representation(), scaled_reward, self._is_done(), [action]
+        return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
 
     def _reward_scaler(self, reward):
         reward = reward / self.max_time_op
