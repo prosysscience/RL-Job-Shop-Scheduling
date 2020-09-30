@@ -9,10 +9,10 @@ config = {
     'update_network_step': 5,
     'batch_size': 64,
     'learning_rate': 5e-4,
-    'tau': 1e-3,  # None to avoid clipping the value estimation
+    'tau': 1e-3,
     'nb_steps': 16,
     'actors_per_cpu': 1,
-    'running_sec_time': 15 * 60,
+    'running_sec_time': 60 * 60,
     'layer_nb': 2,
     'layer_size': 1024,
     'activation': 'tanh',

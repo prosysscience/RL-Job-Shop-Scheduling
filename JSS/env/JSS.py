@@ -93,7 +93,7 @@ class JSS(gym.Env):
         assert self.max_action_step > 0
         assert self.instance_matrix is not None
         # allocate a job + one to wait
-        self.action_space = gym.spaces.Discrete(self.jobs)
+        self.action_space = gym.spaces.Discrete(self.jobs + 1)
         '''
         matrix with the following attributes for each job:
             -Legal job
@@ -107,7 +107,7 @@ class JSS(gym.Env):
         self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float)
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.legal_actions
+        self.state[:, 0] = self.legal_actions[:-1]
         return self.state.reshape(-1)
 
     def get_legal_actions(self):
@@ -119,7 +119,8 @@ class JSS(gym.Env):
         self.next_time_step = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs, dtype=np.bool)
+        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
+        self.legal_actions[self.jobs] = False
         # used to represent the solution
         self.solution = np.empty((self.jobs, self.machines), dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -136,6 +137,11 @@ class JSS(gym.Env):
 
     def step(self, action: int):
         reward = 0
+        if action == self.jobs:
+            self.legal_actions[self.jobs] = False
+            reward -= self._increase_time_step()
+            scaled_reward = self._reward_scaler(reward)
+            return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.instance_matrix[action][current_time_step_job][0]
@@ -153,12 +159,16 @@ class JSS(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        # if there is only one legal action, we perform it
-        if self.nb_legal_actions == 1:
+        # if there is only one legal action, we allow to create hole
+        self.legal_actions[self.jobs] = False
+        if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+            self.legal_actions[self.jobs] = True
+        '''            
             current_legal_actions = np.where(self.legal_actions)[0]
             scaled_reward = self._reward_scaler(reward)
             state, next_step_reward, done, _ = self.step(current_legal_actions[0])
             return state, next_step_reward + scaled_reward, done, {}
+        '''
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}

@@ -21,7 +21,7 @@ def FIFO_worker(default_config):
     while not done:
         waiting_time = np.reshape(states, (env.jobs, 7))[:, 5]
         illegal_actions = np.invert(legal_actions)
-        mask = illegal_actions * -1e8
+        mask = illegal_actions[:-1] * -1e8
         waiting_time += mask
         fifo_action = np.argmax(waiting_time)
         assert legal_actions[fifo_action]
