@@ -11,7 +11,7 @@ from JSS.env_wrapper import BestActionsWrapper
 def FIFO_worker(default_config):
     wandb.init(name='FIFO', config=default_config)
     config = wandb.config
-    env = BestActionsWrapper(gym.make(config['env_name'], env_config={'instance_path': config['instance']}))
+    env = BestActionsWrapper(gym.make(config['env_name'], env_config={'instance_path': config['instances']}))
     env.seed(config['seed'])
     random.seed(config['seed'])
     np.random.seed(config['seed'])

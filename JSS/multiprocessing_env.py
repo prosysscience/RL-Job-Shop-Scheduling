@@ -35,6 +35,8 @@ def worker(remote, parent_remote, env_fn_wrapper):
                 remote.send((env.best_score, env.best_actions))
             elif cmd == 'get_best_timestep':
                 remote.send(env.best_time_step)
+            elif cmd == 'get_last_score':
+                remote.send(env.last_score)
             elif cmd == 'get_legal_actions':
                 ob = env.get_legal_actions()
                 remote.send(ob)

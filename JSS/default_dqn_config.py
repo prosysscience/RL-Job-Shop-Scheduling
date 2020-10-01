@@ -2,7 +2,7 @@ config = {
     'seed': 0,
     'gamma': 0.999,
     'max_steps_per_episode': 1000,
-    'replay_buffer_size': 100000,
+    'replay_buffer_size': 500000,
     'epsilon': 0.9,
     'epsilon_decay':  0.995,
     'minimal_epsilon': 0.1,
@@ -17,5 +17,5 @@ config = {
     'layer_size': 1024,
     'activation': 'tanh',
     'env_name': 'job-shop-v0',
-    'instance': 'env/instances/ta51',
+    'instances': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54', 'env/instances/ta55'],
 }

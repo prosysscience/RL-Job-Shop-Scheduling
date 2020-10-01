@@ -1,4 +1,8 @@
+import random
+
 import gym
+
+from JSS.env import JSS
 
 
 class MaxStepWrapper(gym.Wrapper):
@@ -49,3 +53,34 @@ class BestActionsWrapper(gym.Wrapper):
         self.current_actions.append(action)
         self.current_score += reward
         return observation, reward, done, {}
+
+
+class JSSMultiple(gym.Env):
+
+    def __init__(self, instances=[]):
+        self.envs = []
+        self.last_score = float('-inf')
+        self.current_env = None
+        self.iteration = 0
+        for instance in instances:
+            env = BestActionsWrapper(JSS(env_config={'instance_path': instance}))
+            self.envs.append(env)
+
+    def reset(self, **kwargs):
+        if self.iteration != 0:
+            self.last_score = self.current_env.current_score
+        self.current_env = random.choice(self.envs)
+        self.iteration += 1
+        return self.current_env.reset(**kwargs)
+
+    def step(self, action):
+        return self.current_env.step(action)
+
+    def render(self, mode='human'):
+        return self.current_env.render()
+
+    def seed(self, seed=None):
+        random.seed(seed)
+
+    def get_legal_actions(self):
+        return self.current_env.get_legal_actions()

@@ -16,7 +16,7 @@ def random_worker(default_config):
     config = wandb.config
     np.random.seed(config['seed'])
     random.seed(config['seed'])
-    envs = [make_seeded_env(i, config['env_name'], config['seed'], None, {'instance_path': config['instance']}) for i in range(mp.cpu_count())]
+    envs = [make_seeded_env(i, config['seed'], config['instances']) for i in range(mp.cpu_count())]
     envs = SubprocVecEnv(envs)
     total_steps = 0
     episode_nb = 0
