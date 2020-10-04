@@ -1,0 +1,49 @@
+diff --git a/JSS/dqn.py b/JSS/dqn.py
+index 888fb49..b504aab 100644
+--- a/JSS/dqn.py
++++ b/JSS/dqn.py
+@@ -207,7 +207,7 @@ def dqn(default_config=default_dqn_config.config):
+                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
+                 if sum([episode % 1000 == 0 for episode in range(previous_nb_episode + 1, episode_nb + 1)]) > 0:
+                     mean_last_scores = np.mean(last_scores)
+-                    print(mean_last_scores)
++                    wandb.log({"mean_last_scores": mean_last_scores})
+                     if mean_last_scores > previous_score:
+                         previous_score = mean_last_scores
+                         should_continue = True
+diff --git a/JSS/env/JSS.py b/JSS/env/JSS.py
+index 601ba2e..2619d38 100644
+--- a/JSS/env/JSS.py
++++ b/JSS/env/JSS.py
+@@ -139,8 +139,13 @@ class JSS(gym.Env):
+         reward = 0
+         if action == self.jobs:
+             self.legal_actions[self.jobs] = False
+-            reward -= self._increase_time_step()
++            only_legal = np.where(self.legal_actions)[0][0]
++            while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
++                reward -= self._increase_time_step()
+             scaled_reward = self._reward_scaler(reward)
++            if self.nb_legal_actions > 1:
++                self.legal_actions[only_legal] = False
++                self.nb_legal_actions -= 1
+             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+         self.action_step += 1
+         current_time_step_job = self.todo_time_step_job[action]
+@@ -159,16 +164,9 @@ class JSS(gym.Env):
+         # if we can't allocate new job in the current timestep, we pass to the next one
+         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+             reward -= self._increase_time_step()
+-        # if there is only one legal action, we allow to create hole
+         self.legal_actions[self.jobs] = False
+         if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+             self.legal_actions[self.jobs] = True
+-        '''            
+-            current_legal_actions = np.where(self.legal_actions)[0]
+-            scaled_reward = self._reward_scaler(reward)
+-            state, next_step_reward, done, _ = self.step(current_legal_actions[0])
+-            return state, next_step_reward + scaled_reward, done, {}
+-        '''
+         # we then need to scale the reward
+         scaled_reward = self._reward_scaler(reward)
+         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}

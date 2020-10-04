@@ -299,7 +299,7 @@ def dqn(default_config=default_dqn_config.config):
     '''
     # wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
     #           "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
-    wandb.log({"nb_episodes": episode_nb, "score": previous_score})
+    wandb.log({"nb_episodes": episode_nb, "mean_scores": previous_score})
     return episode_nb, previous_score
 
 
