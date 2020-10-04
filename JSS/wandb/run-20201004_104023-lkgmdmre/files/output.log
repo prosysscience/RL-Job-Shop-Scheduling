@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "dqn.py", line 292, in <module>
+    dqn()
+  File "dqn.py", line 120, in dqn
+    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, {'instance_path': config['instance']}) for i in range(nb_actors)]
+  File "dqn.py", line 120, in <listcomp>
+    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, {'instance_path': config['instance']}) for i in range(nb_actors)]
+  File "/opt/conda/lib/python3.8/site-packages/wandb/sdk/wandb_config.py", line 54, in __getitem__
+    return self._items[key]
+KeyError: 'instance'

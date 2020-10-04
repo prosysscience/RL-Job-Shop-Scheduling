@@ -1,4 +1,4 @@
-from collections import OrderedDict, deque
+from collections import OrderedDict
 
 import os
 import gym
@@ -15,7 +15,7 @@ from PIL import Image
 import plotly.io as pio
 
 from JSS import default_dqn_config
-from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper, JSSMultiple
+from JSS.env_wrapper import BestActionsWrapper, MaxStepWrapper
 from JSS.multiprocessing_env import SubprocVecEnv
 
 pio.orca.config.use_xvfb = True
@@ -79,9 +79,12 @@ class QNetwork(nn.Module):
         return x
 
 
-def make_seeded_env(i: int, seed: int, instances: list = []):
+def make_seeded_env(i: int, env_name: str, seed: int, max_steps_per_episode: int, env_config: dict = {}):
     def _anon():
-        env = JSSMultiple(instances)
+        if max_steps_per_episode is None:
+            env = BestActionsWrapper(gym.make(env_name, env_config=env_config))
+        else:
+            env = BestActionsWrapper(MaxStepWrapper(gym.make(env_name, env_config=env_config), max_steps_per_episode))
         env.seed(seed + i)
         return env
 
@@ -114,10 +117,11 @@ def dqn(default_config=default_dqn_config.config):
     network_config = [config['layer_size'] for _ in range(config['layer_nb'])]
 
     nb_actors = actor_per_cpu * mp.cpu_count()
-    envs = [make_seeded_env(i, seed, config['instances']) for i in range(nb_actors)]
+    envs = [make_seeded_env(i, env_name, seed, max_steps_per_episode, {'instance_path': config['instance']}) for i in range(nb_actors)]
     envs = SubprocVecEnv(envs)
 
-    env_info = gym.make(env_name, env_config={'instance_path': config['instances'][0]})
+    env_best = BestActionsWrapper(gym.make(env_name, env_config={'instance_path': config['instance']}))
+    env_info = gym.make(env_name, env_config={'instance_path': config['instance']})
 
     env_info.seed(seed)
     torch.manual_seed(seed)
@@ -136,10 +140,6 @@ def dqn(default_config=default_dqn_config.config):
     previous_nb_episode = 0
     total_steps = 0
 
-    last_scores = deque(maxlen=1000)
-    previous_score = float('-inf')
-    should_continue = True
-
     states = envs.reset()
     legal_actions = envs.get_legal_actions()
     masks = np.invert(legal_actions) * -1e10
@@ -147,7 +147,7 @@ def dqn(default_config=default_dqn_config.config):
     with torch.no_grad():
         action_values = local_net(state_tensor) + masks
         value_current_states, actions = torch.max(action_values, dim=-1)
-    while should_continue:
+    while time.time() < start + running_sec_time:
         experience_stack = [[] for _ in range(nb_actors)]
         for step in range(nb_steps):
             actions = [np.random.choice(len(legal_action), 1, p=(legal_action / legal_action.sum()))[
@@ -180,14 +180,14 @@ def dqn(default_config=default_dqn_config.config):
                 actions = torch.LongTensor(np.vstack([e.action for e in experiences if e is not None]))
                 rewards = torch.FloatTensor(np.vstack([e.reward for e in experiences if e is not None]))
                 next_states = torch.FloatTensor(np.vstack([e.next_state for e in experiences if e is not None]))
-                dones_memory = torch.FloatTensor(np.vstack([int(e.done) for e in experiences if e is not None]))
+                dones = torch.FloatTensor(np.vstack([int(e.done) for e in experiences if e is not None]))
                 all_masks = torch.FloatTensor(np.vstack([e.legal_actions for e in experiences if e is not None]))
                 q_pred = local_net(states).gather(1, actions)
                 with torch.no_grad():
                     target_next = target_net(next_states) + all_masks
                     action_next = torch.argmax(target_next, dim=1).unsqueeze(1)
                     q_pred_next = local_net(next_states).gather(1, action_next)
-                    td = rewards + ((gamma ** steps) * q_pred_next * (1 - dones_memory))
+                    td = rewards + ((gamma ** steps) * q_pred_next * (1 - dones))
                 loss = (torch.FloatTensor(weights) * loss_fn(td, q_pred)).mean()
                 wandb.log({"loss": loss})
                 loss.backward()
@@ -198,22 +198,7 @@ def dqn(default_config=default_dqn_config.config):
                     errors = td - q_pred
                 memory.update(indices, errors)
             if previous_nb_episode != episode_nb:
-                for agent_id, done in enumerate(dones):
-                    if done:
-                        env_done = envs.remotes[agent_id]
-                        env_done.send(('get_last_score', None))
-                        last_score = env_done.recv()
-                        last_scores.append(last_score)
                 epsilon = max(minimal_epsilon, epsilon * epsilon_decay)
-                if sum([episode % 1000 == 0 for episode in range(previous_nb_episode + 1, episode_nb + 1)]) > 0:
-                    mean_last_scores = np.mean(last_scores)
-                    wandb.log({"mean_last_scores": mean_last_scores})
-                    if mean_last_scores > previous_score:
-                        previous_score = mean_last_scores
-                        should_continue = True
-                        torch.save(local_net.state_dict(), os.path.join(wandb.run.dir, 'model.pt'))
-                    elif episode_nb > 1000:
-                        should_continue = False
                 previous_nb_episode = episode_nb
 
             states = next_states_env
@@ -242,7 +227,7 @@ def dqn(default_config=default_dqn_config.config):
                 experience.error = error
                 memory.add(experience, error)
                 step += 1
-    '''
+
     sum_best_scores = 0
     all_best_score = float('-inf')
     all_best_actions = []
@@ -291,16 +276,16 @@ def dqn(default_config=default_dqn_config.config):
         current_step += 1
     assert done
     '''
-
-    '''
     figure = env_info.render()
     img_bytes = figure.to_image(format="png")
     image = Image.open(io.BytesIO(img_bytes))
     '''
     # wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
     #           "best_timestep": all_best_time_step, 'gantt': [wandb.Image(image)]})
-    wandb.log({"nb_episodes": episode_nb, "score": previous_score})
-    return episode_nb, previous_score
+    wandb.log({"nb_episodes": episode_nb, "avg_best_result": avg_best_result, "best_episode": all_best_score,
+               "best_timestep": all_best_time_step})
+    torch.save(local_net.state_dict(), os.path.join(wandb.run.dir, 'model.pt'))
+    return episode_nb, all_best_score, avg_best_result, all_best_actions
 
 
 if __name__ == "__main__":

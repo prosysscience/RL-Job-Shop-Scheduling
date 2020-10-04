@@ -2,7 +2,7 @@ config = {
     'seed': 0,
     'gamma': 0.999,
     'max_steps_per_episode': 1000,
-    'replay_buffer_size': 500000,
+    'replay_buffer_size': 10000000,
     'epsilon': 0.9,
     'epsilon_decay':  0.995,
     'minimal_epsilon': 0.1,
