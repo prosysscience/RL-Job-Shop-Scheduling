@@ -8,6 +8,7 @@ import numpy as np
 import plotly.express as px
 import plotly.figure_factory as ff
 
+
 class JSS(gym.Env):
 
     def __init__(self, env_config=None):
@@ -93,7 +94,7 @@ class JSS(gym.Env):
         assert self.max_action_step > 0
         assert self.instance_matrix is not None
         # allocate a job + one to wait
-        self.action_space = gym.spaces.Discrete(self.jobs)
+        self.action_space = gym.spaces.Discrete(self.jobs + 1)
         '''
         matrix with the following attributes for each job:
             -Legal job
@@ -104,11 +105,17 @@ class JSS(gym.Env):
             -Time since IDLE: 0 if not available, time otherwise
             -Total IDLE time in the schedule
         '''
-        self.observation_space = gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float)
+        self.observation_space = gym.spaces.Dict({
+            "action_mask": gym.spaces.Box(0, 1, shape=(self.jobs + 1,)),
+            "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float),
+        })
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.legal_actions
-        return self.state.reshape(-1)
+        self.state[:, 0] = self.legal_actions[:-1]
+        return {
+            "real_obs": self.state.reshape(-1),
+            "action_mask": self.legal_actions,
+        }
 
     def get_legal_actions(self):
         return self.legal_actions
@@ -119,7 +126,8 @@ class JSS(gym.Env):
         self.next_time_step = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs, dtype=np.bool)
+        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
+        self.legal_actions[self.jobs] = False
         # used to represent the solution
         self.solution = np.empty((self.jobs, self.machines), dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -136,6 +144,16 @@ class JSS(gym.Env):
 
     def step(self, action: int):
         reward = 0
+        if action == self.jobs:
+            self.legal_actions[self.jobs] = False
+            only_legal = np.where(self.legal_actions)[0][0]
+            while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+                reward -= self._increase_time_step()
+            scaled_reward = self._reward_scaler(reward)
+            if self.nb_legal_actions > 1:
+                self.legal_actions[only_legal] = False
+                self.nb_legal_actions -= 1
+            return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.instance_matrix[action][current_time_step_job][0]
@@ -153,12 +171,10 @@ class JSS(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        # if there is only one legal action, we perform it
-        if self.nb_legal_actions == 1:
-            current_legal_actions = np.where(self.legal_actions)[0]
-            scaled_reward = self._reward_scaler(reward)
-            state, next_step_reward, done, _ = self.step(current_legal_actions[0])
-            return state, next_step_reward + scaled_reward, done, {}
+        if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+            self.legal_actions[self.jobs] = True
+        elif self.legal_actions[self.jobs]:
+            self.legal_actions[self.jobs] = False
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -173,7 +189,6 @@ class JSS(gym.Env):
         and return the time elapsed
         :return: time elapsed
         '''
-        assert len(self.next_time_step) > 0, 'There is no available next time-step'
         hole_planning = 0
         next_time_step = self.next_time_step.pop(0)
         difference = next_time_step - self.current_time_step

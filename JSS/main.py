@@ -1,67 +1,86 @@
 import os
-import multiprocessing as mp
-import plotly.io as pio
+import pickle
+import time
 
-from JSS import default_dqn_config
-import wandb
+import plotly.io as pio
+import ray
+from ray import tune
+
+from JSS.CustomCallbacks import CustomCallbacks
+from JSS.env.JSS import JSS
+from ray.rllib.agents.ppo import ppo, PPOTrainer
+from ray.rllib.models import ModelCatalog
+from ray.rllib.utils import try_import_torch
+from ray.tune import CLIReporter, register_env
+
+from ray.tune.logger import DEFAULT_LOGGERS
+from ray.tune.integration.wandb import WandbLogger
+
+from JSS.models import FCMaskedActionsModel
 
 pio.orca.config.use_xvfb = True
 
+
+def env_creator(env_config):
+    return JSS(env_config)
+
+
+register_env("jss_env", env_creator)
+
+
 if __name__ == "__main__":
-    print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count()))
+    ray.init()
+    torch, nn = try_import_torch()
+    ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
-    config = default_dqn_config.config
-
-    fake_sweep_fifo = {
-        'program': 'FIFO.py',
-        'method': 'grid',
-        'metric': {
-            'name': 'best_timestep',
-            'goal': 'minimize',
-        },
-        'parameters': {
-            'instance': {
-                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54',
-                           'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58',
-                           'env/instances/ta59', 'env/instances/ta60']
-            },
+    config = ppo.DEFAULT_CONFIG.copy()
+    fcnet_architectures = [[512, 512], [1024, 1024], [2048, 2048]]
+    config['seed'] = 0
+    config['framework'] = 'torch'
+    config['env'] = 'jss_env'
+    config['env_config'] = {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51'}
+    config['model'] = {
+        "fcnet_activation": tune.grid_search(["relu", "tanh"]),
+        "custom_model": "fc_masked_model",
+        "fcnet_hiddens": tune.grid_search(fcnet_architectures),
+    }
+    config['entropy_coeff'] = tune.grid_search([0.0, 1e-4])
+    config['kl_coeff'] = tune.grid_search([0.3, 0.2, 0.1])
+    # config['train_batch_size'] = tune.grid_search([2048, 4096])
+    # config['rollout_fragment_length'] = tune.grid_search([256, 512])
+    # config['sgd_minibatch_size'] = tune.grid_search([256, 512])
+    config['lr'] = tune.grid_search([5e-4, 1e-4, 5e-5])
+    config['evaluation_interval'] = None
+    config['metrics_smoothing_episodes'] = 100000
+    config['num_envs_per_worker'] = tune.grid_search([1, 2])
+    config['callbacks'] = CustomCallbacks
+    config['num_workers'] = 7
+    '''
+    config["logger_config"] = {
+        'wandb': {
+            'project': 'RLLibJSS',
+            'api_key': '3487a01956bf67cc7882bca2a38f70c8c95f8463',
         }
     }
-
-    fake_sweep_random = {
-        'program': 'RandomGreedy.py',
-        'method': 'grid',
-        'metric': {
-            'name': 'best_timestep',
-            'goal': 'minimize',
-        },
-        'parameters': {
-            'instance': {
-                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54',
-                           'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58',
-                           'env/instances/ta59', 'env/instances/ta60']
-            },
-        }
+    '''
+    stop = {
+        "time_total_s": 600,
     }
+    reporter = CLIReporter()
+    reporter.add_metric_column("episode_reward_max")
+    reporter.add_metric_column("custom_metric_time_step_min")
+    analysis = tune.run(PPOTrainer, config=config, stop=stop, progress_reporter=reporter,
+                        fail_fast=True,
+                        checkpoint_at_end=True)
+    best_trained_config = analysis.get_best_config(metric="episode_reward_max")
+    print("Best config: ", best_trained_config)
+    save_config = open("{}_{}.json".format(time.time(), config['env_config']['instance_path']), "w+")
+    pickle.dump(best_trained_config, save_config)
+    save_config.close()
+    best_trial = analysis.get_best_trial(metric="time_step_min")
+    print("Best acc reward: ", best_trial.metric_analysis['episode_reward_max']['max'])
+    checkpoints = analysis.get_trial_checkpoints_paths(trial=best_trial,
+                                                       metric='episode_reward_max')
+    print("Checkpoint :", checkpoints)
+    ray.shutdown()
 
-    sweep_config = {
-        'program': 'dqn.py',
-        'method': 'grid',
-        'metric': {
-            'name': 'best_timestep',
-            'goal': 'minimize',
-        },
-        'parameters': {
-            'instance': {
-                'values': ['env/instances/ta51', 'env/instances/ta52', 'env/instances/ta53', 'env/instances/ta54',
-                           'env/instances/ta55', 'env/instances/ta56', 'env/instances/ta57', 'env/instances/ta58',
-                           'env/instances/ta59', 'env/instances/ta60']
-            },
-        }
-    }
-    sweep_id = wandb.sweep(fake_sweep_fifo, project="PAPER_JSS")
-    #wandb.agent(sweep_id, function=lambda: FIFO_worker(config))
-    sweep_id = wandb.sweep(fake_sweep_random, project="PAPER_JSS")
-    #wandb.agent(sweep_id, function=lambda: random_worker(config))
-    sweep_id = wandb.sweep(sweep_config, project="PAPER_JSS")
-    #wandb.agent(sweep_id, function=lambda: dqn(config))
