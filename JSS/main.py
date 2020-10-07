@@ -43,11 +43,11 @@ if __name__ == "__main__":
     config['env'] = 'jss_env'
     config['env_config'] = {'instance_path': '/JSS/JSS/env/instances/ta51'}
     config['num_envs_per_worker'] = 2
-    config['rollout_fragment_length'] = 512
+    config['rollout_fragment_length'] = 512 * 2
     config['num_workers'] = 79
     config['log_level'] = 'INFO'
-    config['train_batch_size'] = 80896
-    config['sgd_minibatch_size'] = 10112
+    config['train_batch_size'] = 80896 * 2
+    config['sgd_minibatch_size'] = 16112
     config['num_gpus'] = 1
     config['model'] = {
         "fcnet_activation": "relu",
