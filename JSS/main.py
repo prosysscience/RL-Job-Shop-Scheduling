@@ -1,6 +1,5 @@
 import os
-import pickle
-import time
+import multiprocessing as mp
 
 import plotly.io as pio
 import ray
@@ -28,62 +27,38 @@ def env_creator(env_config):
 
 
 register_env("jss_env", env_creator)
-
+torch, nn = try_import_torch()
+ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
 
 if __name__ == "__main__":
+    print("I have detected {} CPUs here, so I'm going to create {} actors".format(mp.cpu_count(), mp.cpu_count() - 1))
     os.environ["WANDB_API_KEY"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'
-    ray.init()
-    torch, nn = try_import_torch()
-    print(torch.cuda.is_available())
-    ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
-    config = ppo.DEFAULT_CONFIG.copy()
-    fcnet_architectures = [[1024, 1024], [2048, 2048]]
-    config['seed'] = 0
-    config['framework'] = 'torch'
-    config['env'] = 'jss_env'
-    config['env_config'] = {'instance_path': '/JSS/JSS/env/instances/ta51'}
-    config['num_envs_per_worker'] = 2
-    config['rollout_fragment_length'] = 512 * 2
-    config['num_workers'] = 79
-    config['log_level'] = 'INFO'
-    config['train_batch_size'] = 80896 * 2
-    config['sgd_minibatch_size'] = 16112
-    config['num_gpus'] = 1
-    config['model'] = {
-        "fcnet_activation": "relu",
-        "custom_model": "fc_masked_model",
-        "fcnet_hiddens": [1024, 1024],
+    sweep_config = {
+        'program': 'train.py',
+        'method': 'grid',
+        'metric': {
+            'name': 'time_step_min',
+            'goal': 'minimize',
+        },
+        'parameters': {
+            'num_envs_per_worker': {
+                'values': [2, 4]
+            },
+            'sgd_minibatch_size': {
+                'values': [2**12, 2**13, 2**14, 2**15]
+            },
+            'lr': {
+                'values': [1e-4, 5e-5, 1e-5]
+            },
+            'lambda': {
+                'values': [0.95, 1.0]
+            },
+            'clip_param': {
+                'values': [0.2, 0.3, 0.4]
+            },
+            'num_sgd_iter': {
+                'values': [20, 30, 40]
+            },
+        }
     }
-    stop = {
-        "time_total_s": 600,
-    }
-    config['evaluation_interval'] = None
-    config['metrics_smoothing_episodes'] = 100000
-    config['callbacks'] = CustomCallbacks
-    reporter = CLIReporter()
-    reporter.add_metric_column("episode_reward_max")
-    tune.run(PPOTrainer, progress_reporter=reporter, config=config, stop=stop)
-    '''
-    stop = {
-        "time_total_s": 600,
-    }
-    reporter = CLIReporter()
-    reporter.add_metric_column("episode_reward_max")
-    reporter.add_metric_column("custom_metric_time_step_min")
-    analysis = tune.run(PPOTrainer, config=config, stop=stop, progress_reporter=reporter,
-                        fail_fast=True,
-                        checkpoint_at_end=True,
-                        loggers=[WandbLogger])
-    best_trained_config = analysis.get_best_config(metric="episode_reward_max")
-    print("Best config: ", best_trained_config)
-    save_config = open("{}_{}.json".format(time.time(), config['env_config']['instance_path']), "w+")
-    pickle.dump(best_trained_config, save_config)
-    save_config.close()
-    best_trial = analysis.get_best_trial(metric="time_step_min")
-    print("Best acc reward: ", best_trial.metric_analysis['episode_reward_max']['max'])
-    checkpoints = analysis.get_trial_checkpoints_paths(trial=best_trial,
-                                                       metric='episode_reward_max')
-    print("Checkpoint :", checkpoints)
-    '''
-    ray.shutdown()
 

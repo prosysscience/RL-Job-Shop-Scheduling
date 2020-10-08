@@ -144,7 +144,7 @@ class JSS(gym.Env):
         return self._get_current_state_representation()
 
     def step(self, action: int):
-        reward = 0
+        reward = 0.0
         if action == self.jobs:
             self.legal_actions[self.jobs] = False
             only_legal = np.where(self.legal_actions)[0][0]
