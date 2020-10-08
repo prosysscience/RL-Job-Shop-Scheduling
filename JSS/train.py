@@ -45,20 +45,22 @@ def train_func():
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
 
-    
     ray.init()
     stop = {
         "time_total_s": 600,
     }
-    analysis = tune.run(PPOTrainer, config=config, stop=stop)
-    result = analysis.results_df
-    my_custom_metric = result['custom_metrics']
-    wandb.log(my_custom_metric)
+    analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+    result = analysis.dataframe().to_dict('index')[0]
+    wandb.log({'time_step_min': result['custom_metrics/time_step_min']})
+    if result['custom_metrics/time_step_max'] != float('inf'):
+        wandb.log({'time_step_max': result['custom_metrics/time_step_max']})
+        wandb.log({'time_step_mean': result['custom_metrics/time_step_mean']})
     wandb.log({'episode_reward_max': result['episode_reward_max']})
     wandb.log({'episode_reward_min': result['episode_reward_min']})
     wandb.log({'episode_reward_mean': result['episode_reward_mean']})
     wandb.log({'episodes_total': result['episodes_total']})
     wandb.log({'training_iteration': result['training_iteration']})
+
     ray.shutdown()
 
 

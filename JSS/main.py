@@ -5,6 +5,7 @@ import plotly.io as pio
 import ray
 from ray import tune
 
+from JSS import train
 from JSS.CustomCallbacks import CustomCallbacks
 from JSS.env.JSS import JSS
 from ray.rllib.agents.ppo import ppo, PPOTrainer
