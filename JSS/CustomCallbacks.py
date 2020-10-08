@@ -4,6 +4,7 @@ from ray.rllib.env import BaseEnv
 from ray.rllib.evaluation import MultiAgentEpisode, RolloutWorker
 from ray.rllib.policy import Policy
 from ray.rllib.utils.typing import PolicyID
+import wandb
 
 
 class CustomCallbacks(DefaultCallbacks):
@@ -18,5 +19,12 @@ class CustomCallbacks(DefaultCallbacks):
                        episode: MultiAgentEpisode, **kwargs):
         env = base_env.get_unwrapped()[0]
         episode.custom_metrics['time_step'] = env.last_time_step
+
+    def on_train_result(self, trainer, result: dict, **kwargs):
+        my_custom_metric = result['custom_metrics']
+        wandb.log(my_custom_metric)
+        wandb.log({'episode_reward_max': result['episode_reward_max']})
+        wandb.log({'episode_reward_min': result['episode_reward_min']})
+        wandb.log({'episode_reward_mean': result['episode_reward_mean']})
 
 
