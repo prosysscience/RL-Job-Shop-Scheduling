@@ -17,7 +17,6 @@ class CustomCallbacks(DefaultCallbacks):
                        policies: Dict[PolicyID, Policy],
                        episode: MultiAgentEpisode, **kwargs):
         env = base_env.get_unwrapped()[0]
-        if env.best_time_step != float('inf'):
-            episode.custom_metrics['time_step'] = env.best_time_step
+        episode.custom_metrics['time_step'] = env.last_time_step
 
 

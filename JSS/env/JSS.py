@@ -42,6 +42,7 @@ class JSS(gym.Env):
         self.nb_legal_actions = 0
         # initial values for variables used for solving (to reinitialize when reset() is called)
         self.solution = None
+        self.last_time_step = float('inf')
         self.current_time_step = float('inf')
         self.next_time_step = list()
         self.legal_actions = None
@@ -129,7 +130,7 @@ class JSS(gym.Env):
         self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
         self.legal_actions[self.jobs] = False
         # used to represent the solution
-        self.solution = np.empty((self.jobs, self.machines), dtype=np.int)
+        self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
         self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=np.int)
         self.todo_time_step_job = np.zeros(self.jobs, dtype=np.int)
@@ -235,14 +236,16 @@ class JSS(gym.Env):
         return hole_planning
 
     def _is_done(self):
-        return self.action_step >= self.max_action_step - 1
+        if self.action_step >= self.max_action_step - 1:
+            self.last_time_step = self.current_time_step
+            return True
+        return False
 
     def render(self, mode='human'):
         df = []
         for job in range(self.jobs):
             i = 0
-            # TODO for the moment, only allow full solved env to be printed
-            while i < self.machines:
+            while i < self.machines and self.solution[job][i] != -1:
                 dict_op = dict()
                 dict_op["Task"] = 'Job {}'.format(job)
                 start_sec = self.start_timestamp + self.solution[job][i]
