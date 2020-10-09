@@ -1,0 +1,1782 @@
+2020-10-08 23:28:12,151	INFO services.py:1164 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8270[39m[22m
+== Status ==
+Memory usage on this node: 57.1/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+-------+
+| Trial name              | status   | loc   |
+|-------------------------+----------+-------|
+| PPO_jss_env_ef676_00000 | RUNNING  |       |
++-------------------------+----------+-------+
+
+
+[2m[36m(pid=56680)[0m 2020-10-08 23:28:15,063	INFO trainer.py:616 -- Current log_level is WARN. For more information, set 'log_level': 'INFO' / 'DEBUG' or use the -v and -vv flags.
+[2m[36m(pid=56542)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56542)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56553)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56553)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56633)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56633)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56674)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56674)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56627)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56627)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56645)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56645)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56635)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56635)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56629)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56629)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56650)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56650)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56624)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56624)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56655)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56655)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56548)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56548)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56537)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56537)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56546)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56546)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56560)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56560)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56634)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56634)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56632)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56632)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56659)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56659)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56628)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56628)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56620)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56620)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56622)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56622)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56675)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56675)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56669)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56669)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56657)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56657)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56543)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56543)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56554)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56554)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56665)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56665)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56666)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56666)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56609)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56609)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56563)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56563)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56561)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56561)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56691)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56691)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56640)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56640)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56580)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56580)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56572)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56572)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56683)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56683)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56613)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56613)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56545)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56545)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56643)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56643)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56538)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56538)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56686)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56686)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56631)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56631)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56568)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56568)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56658)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56658)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56558)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56558)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56536)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56536)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56630)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56630)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56544)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56544)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56667)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56667)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56541)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56541)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56540)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56540)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56661)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56661)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56570)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56570)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56547)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56547)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56621)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56621)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56682)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56682)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56688)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56688)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56534)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56534)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56626)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56626)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56555)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56555)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56615)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56615)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56618)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56618)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56564)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56564)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56614)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56614)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56578)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56578)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56535)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56535)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56625)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56625)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56610)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56610)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56652)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56652)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56575)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56575)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56642)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56642)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56637)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56637)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56612)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56612)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56623)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56623)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56617)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56617)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56671)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56671)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56566)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56566)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56539)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56539)[0m   tensor = torch.from_numpy(np.asarray(item))
+[2m[36m(pid=56611)[0m /root/miniconda3/lib/python3.8/site-packages/ray/rllib/utils/torch_ops.py:65: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1595629401015/work/torch/csrc/utils/tensor_numpy.cpp:141.)
+[2m[36m(pid=56611)[0m   tensor = torch.from_numpy(np.asarray(item))
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3279.0
+  date: 2020-10-08_23-28-55
+  done: false
+  episode_len_mean: 877.1708860759494
+  episode_reward_max: 273.13131313131294
+  episode_reward_mean: 224.28870988364636
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 158
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.20000000000000004
+        cur_lr: 1.0e-05
+        entropy: 1.162909460067749
+        entropy_coeff: 0.0
+        kl: 0.00422707675024867
+        model: {}
+        policy_loss: -0.004045553476316854
+        total_loss: 12.19794430732727
+        vf_explained_var: 0.6084357500076294
+        vf_loss: 12.201144361495972
+    num_steps_sampled: 161792
+    num_steps_trained: 161792
+  iterations_since_restore: 1
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 30.160000000000004
+    gpu_util_percent0: 0.242
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.5375
+    vram_util_percent0: 0.2594990160708429
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.17224633056979813
+    mean_env_wait_ms: 1.6243923413381784
+    mean_inference_ms: 5.555733403661951
+    mean_raw_obs_processing_ms: 0.4577755464304741
+  time_since_restore: 34.309388399124146
+  time_this_iter_s: 34.309388399124146
+  time_total_s: 34.309388399124146
+  timers:
+    learn_throughput: 6573.245
+    learn_time_ms: 24613.719
+    sample_throughput: 16824.795
+    sample_time_ms: 9616.284
+    update_time_ms: 41.412
+  timestamp: 1602199735
+  timesteps_since_restore: 0
+  timesteps_total: 161792
+  training_iteration: 1
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 72.8/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      1 |          34.3094 | 161792 |  224.289 |              273.131 |              115.788 |            877.171 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-29-28
+  done: false
+  episode_len_mean: 868.9335443037975
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 227.093466308656
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 316
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.10000000000000002
+        cur_lr: 1.0e-05
+        entropy: 1.1355451464653015
+        entropy_coeff: 0.0
+        kl: 0.006449803849682212
+        model: {}
+        policy_loss: -0.005404108087532222
+        total_loss: 10.123110151290893
+        vf_explained_var: 0.8223798871040344
+        vf_loss: 10.127869462966919
+    num_steps_sampled: 323584
+    num_steps_trained: 323584
+  iterations_since_restore: 2
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.43684210526315
+    gpu_util_percent0: 0.20105263157894737
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.757894736842108
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16879945345948008
+    mean_env_wait_ms: 1.630299493314821
+    mean_inference_ms: 5.3456945812513466
+    mean_raw_obs_processing_ms: 0.4493712093552496
+  time_since_restore: 66.88982701301575
+  time_this_iter_s: 32.5804386138916
+  time_total_s: 66.88982701301575
+  timers:
+    learn_throughput: 6597.458
+    learn_time_ms: 24523.386
+    sample_throughput: 18343.217
+    sample_time_ms: 8820.263
+    update_time_ms: 37.694
+  timestamp: 1602199768
+  timesteps_since_restore: 0
+  timesteps_total: 323584
+  training_iteration: 2
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.3/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      2 |          66.8898 | 323584 |  227.093 |              280.859 |              115.788 |            868.934 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-30-00
+  done: false
+  episode_len_mean: 861.0295358649789
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 228.25734134594873
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 474
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.10000000000000002
+        cur_lr: 1.0e-05
+        entropy: 1.1247536718845368
+        entropy_coeff: 0.0
+        kl: 0.006988351442851126
+        model: {}
+        policy_loss: -0.005489885050337762
+        total_loss: 12.05485897064209
+        vf_explained_var: 0.8802906274795532
+        vf_loss: 12.059649896621703
+    num_steps_sampled: 485376
+    num_steps_trained: 485376
+  iterations_since_restore: 3
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.792105263157897
+    gpu_util_percent0: 0.21052631578947367
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.768421052631581
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.1662872825933146
+    mean_env_wait_ms: 1.6358072222880249
+    mean_inference_ms: 5.222513501263218
+    mean_raw_obs_processing_ms: 0.44232699177602286
+  time_since_restore: 99.71846842765808
+  time_this_iter_s: 32.828641414642334
+  time_total_s: 99.71846842765808
+  timers:
+    learn_throughput: 6600.835
+    learn_time_ms: 24510.837
+    sample_throughput: 18754.607
+    sample_time_ms: 8626.787
+    update_time_ms: 39.212
+  timestamp: 1602199800
+  timesteps_since_restore: 0
+  timesteps_total: 485376
+  training_iteration: 3
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.3/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      3 |          99.7185 | 485376 |  228.257 |              280.859 |              115.788 |             861.03 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-30-33
+  done: false
+  episode_len_mean: 854.0490506329114
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 229.43033179900254
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 632
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.10000000000000002
+        cur_lr: 1.0e-05
+        entropy: 1.092227864265442
+        entropy_coeff: 0.0
+        kl: 0.005156366224400699
+        model: {}
+        policy_loss: -0.005006831116043031
+        total_loss: 12.842995929718018
+        vf_explained_var: 0.9154547452926636
+        vf_loss: 12.8474871635437
+    num_steps_sampled: 647168
+    num_steps_trained: 647168
+  iterations_since_restore: 4
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.731578947368416
+    gpu_util_percent0: 0.11078947368421052
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.792105263157893
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16459554227389314
+    mean_env_wait_ms: 1.6421868153925712
+    mean_inference_ms: 5.128576393766048
+    mean_raw_obs_processing_ms: 0.4368501212282865
+  time_since_restore: 132.65767812728882
+  time_this_iter_s: 32.93920969963074
+  time_total_s: 132.65767812728882
+  timers:
+    learn_throughput: 6574.605
+    learn_time_ms: 24608.628
+    sample_throughput: 19127.493
+    sample_time_ms: 8458.61
+    update_time_ms: 36.644
+  timestamp: 1602199833
+  timesteps_since_restore: 0
+  timesteps_total: 647168
+  training_iteration: 4
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      4 |          132.658 | 647168 |   229.43 |              280.859 |              115.788 |            854.049 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-31-06
+  done: false
+  episode_len_mean: 840.8618143459915
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 229.28177343050746
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 316
+  episodes_total: 948
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.10000000000000002
+        cur_lr: 1.0e-05
+        entropy: 1.0636104881763457
+        entropy_coeff: 0.0
+        kl: 0.006108678923919797
+        model: {}
+        policy_loss: -0.005587032367475331
+        total_loss: 18.421049976348876
+        vf_explained_var: 0.9474899172782898
+        vf_loss: 18.42602653503418
+    num_steps_sampled: 808960
+    num_steps_trained: 808960
+  iterations_since_restore: 5
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.026315789473685
+    gpu_util_percent0: 0.38526315789473686
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.76842105263158
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16250700606733035
+    mean_env_wait_ms: 1.6543218303516392
+    mean_inference_ms: 5.006834425261454
+    mean_raw_obs_processing_ms: 0.430521530281054
+  time_since_restore: 165.59615755081177
+  time_this_iter_s: 32.93847942352295
+  time_total_s: 165.59615755081177
+  timers:
+    learn_throughput: 6575.778
+    learn_time_ms: 24604.237
+    sample_throughput: 19210.032
+    sample_time_ms: 8422.266
+    update_time_ms: 33.313
+  timestamp: 1602199866
+  timesteps_since_restore: 0
+  timesteps_total: 808960
+  training_iteration: 5
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      5 |          165.596 | 808960 |  229.282 |              280.859 |              115.788 |            840.862 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-31-39
+  done: false
+  episode_len_mean: 835.122965641953
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 229.9606645112973
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 1106
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.10000000000000002
+        cur_lr: 1.0e-05
+        entropy: 1.0465686202049256
+        entropy_coeff: 0.0
+        kl: 0.004503600765019655
+        model: {}
+        policy_loss: -0.004771836090367287
+        total_loss: 10.655173349380494
+        vf_explained_var: 0.9607104063034058
+        vf_loss: 10.659494781494141
+    num_steps_sampled: 970752
+    num_steps_trained: 970752
+  iterations_since_restore: 6
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.945945945945944
+    gpu_util_percent0: 0.36756756756756753
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.778378378378381
+    vram_util_percent0: 0.2682026894063626
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16181350342183937
+    mean_env_wait_ms: 1.6592991204048682
+    mean_inference_ms: 4.9644538002108645
+    mean_raw_obs_processing_ms: 0.4283533696765024
+  time_since_restore: 197.89955019950867
+  time_this_iter_s: 32.3033926486969
+  time_total_s: 197.89955019950867
+  timers:
+    learn_throughput: 6590.589
+    learn_time_ms: 24548.946
+    sample_throughput: 19390.571
+    sample_time_ms: 8343.849
+    update_time_ms: 31.745
+  timestamp: 1602199899
+  timesteps_since_restore: 0
+  timesteps_total: 970752
+  training_iteration: 6
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |     ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      6 |            197.9 | 970752 |  229.961 |              280.859 |              115.788 |            835.123 |
++-------------------------+----------+------------------+--------+------------------+--------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-32-11
+  done: false
+  episode_len_mean: 830.431170886076
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 230.58018475898214
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 1264
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.05000000000000001
+        cur_lr: 1.0e-05
+        entropy: 1.018120014667511
+        entropy_coeff: 0.0
+        kl: 0.005503276269882918
+        model: {}
+        policy_loss: -0.005090098438085988
+        total_loss: 8.777469158172607
+        vf_explained_var: 0.9726911783218384
+        vf_loss: 8.782284212112426
+    num_steps_sampled: 1132544
+    num_steps_trained: 1132544
+  iterations_since_restore: 7
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.276315789473685
+    gpu_util_percent0: 0.313421052631579
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.781578947368422
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16123087323611826
+    mean_env_wait_ms: 1.6639980407168893
+    mean_inference_ms: 4.928001761283783
+    mean_raw_obs_processing_ms: 0.4264049093464911
+  time_since_restore: 230.4153537750244
+  time_this_iter_s: 32.51580357551575
+  time_total_s: 230.4153537750244
+  timers:
+    learn_throughput: 6596.398
+    learn_time_ms: 24527.326
+    sample_throughput: 19494.503
+    sample_time_ms: 8299.365
+    update_time_ms: 31.596
+  timestamp: 1602199931
+  timesteps_since_restore: 0
+  timesteps_total: 1132544
+  training_iteration: 7
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      7 |          230.415 | 1132544 |   230.58 |              280.859 |              115.788 |            830.431 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-32-44
+  done: false
+  episode_len_mean: 825.8224687933425
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 231.30562910659992
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 178
+  episodes_total: 1442
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.05000000000000001
+        cur_lr: 1.0e-05
+        entropy: 0.9556609928607941
+        entropy_coeff: 0.0
+        kl: 0.005018916982226074
+        model: {}
+        policy_loss: -0.004397974320454523
+        total_loss: 8.092499470710754
+        vf_explained_var: 0.9836612939834595
+        vf_loss: 8.096646714210511
+    num_steps_sampled: 1294336
+    num_steps_trained: 1294336
+  iterations_since_restore: 8
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.855263157894733
+    gpu_util_percent0: 0.23289473684210527
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.778947368421054
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.16067736721141934
+    mean_env_wait_ms: 1.6693470023118877
+    mean_inference_ms: 4.8928816225938
+    mean_raw_obs_processing_ms: 0.4244883340274972
+  time_since_restore: 263.2492799758911
+  time_this_iter_s: 32.8339262008667
+  time_total_s: 263.2492799758911
+  timers:
+    learn_throughput: 6599.288
+    learn_time_ms: 24516.584
+    sample_throughput: 19492.891
+    sample_time_ms: 8300.051
+    update_time_ms: 32.2
+  timestamp: 1602199964
+  timesteps_since_restore: 0
+  timesteps_total: 1294336
+  training_iteration: 8
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      8 |          263.249 | 1294336 |  231.306 |              280.859 |              115.788 |            825.822 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-33-17
+  done: false
+  episode_len_mean: 819.5880322209437
+  episode_reward_max: 280.85858585858523
+  episode_reward_mean: 231.99512966256344
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 296
+  episodes_total: 1738
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.05000000000000001
+        cur_lr: 1.0e-05
+        entropy: 0.9398666441440582
+        entropy_coeff: 0.0
+        kl: 0.005222523910924792
+        model: {}
+        policy_loss: -0.004870194417890161
+        total_loss: 7.745400595664978
+        vf_explained_var: 0.9853741526603699
+        vf_loss: 7.750009751319885
+    num_steps_sampled: 1456128
+    num_steps_trained: 1456128
+  iterations_since_restore: 9
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.81578947368421
+    gpu_util_percent0: 0.2926315789473684
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.763157894736844
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.1598928132091062
+    mean_env_wait_ms: 1.6767056444483373
+    mean_inference_ms: 4.846591477738312
+    mean_raw_obs_processing_ms: 0.4221334084193311
+  time_since_restore: 295.9564561843872
+  time_this_iter_s: 32.707176208496094
+  time_total_s: 295.9564561843872
+  timers:
+    learn_throughput: 6599.9
+    learn_time_ms: 24514.312
+    sample_throughput: 19537.391
+    sample_time_ms: 8281.147
+    update_time_ms: 31.232
+  timestamp: 1602199997
+  timesteps_since_restore: 0
+  timesteps_total: 1456128
+  training_iteration: 9
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |      9 |          295.956 | 1456128 |  231.995 |              280.859 |              115.788 |            819.588 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-33-50
+  done: false
+  episode_len_mean: 817.039029535865
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 232.3165302817201
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 1896
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.05000000000000001
+        cur_lr: 1.0e-05
+        entropy: 0.9013218253850936
+        entropy_coeff: 0.0
+        kl: 0.004842047742567956
+        model: {}
+        policy_loss: -0.004700993746519088
+        total_loss: 4.697292494773865
+        vf_explained_var: 0.9899801015853882
+        vf_loss: 4.701751387119293
+    num_steps_sampled: 1617920
+    num_steps_trained: 1617920
+  iterations_since_restore: 10
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.360526315789475
+    gpu_util_percent0: 0.2528947368421052
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.768421052631581
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15954656038080942
+    mean_env_wait_ms: 1.6800331500629735
+    mean_inference_ms: 4.826344762772738
+    mean_raw_obs_processing_ms: 0.4210837385112801
+  time_since_restore: 328.99831557273865
+  time_this_iter_s: 33.04185938835144
+  time_total_s: 328.99831557273865
+  timers:
+    learn_throughput: 6595.868
+    learn_time_ms: 24529.295
+    sample_throughput: 19534.363
+    sample_time_ms: 8282.43
+    update_time_ms: 30.673
+  timestamp: 1602200030
+  timesteps_since_restore: 0
+  timesteps_total: 1617920
+  training_iteration: 10
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.3/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     10 |          328.998 | 1617920 |  232.317 |              288.798 |              115.788 |            817.039 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-34-23
+  done: false
+  episode_len_mean: 814.7867575462512
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 232.8827909081073
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 2054
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.025000000000000005
+        cur_lr: 1.0e-05
+        entropy: 0.8644445657730102
+        entropy_coeff: 0.0
+        kl: 0.004315579286776483
+        model: {}
+        policy_loss: -0.004368155146948993
+        total_loss: 4.322618556022644
+        vf_explained_var: 0.991580605506897
+        vf_loss: 4.326878929138184
+    num_steps_sampled: 1779712
+    num_steps_trained: 1779712
+  iterations_since_restore: 11
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.02894736842105
+    gpu_util_percent0: 0.2331578947368421
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.776315789473685
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15924435856928937
+    mean_env_wait_ms: 1.6832076917234753
+    mean_inference_ms: 4.8081188283238685
+    mean_raw_obs_processing_ms: 0.42010323763458096
+  time_since_restore: 361.6030673980713
+  time_this_iter_s: 32.60475182533264
+  time_total_s: 361.6030673980713
+  timers:
+    learn_throughput: 6602.539
+    learn_time_ms: 24504.512
+    sample_throughput: 19883.829
+    sample_time_ms: 8136.864
+    update_time_ms: 28.5
+  timestamp: 1602200063
+  timesteps_since_restore: 0
+  timesteps_total: 1779712
+  training_iteration: 11
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.5/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     11 |          361.603 | 1779712 |  232.883 |              288.798 |              115.788 |            814.787 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-34-56
+  done: false
+  episode_len_mean: 810.8358649789029
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 233.51543707113325
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 316
+  episodes_total: 2370
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.012500000000000002
+        cur_lr: 1.0e-05
+        entropy: 0.8284870773553848
+        entropy_coeff: 0.0
+        kl: 0.00413132687099278
+        model: {}
+        policy_loss: -0.0035649107536301016
+        total_loss: 5.50580792427063
+        vf_explained_var: 0.9925410151481628
+        vf_loss: 5.509321188926696
+    num_steps_sampled: 1941504
+    num_steps_trained: 1941504
+  iterations_since_restore: 12
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.01842105263158
+    gpu_util_percent0: 0.2565789473684211
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.768421052631581
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15872028517775974
+    mean_env_wait_ms: 1.6890561315891397
+    mean_inference_ms: 4.7771394805485246
+    mean_raw_obs_processing_ms: 0.41849739307940553
+  time_since_restore: 394.438937664032
+  time_this_iter_s: 32.83587026596069
+  time_total_s: 394.438937664032
+  timers:
+    learn_throughput: 6600.489
+    learn_time_ms: 24512.121
+    sample_throughput: 19830.235
+    sample_time_ms: 8158.854
+    update_time_ms: 27.196
+  timestamp: 1602200096
+  timesteps_since_restore: 0
+  timesteps_total: 1941504
+  training_iteration: 12
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     12 |          394.439 | 1941504 |  233.515 |              288.798 |              115.788 |            810.836 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-35-29
+  done: false
+  episode_len_mean: 809.1942246835443
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 233.72873913182457
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 2528
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.006250000000000001
+        cur_lr: 1.0e-05
+        entropy: 0.7962696343660355
+        entropy_coeff: 0.0
+        kl: 0.004054987290874124
+        model: {}
+        policy_loss: -0.004179723071865737
+        total_loss: 3.702992284297943
+        vf_explained_var: 0.9930011630058289
+        vf_loss: 3.707146692276001
+    num_steps_sampled: 2103296
+    num_steps_trained: 2103296
+  iterations_since_restore: 13
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.61052631578947
+    gpu_util_percent0: 0.3518421052631579
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.776315789473687
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.1584979349888543
+    mean_env_wait_ms: 1.6916245258736893
+    mean_inference_ms: 4.763792030625298
+    mean_raw_obs_processing_ms: 0.41781556866352265
+  time_since_restore: 427.0807137489319
+  time_this_iter_s: 32.6417760848999
+  time_total_s: 427.0807137489319
+  timers:
+    learn_throughput: 6603.996
+    learn_time_ms: 24499.108
+    sample_throughput: 19860.074
+    sample_time_ms: 8146.596
+    update_time_ms: 32.951
+  timestamp: 1602200129
+  timesteps_since_restore: 0
+  timesteps_total: 2103296
+  training_iteration: 13
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     13 |          427.081 | 2103296 |  233.729 |              288.798 |              115.788 |            809.194 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-36-02
+  done: false
+  episode_len_mean: 807.614296351452
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 234.01857367419538
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 2686
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.0031250000000000006
+        cur_lr: 1.0e-05
+        entropy: 0.7879109025001526
+        entropy_coeff: 0.0
+        kl: 0.003427884203847498
+        model: {}
+        policy_loss: -0.003478276380337775
+        total_loss: 3.203351283073425
+        vf_explained_var: 0.9935868382453918
+        vf_loss: 3.2068188786506653
+    num_steps_sampled: 2265088
+    num_steps_trained: 2265088
+  iterations_since_restore: 14
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.50526315789473
+    gpu_util_percent0: 0.2210526315789474
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.792105263157897
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15830032806196365
+    mean_env_wait_ms: 1.694069039604582
+    mean_inference_ms: 4.751483152269396
+    mean_raw_obs_processing_ms: 0.4171568238257804
+  time_since_restore: 460.13257026672363
+  time_this_iter_s: 33.05185651779175
+  time_total_s: 460.13257026672363
+  timers:
+    learn_throughput: 6615.774
+    learn_time_ms: 24455.492
+    sample_throughput: 19732.917
+    sample_time_ms: 8199.092
+    update_time_ms: 34.949
+  timestamp: 1602200162
+  timesteps_since_restore: 0
+  timesteps_total: 2265088
+  training_iteration: 14
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.5/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     14 |          460.133 | 2265088 |  234.019 |              288.798 |              115.788 |            807.614 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-36-35
+  done: false
+  episode_len_mean: 804.7860480640854
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 234.50560680233576
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 310
+  episodes_total: 2996
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.0015625000000000003
+        cur_lr: 1.0e-05
+        entropy: 0.7558070987462997
+        entropy_coeff: 0.0
+        kl: 0.0033884600503370165
+        model: {}
+        policy_loss: -0.0037080304929986594
+        total_loss: 4.5332728862762455
+        vf_explained_var: 0.9939829111099243
+        vf_loss: 4.536975622177124
+    num_steps_sampled: 2426880
+    num_steps_trained: 2426880
+  iterations_since_restore: 15
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.121052631578944
+    gpu_util_percent0: 0.15473684210526317
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.776315789473687
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15796387233118508
+    mean_env_wait_ms: 1.6986537889487796
+    mean_inference_ms: 4.730327196984709
+    mean_raw_obs_processing_ms: 0.41607518997726994
+  time_since_restore: 492.9088833332062
+  time_this_iter_s: 32.776313066482544
+  time_total_s: 492.9088833332062
+  timers:
+    learn_throughput: 6619.424
+    learn_time_ms: 24442.004
+    sample_throughput: 19745.348
+    sample_time_ms: 8193.93
+    update_time_ms: 36.873
+  timestamp: 1602200195
+  timesteps_since_restore: 0
+  timesteps_total: 2426880
+  training_iteration: 15
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     15 |          492.909 | 2426880 |  234.506 |              288.798 |              115.788 |            804.786 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-37-08
+  done: false
+  episode_len_mean: 803.3863924050632
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 234.68247666538807
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 164
+  episodes_total: 3160
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.0007812500000000002
+        cur_lr: 1.0e-05
+        entropy: 0.7153318285942077
+        entropy_coeff: 0.0
+        kl: 0.0033341223024763167
+        model: {}
+        policy_loss: -0.0036774076870642602
+        total_loss: 2.903553676605225
+        vf_explained_var: 0.9944672584533691
+        vf_loss: 2.907228481769562
+    num_steps_sampled: 2588672
+    num_steps_trained: 2588672
+  iterations_since_restore: 16
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 26.431578947368422
+    gpu_util_percent0: 0.34
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.771052631578948
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15780284125073582
+    mean_env_wait_ms: 1.7008345493721897
+    mean_inference_ms: 4.720271297770648
+    mean_raw_obs_processing_ms: 0.41556284913092073
+  time_since_restore: 525.6583814620972
+  time_this_iter_s: 32.74949812889099
+  time_total_s: 525.6583814620972
+  timers:
+    learn_throughput: 6609.822
+    learn_time_ms: 24477.511
+    sample_throughput: 19747.863
+    sample_time_ms: 8192.886
+    update_time_ms: 38.273
+  timestamp: 1602200228
+  timesteps_since_restore: 0
+  timesteps_total: 2588672
+  training_iteration: 16
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     16 |          525.658 | 2588672 |  234.682 |              288.798 |              115.788 |            803.386 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-37-40
+  done: false
+  episode_len_mean: 802.1353224834237
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 234.98754878501717
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 158
+  episodes_total: 3318
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.0003906250000000001
+        cur_lr: 1.0e-05
+        entropy: 0.7134664624929428
+        entropy_coeff: 0.0
+        kl: 0.003020381543319672
+        model: {}
+        policy_loss: -0.0035638992208987474
+        total_loss: 2.7341466426849363
+        vf_explained_var: 0.9941871762275696
+        vf_loss: 2.7377093195915223
+    num_steps_sampled: 2750464
+    num_steps_trained: 2750464
+  iterations_since_restore: 17
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.17105263157895
+    gpu_util_percent0: 0.445
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.773684210526318
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15765583115056364
+    mean_env_wait_ms: 1.7028708210317687
+    mean_inference_ms: 4.711320041801489
+    mean_raw_obs_processing_ms: 0.41509136408257513
+  time_since_restore: 558.4052250385284
+  time_this_iter_s: 32.746843576431274
+  time_total_s: 558.4052250385284
+  timers:
+    learn_throughput: 6603.466
+    learn_time_ms: 24501.074
+    sample_throughput: 19754.346
+    sample_time_ms: 8190.198
+    update_time_ms: 39.38
+  timestamp: 1602200260
+  timesteps_since_restore: 0
+  timesteps_total: 2750464
+  training_iteration: 17
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     17 |          558.405 | 2750464 |  234.988 |              288.798 |              115.788 |            802.135 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-38-13
+  done: false
+  episode_len_mean: 800.0332594235033
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 235.41372427154025
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 290
+  episodes_total: 3608
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 0.00019531250000000004
+        cur_lr: 1.0e-05
+        entropy: 0.6909369766712189
+        entropy_coeff: 0.0
+        kl: 0.0032669616281054913
+        model: {}
+        policy_loss: -0.003945941757410765
+        total_loss: 3.411963975429535
+        vf_explained_var: 0.9950056076049805
+        vf_loss: 3.4159092903137207
+    num_steps_sampled: 2912256
+    num_steps_trained: 2912256
+  iterations_since_restore: 18
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.718918918918916
+    gpu_util_percent0: 0.4224324324324324
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.764864864864865
+    vram_util_percent0: 0.2682026894063626
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.15741335985530416
+    mean_env_wait_ms: 1.706619093982514
+    mean_inference_ms: 4.696791538659213
+    mean_raw_obs_processing_ms: 0.4143502347302678
+  time_since_restore: 590.9643895626068
+  time_this_iter_s: 32.55916452407837
+  time_total_s: 590.9643895626068
+  timers:
+    learn_throughput: 6606.434
+    learn_time_ms: 24490.064
+    sample_throughput: 19794.061
+    sample_time_ms: 8173.765
+    update_time_ms: 37.782
+  timestamp: 1602200293
+  timesteps_since_restore: 0
+  timesteps_total: 2912256
+  training_iteration: 18
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.5/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status   | loc              |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | RUNNING  | 172.17.0.4:56680 |     18 |          590.964 | 2912256 |  235.414 |              288.798 |              115.788 |            800.033 |
++-------------------------+----------+------------------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+Result for PPO_jss_env_ef676_00000:
+  custom_metrics:
+    time_step_max: .inf
+    time_step_mean: .inf
+    time_step_min: 3197.0
+  date: 2020-10-08_23-38-46
+  done: true
+  episode_len_mean: 798.851529535865
+  episode_reward_max: 288.7979797979799
+  episode_reward_mean: 235.81374397988327
+  episode_reward_min: 115.78787878787875
+  episodes_this_iter: 184
+  episodes_total: 3792
+  experiment_id: 01c15d4b529d45a0b8db40eaff5c5b86
+  experiment_tag: '0'
+  hostname: f85e62b52919
+  info:
+    learner:
+      default_policy:
+        allreduce_latency: 0.0
+        cur_kl_coeff: 9.765625000000002e-05
+        cur_lr: 1.0e-05
+        entropy: 0.6523421853780746
+        entropy_coeff: 0.0
+        kl: 0.0028345799073576927
+        model: {}
+        policy_loss: -0.0036067535169422627
+        total_loss: 2.3469892501831056
+        vf_explained_var: 0.9953402280807495
+        vf_loss: 2.350595760345459
+    num_steps_sampled: 3074048
+    num_steps_trained: 3074048
+  iterations_since_restore: 19
+  node_ip: 172.17.0.4
+  num_healthy_workers: 79
+  off_policy_estimator: {}
+  perf:
+    cpu_util_percent: 27.497368421052634
+    gpu_util_percent0: 0.35815789473684206
+    gpu_util_percent1: 0.0
+    gpu_util_percent2: 0.0
+    ram_util_percent: 9.776315789473687
+    vram_util_percent0: 0.26820268940636255
+    vram_util_percent1: 0.0
+    vram_util_percent2: 0.0
+  pid: 56680
+  policy_reward_max: {}
+  policy_reward_mean: {}
+  policy_reward_min: {}
+  sampler_perf:
+    mean_action_processing_ms: 0.1572619548558691
+    mean_env_wait_ms: 1.7086283552083945
+    mean_inference_ms: 4.688038044041622
+    mean_raw_obs_processing_ms: 0.4138857425518156
+  time_since_restore: 623.5561761856079
+  time_this_iter_s: 32.5917866230011
+  time_total_s: 623.5561761856079
+  timers:
+    learn_throughput: 6608.85
+    learn_time_ms: 24481.114
+    sample_throughput: 19802.59
+    sample_time_ms: 8170.244
+    update_time_ms: 37.565
+  timestamp: 1602200326
+  timesteps_since_restore: 0
+  timesteps_total: 3074048
+  training_iteration: 19
+  trial_id: ef676_00000
+  
+WARNING:root:NaN or Inf found in input tensor.
+WARNING:root:NaN or Inf found in input tensor.
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 0/80 CPUs, 0/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 TERMINATED)
++-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status     | loc   |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | TERMINATED |       |     19 |          623.556 | 3074048 |  235.814 |              288.798 |              115.788 |            798.852 |
++-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+
+== Status ==
+Memory usage on this node: 73.4/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 0/80 CPUs, 0/3 GPUs, 0.0/512.6 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 TERMINATED)
++-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+| Trial name              | status     | loc   |   iter |   total time (s) |      ts |   reward |   episode_reward_max |   episode_reward_min |   episode_len_mean |
+|-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------|
+| PPO_jss_env_ef676_00000 | TERMINATED |       |     19 |          623.556 | 3074048 |  235.814 |              288.798 |              115.788 |            798.852 |
++-------------------------+------------+-------+--------+------------------+---------+----------+----------------------+----------------------+--------------------+
+
+

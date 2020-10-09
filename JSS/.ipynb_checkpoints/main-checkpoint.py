@@ -1,11 +1,16 @@
 import os
 import multiprocessing as mp
+import time
 
 import plotly.io as pio
 import ray
 from ray import tune
+from ray.rllib.evaluation.worker_set import WorkerSet
 
+from JSS import train
 from JSS.CustomCallbacks import CustomCallbacks
+from JSS.RandomRLLib import RandomLegalPolicy
+from JSS.default_config import default_config
 from JSS.env.JSS import JSS
 from ray.rllib.agents.ppo import ppo, PPOTrainer
 from ray.rllib.models import ModelCatalog
@@ -56,4 +61,5 @@ if __name__ == "__main__":
             },
         }
     }
+    train.train_func()
 
