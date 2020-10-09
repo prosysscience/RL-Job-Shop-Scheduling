@@ -122,7 +122,6 @@ class JSS(gym.Env):
         return self.legal_actions
 
     def reset(self):
-        print(self.solution)
         self.action_step = 0
         self.current_time_step = 0
         self.next_time_step = list()
@@ -164,7 +163,9 @@ class JSS(gym.Env):
         self.time_until_available_machine[machine_needed] = time_needed
         self.time_until_finish_current_op_jobs[action] = time_needed
         self.state[action][1] = time_needed / self.max_time_op
-        bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
+        to_add_time_step = self.current_time_step + time_needed
+        if to_add_time_step not in self.next_time_step:
+            bisect.insort_left(self.next_time_step, to_add_time_step)
         self.solution[action][current_time_step_job] = self.current_time_step
         for job in range(self.jobs):
             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:

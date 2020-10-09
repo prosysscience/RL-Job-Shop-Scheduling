@@ -39,6 +39,7 @@ class TestEnv:
                     if env.needed_machine_jobs[action_to_do] == machine:
                         no_op = False
                         assert env.legal_actions[action_to_do], "We don't perform illegal actions"
+                        assert sum(env.legal_actions[:-1]) == env.nb_legal_actions
                         state, reward, done, _ = env.step(action_to_do)
                         index_machine[machine] += 1
             if no_op:

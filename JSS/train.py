@@ -50,7 +50,7 @@ def train_func():
         "time_total_s": 600,
     }
     analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
-    result = analysis.dataframe().to_dict('index')[0]
+    result = analysis.dataframe(metric='custom_metrics/time_step_min', mode='min').to_dict('index')[0]
     wandb.log({'time_step_min': result['custom_metrics/time_step_min']})
     if result['custom_metrics/time_step_max'] != float('inf'):
         wandb.log({'time_step_max': result['custom_metrics/time_step_max']})
