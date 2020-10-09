@@ -122,6 +122,7 @@ class JSS(gym.Env):
         return self.legal_actions
 
     def reset(self):
+        print(self.solution)
         self.action_step = 0
         self.current_time_step = 0
         self.next_time_step = list()
@@ -157,7 +158,7 @@ class JSS(gym.Env):
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
-        machine_needed = self.instance_matrix[action][current_time_step_job][0]
+        machine_needed = self.needed_machine_jobs[action]
         time_needed = self.instance_matrix[action][current_time_step_job][1]
         reward += time_needed
         self.time_until_available_machine[machine_needed] = time_needed
@@ -165,9 +166,9 @@ class JSS(gym.Env):
         self.state[action][1] = time_needed / self.max_time_op
         bisect.insort_left(self.next_time_step, self.current_time_step + time_needed)
         self.solution[action][current_time_step_job] = self.current_time_step
-        for job_id in range(self.jobs):
-            if self.needed_machine_jobs[job_id] == machine_needed and self.legal_actions[job_id]:
-                self.legal_actions[job_id] = False
+        for job in range(self.jobs):
+            if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
+                self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
@@ -191,16 +192,16 @@ class JSS(gym.Env):
         :return: time elapsed
         '''
         hole_planning = 0
-        next_time_step = self.next_time_step.pop(0)
-        difference = next_time_step - self.current_time_step
-        self.current_time_step = next_time_step
+        next_time_step_to_pick = self.next_time_step.pop(0)
+        difference = next_time_step_to_pick - self.current_time_step
+        self.current_time_step = next_time_step_to_pick
         for job in range(self.jobs):
             was_left_time = self.time_until_finish_current_op_jobs[job]
-            performed_op_job = min(difference, was_left_time)
-            self.time_until_finish_current_op_jobs[job] = max(0, self.time_until_finish_current_op_jobs[
-                job] - difference)
-            self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
             if was_left_time > 0:
+                performed_op_job = min(difference, was_left_time)
+                self.time_until_finish_current_op_jobs[job] = max(0, self.time_until_finish_current_op_jobs[
+                    job] - difference)
+                self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
                 self.total_perform_op_time_jobs[job] += performed_op_job
                 self.state[job][3] = self.total_perform_op_time_jobs[job] / self.max_time_jobs
                 if self.time_until_finish_current_op_jobs[job] == 0:
@@ -209,7 +210,7 @@ class JSS(gym.Env):
                     self.idle_time_jobs_last_op[job] = (difference - was_left_time)
                     self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
                     self.todo_time_step_job[job] += 1
-                    self.state[job][2] += (1.0 / self.machines)
+                    self.state[job][2] = self.todo_time_step_job[job] / self.machines
                     if self.todo_time_step_job[job] < self.machines:
                         self.needed_machine_jobs[job] = self.instance_matrix[job][self.todo_time_step_job[job]][0]
                         self.state[job][4] = max(0, self.time_until_available_machine[
@@ -218,8 +219,11 @@ class JSS(gym.Env):
                         self.needed_machine_jobs[job] = -1
                         # this allow to have 1 is job is over (not 0 because, 0 strongly indicate that the job is a good candidate)
                         self.state[job][4] = 1.0
+                        if self.legal_actions[job]:
+                            self.legal_actions[job] = False
+                            self.nb_legal_actions -= 1
             else:
-                self.total_idle_time_jobs[job] += (difference - was_left_time)
+                self.total_idle_time_jobs[job] += difference
                 self.idle_time_jobs_last_op[job] += difference
                 self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
         for machine in range(self.machines):
@@ -236,7 +240,7 @@ class JSS(gym.Env):
         return hole_planning
 
     def _is_done(self):
-        if self.action_step >= self.max_action_step - 1:
+        if self.action_step > self.max_action_step - 1:
             self.last_time_step = self.current_time_step
             return True
         return False
