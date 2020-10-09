@@ -5,7 +5,6 @@ import random
 import pandas as pd
 import gym
 import numpy as np
-import plotly.express as px
 import plotly.figure_factory as ff
 
 
