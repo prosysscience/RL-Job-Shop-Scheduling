@@ -1,0 +1,622 @@
+2020-10-11 11:55:23,204 INFO    MainThread:43934 [internal.py:wandb_internal():62] W&B internal server running at pid: 43934
+2020-10-11 11:55:23,208 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: check_version
+2020-10-11 11:55:23,209 DEBUG   SenderThread:43934 [sender.py:send():88] send: header
+2020-10-11 11:55:23,209 INFO    WriterThread:43934 [datastore.py:open_for_write():76] open: wandb/run-20201011_115522-obb14m0m/run-obb14m0m.wandb
+2020-10-11 11:55:23,209 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:55:23,210 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: check_version
+2020-10-11 11:55:23,214 DEBUG   Thread-4  :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): pypi.org:443
+2020-10-11 11:55:23,266 DEBUG   Thread-4  :43934 [connectionpool.py:_make_request():428] https://pypi.org:443 "GET /pypi/wandb/json HTTP/1.1" 200 50241
+2020-10-11 11:55:23,293 DEBUG   SenderThread:43934 [sender.py:send():88] send: run
+2020-10-11 11:55:23,313 DEBUG   SenderThread:43934 [cmd.py:execute():718] Popen(['git', 'cat-file', '--batch-check'], cwd=/JSS, universal_newlines=False, shell=None, istream=<valid stream>)
+2020-10-11 11:55:23,329 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:23,546 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:23,558 INFO    SenderThread:43934 [dir_watcher.py:__init__():167] watching files in: wandb/run-20201011_115522-obb14m0m/files
+2020-10-11 11:55:23,558 INFO    SenderThread:43934 [sender.py:_start_run_threads():461] run started: obb14m0m with start time 1602417322
+2020-10-11 11:55:23,594 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: run_start
+2020-10-11 11:55:23,595 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 11:55:23,596 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 11:55:24,560 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/wandb-summary.json
+2020-10-11 11:55:25,606 DEBUG   Thread-5  :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:25,709 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'cat-file', '--batch-check'], cwd=/JSS, universal_newlines=False, shell=None, istream=<valid stream>)
+2020-10-11 11:55:25,723 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,733 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,744 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'rev-parse', '--show-toplevel'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,752 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'version'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,761 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,775 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,819 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:25,873 DEBUG   HandlerThread:43934 [cmd.py:execute():718] Popen(['git', 'merge-base', 'HEAD', '7e4241d205c7c49ec23bfbbacf99fe528b21f873'], cwd=/JSS, universal_newlines=False, shell=None, istream=None)
+2020-10-11 11:55:25,899 DEBUG   SenderThread:43934 [sender.py:send():88] send: files
+2020-10-11 11:55:25,900 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-metadata.json with policy now
+2020-10-11 11:55:25,901 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file code/JSS/train.py with policy now
+2020-10-11 11:55:25,903 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file diff.patch with policy now
+2020-10-11 11:55:25,915 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:55:25,916 DEBUG   Thread-11 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:25,916 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:55:25,918 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:55:25,924 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:25,932 DEBUG   Thread-12 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:25,941 DEBUG   Thread-13 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:26,123 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,127 DEBUG   SenderThread:43934 [sender.py:send():88] send: config
+2020-10-11 11:55:26,137 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:26,137 DEBUG   Thread-11 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,139 DEBUG   Thread-12 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,146 DEBUG   Thread-11 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 11:55:26,149 DEBUG   Thread-12 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 11:55:26,158 DEBUG   Thread-13 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,165 DEBUG   Thread-13 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 11:55:26,353 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,372 DEBUG   SenderThread:43934 [sender.py:send():88] send: config
+2020-10-11 11:55:26,377 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:26,520 DEBUG   Thread-11 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/wandb-metadata.json?Expires=1602503726&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=ol9lJe9EJ192cO8i3yG3WhrqvjEr0JVbOrGFjKibGBHfLCiBjF4vnvHDipNXf6P4rUI5BYlzwi2PK0dEqTqPkECIFYKcIFU17j6eZLELTjB9eF%2FlsQu47cZcrKjjO9affFEDezpEO0xpmY9dYnkx9eHLTmFqXu8a7TL9%2Fq752mb7xlEDEdrg2%2FpF06ZgR%2BJTmGPDFZlddZLkeyTwMJgKanvKrkKFtkyDaElpb7DZ1w1%2Btwy2UdyX6M%2BB1vZLu%2B%2FoODFY2lcQ3nhHZQq25DO4pFn0emUziZ5aOwXXEy3piEc%2BktmNlL0T5G%2BSRUF4GoTm8waUxqTojblGsCzMuaBCdA%3D%3D HTTP/1.1" 200 0
+2020-10-11 11:55:26,523 INFO    Thread-11 :43934 [upload_job.py:push():112] Uploaded file /tmp/tmpp3yt0begwandb/2t24kops-wandb-metadata.json
+2020-10-11 11:55:26,554 DEBUG   Thread-12 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/code/JSS/train.py?Expires=1602503726&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=iUfljnoa67Z1qn83jDIo6Dzh94fJbfUB5sgiLD5OTLXtYMYL9MRExxXKE1foJruMKg9%2BB3xnG6Fxj%2BZbuPmgULxEzH%2Beph%2B1Betv7fQniB3U%2Fe7g1bJxsXqDv%2BiTwKZ%2BwtpltRAJmA4fQfkCPzpkIp01VtFz8SFf2Z1bX5JrvNv%2FqC56sNgmsDeWEZrwq1ttosFvN54jB%2BpiQzjwEOYArbJOUiydEwG%2FfDuduzFsFiuzBpdP42h4NqJcV61Bw7jNTvhhqmSllRME0wbppKA%2Flw%2B3Y1E4q2z61q8B4mGXBLkk3RwMR14eYc2J8TFlhP8DDn3Xw8DyH5tMToKgvSJFMA%3D%3D HTTP/1.1" 200 0
+2020-10-11 11:55:26,557 INFO    Thread-12 :43934 [upload_job.py:push():112] Uploaded file /tmp/tmpp3yt0begwandb/2aeshz29-code/JSS/train.py
+2020-10-11 11:55:26,562 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/config.yaml
+2020-10-11 11:55:26,563 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/wandb-metadata.json
+2020-10-11 11:55:26,563 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/requirements.txt
+2020-10-11 11:55:26,564 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/diff.patch
+2020-10-11 11:55:26,564 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/code/JSS/train.py
+2020-10-11 11:55:26,564 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:55:26,565 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/code/JSS
+2020-10-11 11:55:26,565 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_created():215] file/dir created: wandb/run-20201011_115522-obb14m0m/files/code
+2020-10-11 11:55:26,591 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,611 DEBUG   SenderThread:43934 [sender.py:send():88] send: config
+2020-10-11 11:55:26,617 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:26,835 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:26,860 DEBUG   Thread-13 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/diff.patch?Expires=1602503726&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=Z1dqeKg7rd1l2pmefYuaYXX4lZKe6GW9G4E760E%2B7Kt%2FwGhv8KjUNCUak26mPaUfCBsB2f%2FgD%2Fbq8MUM5bgIo71IxjybCWq9OUOOp3uSuWV%2BLv7GpC0PMDa1G45oGh7Eo1Wl%2B45UlRELdhdb%2FkJsr5hwZ5es%2BXPDCeOgj6kkC8skMg%2FU874Io4Uj%2BsrqlP1Hr732n67f%2FmbdKgcAXrVekePef6PBDx89MAyXj8oAdtn21HZdYOfVaidJ0IT99cyI5pC6xvVS5S8nXC1%2FG3gjbIsWobsQF%2Buj1a4R6pLdJgSCUlJyhbO%2BHdgWe%2FcwyV3TOfdMO%2BOMsWGXAX5Y%2BroxAw%3D%3D HTTP/1.1" 200 0
+2020-10-11 11:55:26,862 INFO    Thread-13 :43934 [upload_job.py:push():112] Uploaded file /tmp/tmpp3yt0begwandb/13ltrtg9-diff.patch
+2020-10-11 11:55:27,563 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/config.yaml
+2020-10-11 11:55:28,000 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:28,564 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:55:29,204 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:29,564 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:55:31,402 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:33,871 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:34,043 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:34,568 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:55:35,569 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:55:36,849 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:38,628 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:38,826 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:41,130 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:55:41,131 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:55:41,131 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:55:41,135 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:41,331 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:43,335 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:43,515 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:48,023 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:48,203 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:52,623 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:52,801 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:55:56,338 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:55:56,339 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:55:56,339 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:55:56,345 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:55:56,538 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:55:57,202 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:55:57,370 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:01,792 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:01,968 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:06,375 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:06,549 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:10,966 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:11,264 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:11,543 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:56:11,544 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:56:11,544 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:56:11,548 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:56:11,742 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:56:15,577 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:15,761 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:20,172 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:20,347 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:21,604 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:56:24,869 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:26,747 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:56:26,747 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:56:26,748 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:56:26,753 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:56:26,951 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:56:29,476 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:34,058 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:34,233 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:38,636 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:41,957 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:56:41,957 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:56:41,957 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:56:41,968 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:56:42,165 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:56:43,225 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:47,794 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:47,976 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:52,398 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:56,979 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:56:57,172 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:56:57,172 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:56:57,172 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:56:57,176 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:56:57,369 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:56:58,635 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:56:58,782 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:56:59,636 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:57:01,645 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:06,255 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:10,845 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:11,027 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:57:12,374 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:57:12,375 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:57:12,375 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:57:12,379 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:57:12,577 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:57:15,421 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:19,999 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:24,564 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:24,765 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:57:27,582 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:57:27,583 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:57:27,583 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:57:27,587 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:57:27,787 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:57:29,151 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:33,729 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:36,468 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:57:36,664 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:57:38,399 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:42,792 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:57:42,793 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:57:42,793 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:57:42,799 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:57:42,991 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:57:43,192 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:47,814 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:47,995 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:57:52,385 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:56,991 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:57:57,998 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:57:57,998 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:57:57,998 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:57:58,006 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:57:58,198 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:58:01,578 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:01,755 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:58:06,177 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:10,768 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:13,205 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:58:13,205 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:58:13,206 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:58:13,210 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:58:13,400 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:58:15,379 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:15,552 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:58:19,986 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:20,698 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:58:24,723 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:28,406 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:58:28,406 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:58:28,407 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:58:28,414 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:58:28,615 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:58:29,295 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:29,479 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:58:33,885 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:38,510 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:43,108 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:43,283 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:58:43,621 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:58:43,621 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:58:43,622 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:58:43,626 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:58:43,825 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:58:47,693 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:52,277 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:56,861 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:58:57,037 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:58:57,727 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:58:58,830 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:58:58,830 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:58:58,830 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:58:58,835 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:58:59,025 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:59:01,555 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:06,157 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:10,744 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:10,924 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:59:14,031 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:59:14,031 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:59:14,032 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:59:14,036 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:59:14,235 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:59:15,328 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:19,898 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:24,492 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:24,666 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:59:29,062 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:29,241 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:59:29,241 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:59:29,242 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:59:29,244 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:59:29,446 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:59:33,676 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:36,206 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:59:36,754 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 11:59:38,361 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:43,056 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:44,452 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:59:44,452 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:59:44,453 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:59:44,459 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:59:44,653 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 11:59:47,727 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:47,916 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 11:59:52,303 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:56,894 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 11:59:59,659 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 11:59:59,659 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 11:59:59,659 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 11:59:59,664 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 11:59:59,901 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:00:01,499 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:01,681 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:00:06,085 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:10,686 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:14,907 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:00:14,907 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:00:14,908 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:00:14,915 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:00:15,112 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:00:15,269 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:15,428 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:00:19,788 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:00:20,018 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:24,684 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:29,294 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:30,118 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:00:30,118 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:00:30,118 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:00:30,125 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:00:30,327 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:00:33,868 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:38,464 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:43,055 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:45,333 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:00:45,333 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:00:45,334 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:00:45,341 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:00:45,538 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:00:47,658 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:47,854 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:00:52,277 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:00:56,817 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:00:56,917 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:00,545 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:01:00,545 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:01:00,546 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:01:00,553 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:01:00,757 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:01:01,709 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:06,283 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:10,874 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:15,470 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:15,764 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:01:15,764 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:01:15,765 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:01:15,769 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:01:15,963 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:01:20,055 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:20,251 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:01:24,619 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:29,205 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:30,968 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:01:30,969 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:01:30,969 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:01:30,974 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:01:31,174 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:01:33,800 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:34,847 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:01:38,530 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:43,325 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:46,179 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:01:46,180 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:01:46,180 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:01:46,184 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:01:46,374 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:01:47,948 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:52,526 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:01:52,720 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:01:57,127 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:01,379 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:02:01,380 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:02:01,380 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:02:01,385 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:02:01,586 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:02:01,694 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:06,274 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:10,851 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:15,431 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:16,591 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:02:16,592 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:02:16,592 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:02:16,599 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:02:16,795 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:02:16,878 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:02:17,879 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:02:20,164 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:24,788 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:24,972 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:02:29,387 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:31,817 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:02:31,817 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:02:31,817 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:02:31,822 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:02:32,015 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:02:33,976 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:38,565 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:43,203 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:47,021 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:02:47,021 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:02:47,021 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:02:47,029 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:02:47,225 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:02:47,817 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:52,394 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:54,905 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:02:57,141 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:02:57,321 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:03:01,800 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:02,231 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:03:02,232 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:03:02,232 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:03:02,236 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:03:02,416 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:03:06,417 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:11,021 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:15,597 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:17,421 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:03:17,422 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:03:17,422 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:03:17,426 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:03:17,630 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:03:20,187 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:24,803 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:29,392 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:29,574 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:03:32,636 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:03:32,636 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:03:32,636 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:03:32,642 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:03:32,846 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:03:33,936 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:03:34,017 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:38,778 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:43,446 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:47,990 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:03:47,990 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:03:47,991 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:03:47,995 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:03:48,194 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:03:48,197 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:52,667 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:03:57,245 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:01,881 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:02,096 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:04:03,199 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:04:03,200 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:04:03,200 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:04:03,204 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:04:03,395 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:04:06,459 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:11,032 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:14,965 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:04:15,722 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:15,965 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:04:18,400 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:04:18,401 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:04:18,401 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:04:18,405 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:04:18,596 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:04:20,380 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:25,007 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:29,611 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:33,602 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:04:33,602 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:04:33,603 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:04:33,607 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:04:33,805 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:04:34,199 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:34,405 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:04:38,800 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:43,414 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:47,990 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:48,810 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:04:48,811 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:04:48,811 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:04:48,818 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:04:49,011 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:04:52,607 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:04:52,993 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:04:57,330 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:01,922 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:04,015 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:05:04,016 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:05:04,016 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:05:04,020 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:05:04,210 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:05:06,499 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:06,694 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:05:11,061 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:15,656 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:19,215 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:05:19,216 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:05:19,216 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:05:19,220 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:05:19,415 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:05:20,225 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:24,820 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:29,434 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:31,021 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:05:34,109 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:34,420 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:05:34,420 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:05:34,420 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:05:34,425 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:05:34,626 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:05:38,815 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:39,000 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:05:43,439 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:48,019 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:49,632 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:05:49,633 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:05:49,633 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:05:49,637 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:05:49,829 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:05:52,611 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:05:57,194 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:01,786 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:04,834 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: status
+2020-10-11 12:06:04,835 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:04,835 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: status
+2020-10-11 12:06:04,842 DEBUG   SenderThread:43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:06:05,038 DEBUG   SenderThread:43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:06:06,388 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:10,972 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:11,147 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:06:12,620 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,623 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,624 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,625 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,625 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,625 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,625 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,625 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,626 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,626 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,626 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,626 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,627 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,627 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,627 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,627 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,627 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,628 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,628 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,628 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,628 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:12,629 DEBUG   SenderThread:43934 [sender.py:send():88] send: history
+2020-10-11 12:06:12,629 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:12,629 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:13,051 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/wandb-summary.json
+2020-10-11 12:06:13,052 INFO    Thread-8  :43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:06:15,481 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:15,783 DEBUG   SenderThread:43934 [sender.py:send():88] send: exit
+2020-10-11 12:06:15,783 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: poll_exit
+2020-10-11 12:06:15,784 INFO    SenderThread:43934 [sender.py:send_exit():156] handling exit code: 0
+2020-10-11 12:06:15,784 INFO    SenderThread:43934 [sender.py:send_exit():164] send defer
+2020-10-11 12:06:15,785 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,785 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: poll_exit
+2020-10-11 12:06:15,786 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:15,786 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 0
+2020-10-11 12:06:15,786 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,786 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:15,786 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 0
+2020-10-11 12:06:15,787 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 1
+2020-10-11 12:06:15,787 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:15,787 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 1
+2020-10-11 12:06:15,898 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,898 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:15,899 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 1
+2020-10-11 12:06:15,899 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 2
+2020-10-11 12:06:15,899 DEBUG   SenderThread:43934 [sender.py:send():88] send: stats
+2020-10-11 12:06:15,900 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:15,901 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 2
+2020-10-11 12:06:15,901 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,901 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:15,901 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 2
+2020-10-11 12:06:15,902 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 3
+2020-10-11 12:06:15,902 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:15,902 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 3
+2020-10-11 12:06:15,903 DEBUG   SenderThread:43934 [sender.py:send():88] send: summary
+2020-10-11 12:06:15,904 INFO    SenderThread:43934 [sender.py:_save_file():542] saving file wandb-summary.json with policy end
+2020-10-11 12:06:15,905 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,905 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:15,905 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 3
+2020-10-11 12:06:15,905 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 4
+2020-10-11 12:06:15,906 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:15,906 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 4
+2020-10-11 12:06:15,906 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:15,906 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:15,906 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 4
+2020-10-11 12:06:15,907 INFO    SenderThread:43934 [dir_watcher.py:finish():280] shutting down directory watcher
+2020-10-11 12:06:16,053 INFO    SenderThread:43934 [dir_watcher.py:_on_file_modified():228] file/dir modified: wandb/run-20201011_115522-obb14m0m/files/wandb-summary.json
+2020-10-11 12:06:16,055 INFO    SenderThread:43934 [dir_watcher.py:finish():309] scan: wandb/run-20201011_115522-obb14m0m/files
+2020-10-11 12:06:16,055 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/diff.patch diff.patch
+2020-10-11 12:06:16,055 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/requirements.txt requirements.txt
+2020-10-11 12:06:16,056 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/wandb-metadata.json wandb-metadata.json
+2020-10-11 12:06:16,056 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/config.yaml config.yaml
+2020-10-11 12:06:16,056 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/output.log output.log
+2020-10-11 12:06:16,057 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/wandb-summary.json wandb-summary.json
+2020-10-11 12:06:16,070 DEBUG   Thread-14 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:06:16,081 DEBUG   Thread-15 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:06:16,083 DEBUG   Thread-16 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:06:16,089 DEBUG   Thread-17 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+2020-10-11 12:06:16,090 INFO    SenderThread:43934 [dir_watcher.py:finish():315] scan save: wandb/run-20201011_115522-obb14m0m/files/code/JSS/train.py code/JSS/train.py
+2020-10-11 12:06:16,090 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 5
+2020-10-11 12:06:16,091 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:16,091 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 5
+2020-10-11 12:06:16,092 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:16,092 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:16,092 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 5
+2020-10-11 12:06:16,092 INFO    SenderThread:43934 [file_pusher.py:finish():169] shutting down file pusher
+2020-10-11 12:06:16,092 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 6
+2020-10-11 12:06:16,093 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:16,094 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 6
+2020-10-11 12:06:16,094 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:16,094 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:16,094 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 6
+2020-10-11 12:06:16,268 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:06:16,289 DEBUG   Thread-14 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:06:16,291 DEBUG   Thread-15 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:06:16,303 DEBUG   Thread-14 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 12:06:16,303 DEBUG   Thread-17 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:06:16,305 DEBUG   Thread-15 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 12:06:16,306 DEBUG   Thread-16 :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+2020-10-11 12:06:16,318 DEBUG   Thread-17 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 12:06:16,319 DEBUG   Thread-16 :43934 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): storage.googleapis.com:443
+2020-10-11 12:06:16,433 DEBUG   Thread-5  :43934 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /files/ingambe/RLLIB_SWEEP_2/obb14m0m/file_stream HTTP/1.1" 200 None
+2020-10-11 12:06:16,438 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 7
+2020-10-11 12:06:16,438 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:16,439 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 7
+2020-10-11 12:06:16,439 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:16,439 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:16,439 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 7
+2020-10-11 12:06:16,440 INFO    SenderThread:43934 [sender.py:send_request_defer():209] send defer: 8
+2020-10-11 12:06:16,440 DEBUG   SenderThread:43934 [sender.py:send():88] send: final
+2020-10-11 12:06:16,441 DEBUG   SenderThread:43934 [sender.py:send():88] send: footer
+2020-10-11 12:06:16,441 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: defer
+2020-10-11 12:06:16,442 INFO    HandlerThread:43934 [handler.py:handle_request_defer():68] handle defer: 8
+2020-10-11 12:06:16,442 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:16,442 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: defer
+2020-10-11 12:06:16,442 INFO    SenderThread:43934 [sender.py:send_request_defer():173] handle sender defer: 8
+2020-10-11 12:06:16,664 DEBUG   Thread-15 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/config.yaml?Expires=1602504376&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=FzcEPVcsFQaxMm%2BZpYwsjb6RnrQZK%2Fm0b2%2BYB6Zc2OM5xV5oUOp4y5tPfbU%2BPgpThwYMaWI9PoPqhS6XIRdWRyH8h05PnKaVM03g1lQOtEsp6hASa5%2BqMPuK1afs6N56k1xAlRyCWAHQHEpJKIw8MeXdk5PzXoWOqSNiI%2BJOOEP8leSkqS17P5BvpovM%2BNQtox%2BmvmFPnENhLV1SDGqY4CnhW2F5ePeEdCxGhx16akd3qIg2Ss8cibKemnUIJ4HTn28thK4zPkjFT4cSXcK1UXq33ONs%2FA0xWLi3ei3Y0GMjIjICO1wFP71g9jML1BffUPNP4bGNtPAUIAhz%2Fxv7yg%3D%3D HTTP/1.1" 200 0
+2020-10-11 12:06:16,666 INFO    Thread-15 :43934 [upload_job.py:push():112] Uploaded file wandb/run-20201011_115522-obb14m0m/files/config.yaml
+2020-10-11 12:06:16,669 DEBUG   Thread-14 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/requirements.txt?Expires=1602504376&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=h4v4l8CWIU8fXqMMt7gV9diu0UnLoOa6%2BRiaxK2U9wkg1fI1hrxr0ui4VHnNl23nxEwuppp3EZ%2BT5ZtfPe7M18pZyDaIT7JwFcU98Z%2FfBCyl9odEX%2BenFI75pmwVVj7h7RrnRfcY7BEHImSwxLj6Rtigw%2B7osre4DcoKL141325UY0JooPhck2CvjonMFqRaCO6skQlWqPkJgvrs5yBmURr4SyvFb%2Fv%2Bzkjjx4fX7uqmD%2BuqRr5BZ0cXDDn4h5xRmb8PVb%2BJdgJzZvm1055tjrgLFhqVR8npqYSaTM2jmmmo%2FdYOZFhnwWP4W1rb9nrJx9ZPFcsOyUxsQAnJ7rTFSw%3D%3D HTTP/1.1" 200 0
+2020-10-11 12:06:16,671 INFO    Thread-14 :43934 [upload_job.py:push():112] Uploaded file wandb/run-20201011_115522-obb14m0m/files/requirements.txt
+2020-10-11 12:06:16,680 DEBUG   Thread-17 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/wandb-summary.json?Expires=1602504376&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=dID14lAbGkak4I%2BHYXMJhhruvBxoh%2BHOpIA70rx0mKyOKt0K20atmEYDjvvnojs1cL%2BfI%2BmFrygzMqIjTqgzhbCmBwcnSzG%2FRAEN%2ByyRLHgX4v5PCyagmzEQZinG68UrCjsq4BMJOlAOg2rd0TyRACSbDvl%2FOiHMcCFj4gQbEukjCQM6F3RlxyY8uNMDzwc%2F30SS8g1895dlnVCTcgcqLTVvBRWhL7mF%2FHCb7lxVy%2BsWzgcrFy29AaxUF4M%2FMC2UcF6I%2BS6tYxOzfDT8%2BkJcMTl8%2FfXWAsrK2N0maK8d49MldWaC9R6MCcxM4I6%2B40qC%2BQlAtBSlW2C%2FKpwqkYMJfA%3D%3D HTTP/1.1" 200 0
+2020-10-11 12:06:16,682 INFO    Thread-17 :43934 [upload_job.py:push():112] Uploaded file wandb/run-20201011_115522-obb14m0m/files/wandb-summary.json
+2020-10-11 12:06:16,771 DEBUG   Thread-16 :43934 [connectionpool.py:_make_request():428] https://storage.googleapis.com:443 "PUT /wandb-production.appspot.com/ingambe/RLLIB_SWEEP_2/obb14m0m/output.log?Expires=1602504376&GoogleAccessId=gorilla-cloud-storage%40wandb-production.iam.gserviceaccount.com&Signature=QhyIj3jzZUmE6LNEV7AvfO6fcpnteoNCCJF5UcUcAYNJIZroumPlPqJ9YgeKyoJy7XbGk%2BAkLyYjvlChk3Nf7Cgl2rgvDgTg8DBGrLbDSqbEppT%2BXvnMPlWZUCsAet55CgGSwS45BNhE%2BDfLZpReMQi8%2Bji%2Ft4629Zk9xoZp5w%2FZdMvVvIwNWrPJ9fZLtvKSvR77ev3Lk4B%2BZZ16cVm24lQpgBiSr5Mto8tvJ6yt2Wk613mvv879pTO4lHuOV5BZKsWwKSp2CLdnBEyuv4uVlsISSp50P0QPGyLSbwZ78elSjei8zChNXgIndaBq%2Fp%2B5OEopp1vhmtbMJQF00%2BOQ4w%3D%3D HTTP/1.1" 200 0
+2020-10-11 12:06:16,773 INFO    Thread-16 :43934 [upload_job.py:push():112] Uploaded file wandb/run-20201011_115522-obb14m0m/files/output.log
+2020-10-11 12:06:17,792 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: poll_exit
+2020-10-11 12:06:17,793 DEBUG   SenderThread:43934 [sender.py:send():88] send: request
+2020-10-11 12:06:17,793 DEBUG   SenderThread:43934 [sender.py:send_request():97] send_request: poll_exit
+2020-10-11 12:06:17,793 INFO    SenderThread:43934 [file_pusher.py:join():174] waiting for file pusher
+2020-10-11 12:06:17,798 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: get_summary
+2020-10-11 12:06:17,800 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: sampled_history
+2020-10-11 12:06:17,802 DEBUG   HandlerThread:43934 [handler.py:handle_request():54] handle_request: shutdown
+2020-10-11 12:06:17,802 INFO    HandlerThread:43934 [handler.py:finish():267] shutting down handler
+2020-10-11 12:06:18,442 INFO    WriterThread:43934 [datastore.py:close():257] close: wandb/run-20201011_115522-obb14m0m/run-obb14m0m.wandb
+2020-10-11 12:06:18,794 INFO    SenderThread:43934 [sender.py:finish():583] shutting down sender
+2020-10-11 12:06:18,794 INFO    SenderThread:43934 [file_pusher.py:finish():169] shutting down file pusher
+2020-10-11 12:06:18,794 INFO    SenderThread:43934 [file_pusher.py:join():174] waiting for file pusher
+2020-10-11 12:06:18,797 INFO    MainThread:43934 [internal.py:handle_exit():137] Internal process exited

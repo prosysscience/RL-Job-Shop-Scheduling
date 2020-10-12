@@ -1,0 +1,67 @@
+2020-10-11 11:28:44,192	INFO services.py:1164 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+== Status ==
+Memory usage on this node: 11.5/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/558.3 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+-------+
+| Trial name              | status   | loc   |
+|-------------------------+----------+-------|
+| PPO_jss_env_ec852_00000 | RUNNING  |       |
++-------------------------+----------+-------+
+
+
+2020-10-11 11:28:46,970	ERROR trial_runner.py:567 -- Trial PPO_jss_env_ec852_00000: Error processing event.
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trial_runner.py", line 515, in _process_trial
+    result = self.trial_executor.fetch_result(trial)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/ray_trial_executor.py", line 488, in fetch_result
+    result = ray.get(trial_future[0], timeout=DEFAULT_GET_TIMEOUT)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/worker.py", line 1428, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(ValueError): [36mray::PPO.train()[39m (pid=804, ip=172.17.0.4)
+  File "python/ray/_raylet.pyx", line 445, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 479, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 483, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 484, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 438, in ray._raylet.execute_task.function_executor
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 101, in __init__
+    Trainer.__init__(self, config, env, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 476, in __init__
+    super().__init__(config, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trainable.py", line 249, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 629, in setup
+    self._init(self.config, self.env_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 107, in _init
+    validate_config(config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/ppo/ppo.py", line 127, in validate_config
+    raise ValueError(
+ValueError: Episode truncation is not supported without a value function. Consider setting batch_mode=complete_episodes.
+== Status ==
+Memory usage on this node: 11.7/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 0/80 CPUs, 0/3 GPUs, 0.0/558.3 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 ERROR)
++-------------------------+----------+-------+
+| Trial name              | status   | loc   |
+|-------------------------+----------+-------|
+| PPO_jss_env_ec852_00000 | ERROR    |       |
++-------------------------+----------+-------+
+Number of errored trials: 1
++-------------------------+--------------+-----------------------------------------------------------------------------------+
+| Trial name              |   # failures | error file                                                                        |
+|-------------------------+--------------+-----------------------------------------------------------------------------------|
+| PPO_jss_env_ec852_00000 |            1 | /root/ray_results/ppo-jss/PPO_jss_env_ec852_00000_0_2020-10-11_11-28-45/error.txt |
++-------------------------+--------------+-----------------------------------------------------------------------------------+
+
+Traceback (most recent call last):
+  File "train.py", line 72, in <module>
+    train_func()
+  File "train.py", line 56, in train_func
+    analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/tune.py", line 427, in run
+    raise TuneError("Trials did not complete", incomplete_trials)
+ray.tune.error.TuneError: ('Trials did not complete', [PPO_jss_env_ec852_00000])
