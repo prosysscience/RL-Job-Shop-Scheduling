@@ -16,6 +16,8 @@ from ray.tune import CLIReporter, register_env
 from JSS.env_wrapper import BestActionsWrapper
 from JSS.env.JSS import JSS
 
+import multiprocessing as mp
+
 from JSS.models import FCMaskedActionsModel
 
 
@@ -31,11 +33,15 @@ def rand_func():
     wandb.init(config={})
     config = with_common_config(wandb.config)
 
+    config['num_workers'] = mp.cpu_count() - 1
+    config['num_envs_per_worker'] = 3
+    config['metrics_smoothing_episodes'] = 9e10
     config['observation_filter'] = 'NoFilter'
     config['env'] = default_config['env']
     config['env_config'] = {
         'instance_path': default_config['instance_path']
     }
+    config.pop('instance_path', None)
 
     config['callbacks'] = CustomCallbacks
 
