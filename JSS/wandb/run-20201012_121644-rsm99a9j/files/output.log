@@ -1,0 +1,135 @@
+2020-10-12 12:16:48,109	INFO services.py:1164 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+== Status ==
+Memory usage on this node: 11.5/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 80/80 CPUs, 1/3 GPUs, 0.0/557.71 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 RUNNING)
++-------------------------+----------+-------+
+| Trial name              | status   | loc   |
+|-------------------------+----------+-------|
+| PPO_jss_env_cdebd_00000 | RUNNING  |       |
++-------------------------+----------+-------+
+
+
+[2m[36m(pid=34875)[0m F1012 12:16:50.344102 34875 34875 service_based_gcs_client.cc:207] Couldn't reconnect to GCS server. The last attempted GCS server address was 172.17.0.4:44655
+[2m[36m(pid=34875)[0m *** Check failure stack trace: ***
+[2m[36m(pid=34875)[0m     @     0x7f0b0a9146ed  google::LogMessage::Fail()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a91584c  google::LogMessage::SendToLog()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a9143c9  google::LogMessage::Flush()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a9145e1  google::LogMessage::~LogMessage()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a8cb789  ray::RayLog::~RayLog()
+[2m[36m(pid=34869)[0m F1012 12:16:50.342787 34869 34869 service_based_gcs_client.cc:207] Couldn't reconnect to GCS server. The last attempted GCS server address was 172.17.0.4:44655
+[2m[36m(pid=34869)[0m *** Check failure stack trace: ***
+[2m[36m(pid=34869)[0m     @     0x7f680becf6ed  google::LogMessage::Fail()
+[2m[36m(pid=34869)[0m     @     0x7f680bed084c  google::LogMessage::SendToLog()
+[2m[36m(pid=34869)[0m     @     0x7f680becf3c9  google::LogMessage::Flush()
+[2m[36m(pid=34869)[0m     @     0x7f680becf5e1  google::LogMessage::~LogMessage()
+[2m[36m(pid=34869)[0m     @     0x7f680be86789  ray::RayLog::~RayLog()
+[2m[36m(pid=34869)[0m     @     0x7f680bbca1ea  ray::gcs::ServiceBasedGcsClient::ReconnectGcsServer()
+[2m[36m(pid=34869)[0m     @     0x7f680bbca2ef  ray::gcs::ServiceBasedGcsClient::GcsServiceFailureDetected()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a60f1ea  ray::gcs::ServiceBasedGcsClient::ReconnectGcsServer()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a60f2ef  ray::gcs::ServiceBasedGcsClient::GcsServiceFailureDetected()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a60f491  ray::gcs::ServiceBasedGcsClient::PeriodicallyCheckGcsServerAddress()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a611801  ray::gcs::ServiceBasedGcsClient::Connect()
+[2m[36m(pid=34869)[0m     @     0x7f680bbca491  ray::gcs::ServiceBasedGcsClient::PeriodicallyCheckGcsServerAddress()
+[2m[36m(pid=34869)[0m     @     0x7f680bbcc801  ray::gcs::ServiceBasedGcsClient::Connect()
+[2m[36m(pid=34869)[0m     @     0x7f680bb4ded6  ray::CoreWorker::CoreWorker()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a592ed6  ray::CoreWorker::CoreWorker()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a596c14  ray::CoreWorkerProcess::CreateWorker()
+[2m[36m(pid=34869)[0m     @     0x7f680bb51c14  ray::CoreWorkerProcess::CreateWorker()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a597e82  ray::CoreWorkerProcess::CoreWorkerProcess()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a59884b  ray::CoreWorkerProcess::Initialize()
+[2m[36m(pid=34869)[0m     @     0x7f680bb52e82  ray::CoreWorkerProcess::CoreWorkerProcess()
+[2m[36m(pid=34869)[0m     @     0x7f680bb5384b  ray::CoreWorkerProcess::Initialize()
+[2m[36m(pid=34869)[0m     @     0x7f680ba91448  __pyx_pw_3ray_7_raylet_10CoreWorker_1__cinit__()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a4d6448  __pyx_pw_3ray_7_raylet_10CoreWorker_1__cinit__()
+[2m[36m(pid=34875)[0m     @     0x7f0b0a4d7ba5  __pyx_tp_new_3ray_7_raylet_CoreWorker()
+[2m[36m(pid=34875)[0m     @     0x55b59616437d  _PyObject_MakeTpCall
+[2m[36m(pid=34875)[0m     @     0x55b5961ecd09  _PyEval_EvalFrameDefault
+[2m[36m(pid=34875)[0m     @     0x55b5961b1baf  _PyEval_EvalCodeWithName
+[2m[36m(pid=34875)[0m     @     0x55b5961b2643  _PyFunction_Vectorcall.localalias.353
+[2m[36m(pid=34869)[0m     @     0x7f680ba92ba5  __pyx_tp_new_3ray_7_raylet_CoreWorker()
+[2m[36m(pid=34869)[0m     @     0x55f554a0137d  _PyObject_MakeTpCall
+[2m[36m(pid=34869)[0m     @     0x55f554a89d09  _PyEval_EvalFrameDefault
+[2m[36m(pid=34869)[0m     @     0x55f554a4ebaf  _PyEval_EvalCodeWithName
+[2m[36m(pid=34869)[0m     @     0x55f554a4f643  _PyFunction_Vectorcall.localalias.353
+[2m[36m(pid=34869)[0m     @     0x55f5549c4de6  _PyEval_EvalFrameDefault.cold.2792
+[2m[36m(pid=34869)[0m     @     0x55f554a4e6a2  _PyEval_EvalCodeWithName
+[2m[36m(pid=34869)[0m     @     0x55f554a4f454  PyEval_EvalCodeEx
+[2m[36m(pid=34875)[0m     @     0x55b596127de6  _PyEval_EvalFrameDefault.cold.2792
+[2m[36m(pid=34875)[0m     @     0x55b5961b16a2  _PyEval_EvalCodeWithName
+[2m[36m(pid=34875)[0m     @     0x55b5961b2454  PyEval_EvalCodeEx
+[2m[36m(pid=34875)[0m     @     0x55b596240bbc  PyEval_EvalCode
+[2m[36m(pid=34875)[0m     @     0x55b596240c64  run_eval_code_obj
+[2m[36m(pid=34875)[0m     @     0x55b596272d14  run_mod
+[2m[36m(pid=34875)[0m     @     0x55b59613b625  PyRun_FileExFlags
+[2m[36m(pid=34875)[0m     @     0x55b59613ba0a  PyRun_SimpleFileExFlags
+[2m[36m(pid=34875)[0m     @     0x55b59613c8cf  Py_RunMain.cold.2911
+[2m[36m(pid=34875)[0m     @     0x55b596275829  Py_BytesMain
+[2m[36m(pid=34869)[0m     @     0x55f554addbbc  PyEval_EvalCode
+[2m[36m(pid=34869)[0m     @     0x55f554addc64  run_eval_code_obj
+[2m[36m(pid=34869)[0m     @     0x55f554b0fd14  run_mod
+[2m[36m(pid=34869)[0m     @     0x55f5549d8625  PyRun_FileExFlags
+[2m[36m(pid=34869)[0m     @     0x55f5549d8a0a  PyRun_SimpleFileExFlags
+[2m[36m(pid=34869)[0m     @     0x55f5549d98cf  Py_RunMain.cold.2911
+[2m[36m(pid=34869)[0m     @     0x55f554b12829  Py_BytesMain
+[2m[36m(pid=34875)[0m     @     0x7f0b0bc19840  __libc_start_main
+[2m[36m(pid=34875)[0m     @     0x55b596205b33  (unknown)
+[2m[36m(pid=34869)[0m     @     0x7f680d1d4840  __libc_start_main
+[2m[36m(pid=34869)[0m     @     0x55f554aa2b33  (unknown)
+[2m[33m(pid=raylet)[0m E1012 12:16:50.516765 34798 34798 node_manager.cc:3307] Failed to send get core worker stats request: IOError: 14: Socket closed
+[2m[33m(pid=raylet)[0m E1012 12:16:50.517760 34798 34798 node_manager.cc:3307] Failed to send get core worker stats request: IOError: 14: Socket closed
+2020-10-12 12:16:50,947	ERROR trial_runner.py:567 -- Trial PPO_jss_env_cdebd_00000: Error processing event.
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trial_runner.py", line 515, in _process_trial
+    result = self.trial_executor.fetch_result(trial)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/ray_trial_executor.py", line 488, in fetch_result
+    result = ray.get(trial_future[0], timeout=DEFAULT_GET_TIMEOUT)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/worker.py", line 1428, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError: [36mray::PPO.train()[39m (pid=34969, ip=172.17.0.4)
+  File "python/ray/_raylet.pyx", line 445, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 479, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 483, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 484, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 438, in ray._raylet.execute_task.function_executor
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 101, in __init__
+    Trainer.__init__(self, config, env, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 476, in __init__
+    super().__init__(config, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trainable.py", line 249, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 577, in setup
+    self.config = Trainer.merge_trainer_configs(self._default_config,
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 1045, in merge_trainer_configs
+    return deep_update(config1, config2, _allow_unknown_configs,
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/utils/util.py", line 208, in deep_update
+    raise Exception("Unknown config parameter `{}` ".format(k))
+Exception: Unknown config parameter `instance`
+== Status ==
+Memory usage on this node: 11.6/754.6 GiB
+Using FIFO scheduling algorithm.
+Resources requested: 0/80 CPUs, 0/3 GPUs, 0.0/557.71 GiB heap, 0.0/128.52 GiB objects (0/1.0 accelerator_type:RTX)
+Result logdir: /root/ray_results/ppo-jss
+Number of trials: 1 (1 ERROR)
++-------------------------+----------+-------+
+| Trial name              | status   | loc   |
+|-------------------------+----------+-------|
+| PPO_jss_env_cdebd_00000 | ERROR    |       |
++-------------------------+----------+-------+
+Number of errored trials: 1
++-------------------------+--------------+-----------------------------------------------------------------------------------+
+| Trial name              |   # failures | error file                                                                        |
+|-------------------------+--------------+-----------------------------------------------------------------------------------|
+| PPO_jss_env_cdebd_00000 |            1 | /root/ray_results/ppo-jss/PPO_jss_env_cdebd_00000_0_2020-10-12_12-16-49/error.txt |
++-------------------------+--------------+-----------------------------------------------------------------------------------+
+
+Traceback (most recent call last):
+  File "train.py", line 74, in <module>
+    train_func()
+  File "train.py", line 56, in train_func
+    analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/tune.py", line 427, in run
+    raise TuneError("Trials did not complete", incomplete_trials)
+ray.tune.error.TuneError: ('Trials did not complete', [PPO_jss_env_cdebd_00000])
