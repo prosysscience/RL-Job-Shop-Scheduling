@@ -8,8 +8,8 @@ from JSS.env import JSS
 from JSS.env_wrapper import BestActionsWrapper
 
 
-def FIFO_worker(default_config):
-    wandb.init(name='FIFO', config=default_config)
+def MTWR_worker(default_config):
+    wandb.init(name='MTWR', config=default_config)
     config = wandb.config
     env = BestActionsWrapper(JSS(env_config={'instance_path': config['instance_path']}))
     env.seed(config['seed'])
@@ -21,13 +21,13 @@ def FIFO_worker(default_config):
         real_state = np.copy(state['real_obs'])
         legal_actions = state['action_mask'][:-1]
         reshaped = np.reshape(real_state, (env.jobs, 7))
-        remaining_time = reshaped[:, 5]
+        remaining_time = reshaped[:, 3]
         illegal_actions = np.invert(legal_actions)
         mask = illegal_actions * -1e8
         remaining_time += mask
-        FIFO_action = np.argmax(remaining_time)
-        assert legal_actions[FIFO_action]
-        state, reward, done, _ = env.step(FIFO_action)
+        MTWR_action = np.argmax(remaining_time)
+        assert legal_actions[MTWR_action]
+        state, reward, done, _ = env.step(MTWR_action)
     env.reset()
     all_best_score = env.best_score
     all_best_actions = env.best_actions
@@ -36,4 +36,4 @@ def FIFO_worker(default_config):
                "best_timestep": all_best_time_step})
 
 if __name__ == "__main__":
-    FIFO_worker(default_config)
+    MTWR_worker(default_config)
