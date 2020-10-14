@@ -50,12 +50,12 @@ def train_func():
     ray.init()
 
     stop = {
-        "time_total_s": 600,
+        "time_total_s": 60 * 60,
     }
 
     analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
     result = analysis.results_df.to_dict('index')
-    last_run_id = result.keys()[0]
+    last_run_id = list(result.keys())[0]
     result = result[last_run_id]
     wandb.log({'time_step_min': result['custom_metrics.time_step_min']})
     if result['custom_metrics.time_step_max'] != float('inf'):
