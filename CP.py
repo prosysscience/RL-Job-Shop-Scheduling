@@ -88,49 +88,10 @@ def MinimalJobshopSat(instance_config= {'instance_path': '/home/local/IWAS/pierr
     status = solver.Solve(model)
 
     if status == cp_model.FEASIBLE or status == cp_model.OPTIMAL:
-        # Create one list of assigned tasks per machine.
-        assigned_jobs = collections.defaultdict(list)
-        for job_id, job in enumerate(jobs_data):
-            for task_id, task in enumerate(job):
-                machine = task[0]
-                assigned_jobs[machine].append(
-                    assigned_task_type(
-                        start=solver.Value(all_tasks[job_id, task_id].start),
-                        job=job_id,
-                        index=task_id,
-                        duration=task[1]))
-
-        # Create per machine output lines.
-        output = ''
-        for machine in all_machines:
-            # Sort by starting time.
-            assigned_jobs[machine].sort()
-            sol_line_tasks = 'Machine ' + str(machine) + ': '
-            sol_line = '           '
-
-            for assigned_task in assigned_jobs[machine]:
-                name = 'job_%i_%i' % (assigned_task.job, assigned_task.index)
-                # Add spaces to output to align columns.
-                sol_line_tasks += '%-10s' % name
-
-                start = assigned_task.start
-                duration = assigned_task.duration
-                sol_tmp = '[%i,%i]' % (start, start + duration)
-                # Add spaces to output to align columns.
-                sol_line += '%-10s' % sol_tmp
-
-            sol_line += '\n'
-            sol_line_tasks += '\n'
-            output += sol_line_tasks
-            output += sol_line
-
-        # Finally print the solution found.
-        print('Optimal Schedule Length: %i' % solver.ObjectiveValue())
-        print(output)
         wandb.log({"best_timestep": solver.ObjectiveValue()})
     else:
-        print('No Solution found in the time limit')
         wandb.log({"best_timestep": float('inf')})
 
 
-MinimalJobshopSat()
+if __name__ == "__main__":
+    MinimalJobshopSat()
