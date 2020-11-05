@@ -1,0 +1,1004 @@
+diff --git a/JSS/.ipynb_checkpoints/PPO-checkpoint.ipynb b/JSS/.ipynb_checkpoints/PPO-checkpoint.ipynb
+index 4ec3a0c..4e2b290 100644
+--- a/JSS/.ipynb_checkpoints/PPO-checkpoint.ipynb
++++ b/JSS/.ipynb_checkpoints/PPO-checkpoint.ipynb
+@@ -2,7 +2,7 @@
+  "cells": [
+   {
+    "cell_type": "code",
+-   "execution_count": 7,
++   "execution_count": 13,
+    "metadata": {},
+    "outputs": [
+     {
+@@ -74,15 +74,15 @@
+   },
+   {
+    "cell_type": "code",
+-   "execution_count": 8,
++   "execution_count": 14,
+    "metadata": {},
+    "outputs": [
+     {
+      "name": "stdout",
+      "output_type": "stream",
+      "text": [
+-      "Create sweep with ID: 1x8v92mc\n",
+-      "Sweep URL: https://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/1x8v92mc\n"
++      "Create sweep with ID: po3ygyxo\n",
++      "Sweep URL: https://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\n"
+      ]
+     }
+    ],
+@@ -92,7 +92,7 @@
+   },
+   {
+    "cell_type": "code",
+-   "execution_count": 9,
++   "execution_count": 15,
+    "metadata": {},
+    "outputs": [
+     {
+@@ -100,67 +100,425 @@
+      "output_type": "stream",
+      "text": [
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Starting wandb agent 🕵️\n",
+-      "2020-10-13 11:45:51,946 - wandb.wandb_agent - INFO - Running runs: []\n",
+-      "2020-10-13 11:45:52,259 - wandb.wandb_agent - INFO - Agent received command: run\n",
+-      "2020-10-13 11:45:52,260 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "2020-10-14 20:43:27,735 - wandb.wandb_agent - INFO - Running runs: []\n",
++      "2020-10-14 20:43:31,145 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:43:31,145 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
+       "\tinstance_path: /JSS/JSS/env/instances/ta51\n",
+-      "2020-10-13 11:45:52,261 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python RandomGreedy.py --instance_path=/JSS/JSS/env/instances/ta51\n",
++      "2020-10-14 20:43:31,147 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta51\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mrandom\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/1x8v92mc\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/3qwfavbb\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201013_114553-3qwfavbb\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/9bbl2cxc\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204333-9bbl2cxc\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
+       "\n",
+-      "2020-10-13 11:45:57,278 - wandb.wandb_agent - INFO - Running runs: ['3qwfavbb']\n",
+       "\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 39394\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3282\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:43:36,159 - wandb.wandb_agent - INFO - Running runs: ['9bbl2cxc']\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201013_114553-3qwfavbb/logs/debug.log\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201013_114553-3qwfavbb/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204333-9bbl2cxc/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204333-9bbl2cxc/logs/debug-internal.log\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 4473\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 261.82891\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 280.71717\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:     time_step_min 3203\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 197.38384\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 197.38384\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3753\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 607\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602590160\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708214\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m:     time_step_min ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mrandom\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/3qwfavbb\u001b[0m\n",
+-      "2020-10-13 11:56:07,517 - wandb.wandb_agent - INFO - Cleaning up finished run: 3qwfavbb\n",
+-      "2020-10-13 11:56:07,847 - wandb.wandb_agent - INFO - Agent received command: run\n",
+-      "2020-10-13 11:56:07,847 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/9bbl2cxc\u001b[0m\n",
++      "2020-10-14 20:43:41,380 - wandb.wandb_agent - INFO - Cleaning up finished run: 9bbl2cxc\n",
++      "2020-10-14 20:43:41,772 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:43:41,772 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
+       "\tinstance_path: /JSS/JSS/env/instances/ta52\n",
+-      "2020-10-13 11:56:07,849 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python RandomGreedy.py --instance_path=/JSS/JSS/env/instances/ta52\n",
++      "2020-10-14 20:43:41,774 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta52\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mrandom\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/1x8v92mc\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/av30c7rd\u001b[0m\n",
+-      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201013_115608-av30c7rd\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/frw3hck3\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204343-frw3hck3\n",
+       "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
+       "\n",
+-      "2020-10-13 11:56:12,862 - wandb.wandb_agent - INFO - Running runs: ['av30c7rd']\n"
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3372\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:43:46,790 - wandb.wandb_agent - INFO - Running runs: ['frw3hck3']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204343-frw3hck3/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204343-frw3hck3/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 163.86869\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 163.86869\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3871\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 2\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708225\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/frw3hck3\u001b[0m\n",
++      "2020-10-14 20:43:52,006 - wandb.wandb_agent - INFO - Cleaning up finished run: frw3hck3\n",
++      "2020-10-14 20:43:52,326 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:43:52,327 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta53\n",
++      "2020-10-14 20:43:52,329 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta53\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/o0hyb863\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204354-o0hyb863\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3461\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:43:57,342 - wandb.wandb_agent - INFO - Running runs: ['o0hyb863']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204354-o0hyb863/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204354-o0hyb863/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 180.92929\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 180.92929\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3790\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708235\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/o0hyb863\u001b[0m\n",
++      "2020-10-14 20:44:02,563 - wandb.wandb_agent - INFO - Cleaning up finished run: o0hyb863\n",
++      "2020-10-14 20:44:02,910 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:02,911 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta54\n",
++      "2020-10-14 20:44:02,913 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta54\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/802owiob\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204405-802owiob\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3552\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:44:07,929 - wandb.wandb_agent - INFO - Running runs: ['802owiob']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204405-802owiob/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204405-802owiob/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 201.68687\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 201.68687\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3601\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708246\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/802owiob\u001b[0m\n",
++      "2020-10-14 20:44:13,147 - wandb.wandb_agent - INFO - Cleaning up finished run: 802owiob\n",
++      "2020-10-14 20:44:13,451 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:13,451 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta55\n",
++      "2020-10-14 20:44:13,453 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta55\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/ix8moovg\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204415-ix8moovg\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3642\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:44:18,469 - wandb.wandb_agent - INFO - Running runs: ['ix8moovg']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204415-ix8moovg/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204415-ix8moovg/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 224.37374\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 224.37374\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3435\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708256\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/ix8moovg\u001b[0m\n",
++      "2020-10-14 20:44:23,694 - wandb.wandb_agent - INFO - Cleaning up finished run: ix8moovg\n",
++      "2020-10-14 20:44:24,023 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:24,023 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta56\n",
++      "2020-10-14 20:44:24,025 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta56\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/zda8eskt\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204426-zda8eskt\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3726\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:44:29,037 - wandb.wandb_agent - INFO - Running runs: ['zda8eskt']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204426-zda8eskt/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204426-zda8eskt/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 178.59596\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 178.59596\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3881\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708267\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/zda8eskt\u001b[0m\n",
++      "2020-10-14 20:44:34,252 - wandb.wandb_agent - INFO - Cleaning up finished run: zda8eskt\n",
++      "2020-10-14 20:44:36,273 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:36,273 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta57\n",
++      "2020-10-14 20:44:36,275 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta57\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/uz9lk4hk\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204438-uz9lk4hk\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3824\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:44:41,292 - wandb.wandb_agent - INFO - Running runs: ['uz9lk4hk']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204438-uz9lk4hk/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204438-uz9lk4hk/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 209.43434\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 209.43434\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3742\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708279\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/uz9lk4hk\u001b[0m\n",
++      "2020-10-14 20:44:46,515 - wandb.wandb_agent - INFO - Cleaning up finished run: uz9lk4hk\n",
++      "2020-10-14 20:44:46,834 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:46,834 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta58\n",
++      "2020-10-14 20:44:46,836 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta58\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/i1pzxngg\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204448-i1pzxngg\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3912\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:44:51,849 - wandb.wandb_agent - INFO - Running runs: ['i1pzxngg']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204448-i1pzxngg/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204448-i1pzxngg/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 209.89899\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 209.89899\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3826\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708290\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/i1pzxngg\u001b[0m\n",
++      "2020-10-14 20:44:57,073 - wandb.wandb_agent - INFO - Cleaning up finished run: i1pzxngg\n",
++      "2020-10-14 20:44:57,383 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:44:57,384 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta59\n",
++      "2020-10-14 20:44:57,386 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta59\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/3kcee9dt\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204459-3kcee9dt\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 3998\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:45:02,401 - wandb.wandb_agent - INFO - Running runs: ['3kcee9dt']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204459-3kcee9dt/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204459-3kcee9dt/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 211.84848\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 211.84848\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3517\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708300\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/3kcee9dt\u001b[0m\n",
++      "2020-10-14 20:45:07,613 - wandb.wandb_agent - INFO - Cleaning up finished run: 3kcee9dt\n",
++      "2020-10-14 20:45:10,058 - wandb.wandb_agent - INFO - Agent received command: run\n",
++      "2020-10-14 20:45:10,059 - wandb.wandb_agent - INFO - Agent starting run with config:\n",
++      "\tinstance_path: /JSS/JSS/env/instances/ta60\n",
++      "2020-10-14 20:45:10,061 - wandb.wandb_agent - INFO - About to run command: /usr/bin/env python MTWR.py --instance_path=/JSS/JSS/env/instances/ta60\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Currently logged in as: \u001b[33mingambe\u001b[0m (use `wandb login --relogin` to force relogin)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Tracking run with wandb version 0.10.5\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Syncing run \u001b[33mMTWR\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: ⭐️ View project at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🧹 View sweep at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/sweeps/po3ygyxo\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: 🚀 View run at \u001b[34m\u001b[4mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/kkype8ue\u001b[0m\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run data is saved locally in wandb/run-20201014_204512-kkype8ue\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run `wandb off` to turn off syncing.\n",
++      "\n",
++      "\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Waiting for W&B process to finish, PID 4096\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Program ended successfully.\n",
++      "2020-10-14 20:45:15,074 - wandb.wandb_agent - INFO - Running runs: ['kkype8ue']\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:                                                                                \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find user logs for this run at: wandb/run-20201014_204512-kkype8ue/logs/debug.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Find internal logs for this run at: wandb/run-20201014_204512-kkype8ue/logs/debug-internal.log\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run summary:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result 197.64646\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode 197.64646\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep 3735\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step 0\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime 1\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp 1602708313\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Run history:\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:       nb_episodes ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:   avg_best_result ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:      best_episode ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:     best_timestep ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:             _step ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:          _runtime ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m:        _timestamp ▁\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: \n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Synced \u001b[33mMTWR\u001b[0m: \u001b[34mhttps://wandb.ai/ingambe/RLLIB_SWEEP_2/runs/kkype8ue\u001b[0m\n",
++      "2020-10-14 20:45:20,294 - wandb.wandb_agent - INFO - Cleaning up finished run: kkype8ue\n",
++      "2020-10-14 20:45:20,607 - wandb.wandb_agent - INFO - Agent received command: exit\n",
++      "2020-10-14 20:45:20,607 - wandb.wandb_agent - INFO - Received exit command. Killing runs and quitting.\n",
++      "\u001b[34m\u001b[1mwandb\u001b[0m: Terminating and syncing runs. Press ctrl-c to kill.\n"
+      ]
+     }
+    ],
+    "source": [
+-    "!wandb agent 1x8v92mc"
++    "!wandb agent po3ygyxo"
+    ]
+   },
+   {
+diff --git a/JSS/.ipynb_checkpoints/default_config-checkpoint.py b/JSS/.ipynb_checkpoints/default_config-checkpoint.py
+index 46f4d10..4729210 100644
+--- a/JSS/.ipynb_checkpoints/default_config-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/default_config-checkpoint.py
+@@ -6,7 +6,7 @@ default_config = {
+     'env': 'jss_env',
+     'seed': 0,
+     'framework': 'torch',
+-    'log_level': 'INFO',
++    'log_level': 'WARN',
+     'num_gpus': 1,
+     'instance_path': '/JSS/JSS/env/instances/ta51',
+     'num_envs_per_worker': 2,
+diff --git a/JSS/.ipynb_checkpoints/train-checkpoint.py b/JSS/.ipynb_checkpoints/train-checkpoint.py
+index d4ac941..010c6c9 100644
+--- a/JSS/.ipynb_checkpoints/train-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/train-checkpoint.py
+@@ -50,7 +50,7 @@ def train_func():
+     ray.init()
+ 
+     stop = {
+-        "time_total_s": 60 * 60,
++        "time_total_s": 600,
+     }
+ 
+     analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+diff --git a/JSS/PPO.ipynb b/JSS/PPO.ipynb
+index 23b572b..4e2b290 100644
+--- a/JSS/PPO.ipynb
++++ b/JSS/PPO.ipynb
+@@ -56,7 +56,7 @@
+     "    print(\"I have detected {} CPUs here, so I'm going to create {} actors\".format(mp.cpu_count(), mp.cpu_count() - 1))\n",
+     "    os.environ[\"WANDB_API_KEY\"] = '3487a01956bf67cc7882bca2a38f70c8c95f8463'\n",
+     "    sweep_config = {\n",
+-    "        'program': 'MTWR.py',\n",
++    "        'program': 'train.py',\n",
+     "        'method': 'grid',\n",
+     "        'metric': {\n",
+     "            'name': 'time_step_min',\n",
+diff --git a/JSS/__pycache__/default_config.cpython-38.pyc b/JSS/__pycache__/default_config.cpython-38.pyc
+index 14e0018..8fbfc47 100644
+Binary files a/JSS/__pycache__/default_config.cpython-38.pyc and b/JSS/__pycache__/default_config.cpython-38.pyc differ
+diff --git a/JSS/default_config.py b/JSS/default_config.py
+index 46f4d10..4729210 100644
+--- a/JSS/default_config.py
++++ b/JSS/default_config.py
+@@ -6,7 +6,7 @@ default_config = {
+     'env': 'jss_env',
+     'seed': 0,
+     'framework': 'torch',
+-    'log_level': 'INFO',
++    'log_level': 'WARN',
+     'num_gpus': 1,
+     'instance_path': '/JSS/JSS/env/instances/ta51',
+     'num_envs_per_worker': 2,
+diff --git a/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py b/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
+index abc5f4d..e37f96f 100644
+--- a/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
++++ b/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
+@@ -49,10 +49,7 @@ class JSS(gym.Env):
+         self.time_until_available_machine = None
+         self.time_until_finish_current_op_jobs = None
+         self.todo_time_step_job = None
+-        self.total_perform_op_time_jobs = None
+         self.needed_machine_jobs = None
+-        self.total_idle_time_jobs = None
+-        self.idle_time_jobs_last_op = None
+         self.state = None
+         # initial values for variables used for representation
+         self.start_timestamp = datetime.datetime.now().timestamp()
+@@ -111,9 +108,8 @@ class JSS(gym.Env):
+         })
+ 
+     def _get_current_state_representation(self):
+-        self.state[:, 0] = self.legal_actions[:-1]
+         return {
+-            "real_obs": self.state.reshape(-1),
++            "real_obs": self.state,
+             "action_mask": self.legal_actions,
+         }
+ 
+@@ -133,13 +129,10 @@ class JSS(gym.Env):
+         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
+         self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=np.int)
+         self.todo_time_step_job = np.zeros(self.jobs, dtype=np.int)
+-        self.total_perform_op_time_jobs = np.zeros(self.jobs, dtype=np.int)
+         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
+-        self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
+-        self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
+         for job in range(self.jobs):
+             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
+-        self.state = np.zeros((self.jobs, 7), dtype=np.float)
++        self.state = np.zeros((self.jobs * 7,), dtype=np.float)
+         return self._get_current_state_representation()
+ 
+     def step(self, action: int):
+@@ -152,6 +145,7 @@ class JSS(gym.Env):
+             scaled_reward = self._reward_scaler(reward)
+             if self.nb_legal_actions > 1:
+                 self.legal_actions[only_legal] = False
++                self.state[only_legal * 7] = False
+                 self.nb_legal_actions -= 1
+                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+                     self.legal_actions[self.jobs] = True
+@@ -163,7 +157,7 @@ class JSS(gym.Env):
+         reward += time_needed
+         self.time_until_available_machine[machine_needed] = time_needed
+         self.time_until_finish_current_op_jobs[action] = time_needed
+-        self.state[action][1] = time_needed / self.max_time_op
++        self.state[action * 7 + 1] = time_needed / self.max_time_op
+         to_add_time_step = self.current_time_step + time_needed
+         if to_add_time_step not in self.next_time_step:
+             bisect.insort_left(self.next_time_step, to_add_time_step)
+@@ -171,6 +165,7 @@ class JSS(gym.Env):
+         for job in range(self.jobs):
+             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
+                 self.legal_actions[job] = False
++                self.state[job * 7] = False
+                 self.nb_legal_actions -= 1
+         # if we can't allocate new job in the current timestep, we pass to the next one
+         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+@@ -197,37 +192,33 @@ class JSS(gym.Env):
+         next_time_step_to_pick = self.next_time_step.pop(0)
+         difference = next_time_step_to_pick - self.current_time_step
+         self.current_time_step = next_time_step_to_pick
+-        for job in range(self.jobs):
+-            was_left_time = self.time_until_finish_current_op_jobs[job]
++        for job_id in range(self.jobs):
++            was_left_time = self.time_until_finish_current_op_jobs[job_id]
+             if was_left_time > 0:
+                 performed_op_job = min(difference, was_left_time)
+-                self.time_until_finish_current_op_jobs[job] = max(0, self.time_until_finish_current_op_jobs[
+-                    job] - difference)
+-                self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
+-                self.total_perform_op_time_jobs[job] += performed_op_job
+-                self.state[job][3] = self.total_perform_op_time_jobs[job] / self.max_time_jobs
+-                if self.time_until_finish_current_op_jobs[job] == 0:
+-                    self.total_idle_time_jobs[job] += (difference - was_left_time)
+-                    self.state[job][6] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
+-                    self.idle_time_jobs_last_op[job] = (difference - was_left_time)
+-                    self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
+-                    self.todo_time_step_job[job] += 1
+-                    self.state[job][2] = self.todo_time_step_job[job] / self.machines
+-                    if self.todo_time_step_job[job] < self.machines:
+-                        self.needed_machine_jobs[job] = self.instance_matrix[job][self.todo_time_step_job[job]][0]
+-                        self.state[job][4] = max(0, self.time_until_available_machine[
+-                                                 self.needed_machine_jobs[job]] - difference) / self.max_time_op
++                self.time_until_finish_current_op_jobs[job_id] = max(0, self.time_until_finish_current_op_jobs[
++                    job_id] - difference)
++                self.state[job_id * 7 + 1] = self.time_until_finish_current_op_jobs[job_id] / self.max_time_op
++                self.state[job_id * 7 + 3] += performed_op_job / self.max_time_jobs
++                if self.time_until_finish_current_op_jobs[job_id] == 0:
++                    self.state[job_id * 7 + 6] += (difference - was_left_time) / (self.max_time_jobs * self.jobs)
++                    self.state[job_id * 7 + 5] = (difference - was_left_time) / (self.max_time_jobs * self.jobs)
++                    self.todo_time_step_job[job_id] += 1
++                    self.state[job_id * 7 + 2] += 1.0 / self.machines
++                    if self.todo_time_step_job[job_id] < self.machines:
++                        self.needed_machine_jobs[job_id] = self.instance_matrix[job_id][self.todo_time_step_job[job_id]][0]
++                        self.state[job_id * 7 + 4] = max(0, self.time_until_available_machine[
++                                                 self.needed_machine_jobs[job_id]] - difference) / self.max_time_op
+                     else:
+-                        self.needed_machine_jobs[job] = -1
++                        self.needed_machine_jobs[job_id] = -1
+                         # this allow to have 1 is job is over (not 0 because, 0 strongly indicate that the job is a good candidate)
+-                        self.state[job][4] = 1.0
+-                        if self.legal_actions[job]:
+-                            self.legal_actions[job] = False
++                        self.state[job_id * 7 + 4] = 1.0
++                        if self.legal_actions[job_id]:
++                            self.legal_actions[job_id] = False
++                            self.state[job_id * 7] = False
+                             self.nb_legal_actions -= 1
+             else:
+-                self.total_idle_time_jobs[job] += difference
+-                self.idle_time_jobs_last_op[job] += difference
+-                self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
++                self.state[job_id * 7 + 5] += difference / (self.max_time_jobs * self.jobs)
+         for machine in range(self.machines):
+             if self.time_until_available_machine[machine] < difference:
+                 empty = difference - self.time_until_available_machine[machine]
+@@ -235,9 +226,10 @@ class JSS(gym.Env):
+             self.time_until_available_machine[machine] = max(0, self.time_until_available_machine[
+                 machine] - difference)
+             if self.time_until_available_machine[machine] == 0:
+-                for job in range(self.jobs):
+-                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job]:
+-                        self.legal_actions[job] = True
++                for job_id in range(self.jobs):
++                    if self.needed_machine_jobs[job_id] == machine and not self.legal_actions[job_id]:
++                        self.legal_actions[job_id] = True
++                        self.state[job_id * 7] = True
+                         self.nb_legal_actions += 1
+         return hole_planning
+ 
+diff --git a/JSS/env/JSS.py b/JSS/env/JSS.py
+index abc5f4d..e37f96f 100644
+--- a/JSS/env/JSS.py
++++ b/JSS/env/JSS.py
+@@ -49,10 +49,7 @@ class JSS(gym.Env):
+         self.time_until_available_machine = None
+         self.time_until_finish_current_op_jobs = None
+         self.todo_time_step_job = None
+-        self.total_perform_op_time_jobs = None
+         self.needed_machine_jobs = None
+-        self.total_idle_time_jobs = None
+-        self.idle_time_jobs_last_op = None
+         self.state = None
+         # initial values for variables used for representation
+         self.start_timestamp = datetime.datetime.now().timestamp()
+@@ -111,9 +108,8 @@ class JSS(gym.Env):
+         })
+ 
+     def _get_current_state_representation(self):
+-        self.state[:, 0] = self.legal_actions[:-1]
+         return {
+-            "real_obs": self.state.reshape(-1),
++            "real_obs": self.state,
+             "action_mask": self.legal_actions,
+         }
+ 
+@@ -133,13 +129,10 @@ class JSS(gym.Env):
+         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
+         self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=np.int)
+         self.todo_time_step_job = np.zeros(self.jobs, dtype=np.int)
+-        self.total_perform_op_time_jobs = np.zeros(self.jobs, dtype=np.int)
+         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
+-        self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
+-        self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
+         for job in range(self.jobs):
+             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
+-        self.state = np.zeros((self.jobs, 7), dtype=np.float)
++        self.state = np.zeros((self.jobs * 7,), dtype=np.float)
+         return self._get_current_state_representation()
+ 
+     def step(self, action: int):
+@@ -152,6 +145,7 @@ class JSS(gym.Env):
+             scaled_reward = self._reward_scaler(reward)
+             if self.nb_legal_actions > 1:
+                 self.legal_actions[only_legal] = False
++                self.state[only_legal * 7] = False
+                 self.nb_legal_actions -= 1
+                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+                     self.legal_actions[self.jobs] = True
+@@ -163,7 +157,7 @@ class JSS(gym.Env):
+         reward += time_needed
+         self.time_until_available_machine[machine_needed] = time_needed
+         self.time_until_finish_current_op_jobs[action] = time_needed
+-        self.state[action][1] = time_needed / self.max_time_op
++        self.state[action * 7 + 1] = time_needed / self.max_time_op
+         to_add_time_step = self.current_time_step + time_needed
+         if to_add_time_step not in self.next_time_step:
+             bisect.insort_left(self.next_time_step, to_add_time_step)
+@@ -171,6 +165,7 @@ class JSS(gym.Env):
+         for job in range(self.jobs):
+             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
+                 self.legal_actions[job] = False
++                self.state[job * 7] = False
+                 self.nb_legal_actions -= 1
+         # if we can't allocate new job in the current timestep, we pass to the next one
+         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+@@ -197,37 +192,33 @@ class JSS(gym.Env):
+         next_time_step_to_pick = self.next_time_step.pop(0)
+         difference = next_time_step_to_pick - self.current_time_step
+         self.current_time_step = next_time_step_to_pick
+-        for job in range(self.jobs):
+-            was_left_time = self.time_until_finish_current_op_jobs[job]
++        for job_id in range(self.jobs):
++            was_left_time = self.time_until_finish_current_op_jobs[job_id]
+             if was_left_time > 0:
+                 performed_op_job = min(difference, was_left_time)
+-                self.time_until_finish_current_op_jobs[job] = max(0, self.time_until_finish_current_op_jobs[
+-                    job] - difference)
+-                self.state[job][1] = self.time_until_finish_current_op_jobs[job] / self.max_time_op
+-                self.total_perform_op_time_jobs[job] += performed_op_job
+-                self.state[job][3] = self.total_perform_op_time_jobs[job] / self.max_time_jobs
+-                if self.time_until_finish_current_op_jobs[job] == 0:
+-                    self.total_idle_time_jobs[job] += (difference - was_left_time)
+-                    self.state[job][6] = self.total_idle_time_jobs[job] / (self.max_time_jobs * self.jobs)
+-                    self.idle_time_jobs_last_op[job] = (difference - was_left_time)
+-                    self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
+-                    self.todo_time_step_job[job] += 1
+-                    self.state[job][2] = self.todo_time_step_job[job] / self.machines
+-                    if self.todo_time_step_job[job] < self.machines:
+-                        self.needed_machine_jobs[job] = self.instance_matrix[job][self.todo_time_step_job[job]][0]
+-                        self.state[job][4] = max(0, self.time_until_available_machine[
+-                                                 self.needed_machine_jobs[job]] - difference) / self.max_time_op
++                self.time_until_finish_current_op_jobs[job_id] = max(0, self.time_until_finish_current_op_jobs[
++                    job_id] - difference)
++                self.state[job_id * 7 + 1] = self.time_until_finish_current_op_jobs[job_id] / self.max_time_op
++                self.state[job_id * 7 + 3] += performed_op_job / self.max_time_jobs
++                if self.time_until_finish_current_op_jobs[job_id] == 0:
++                    self.state[job_id * 7 + 6] += (difference - was_left_time) / (self.max_time_jobs * self.jobs)
++                    self.state[job_id * 7 + 5] = (difference - was_left_time) / (self.max_time_jobs * self.jobs)
++                    self.todo_time_step_job[job_id] += 1
++                    self.state[job_id * 7 + 2] += 1.0 / self.machines
++                    if self.todo_time_step_job[job_id] < self.machines:
++                        self.needed_machine_jobs[job_id] = self.instance_matrix[job_id][self.todo_time_step_job[job_id]][0]
++                        self.state[job_id * 7 + 4] = max(0, self.time_until_available_machine[
++                                                 self.needed_machine_jobs[job_id]] - difference) / self.max_time_op
+                     else:
+-                        self.needed_machine_jobs[job] = -1
++                        self.needed_machine_jobs[job_id] = -1
+                         # this allow to have 1 is job is over (not 0 because, 0 strongly indicate that the job is a good candidate)
+-                        self.state[job][4] = 1.0
+-                        if self.legal_actions[job]:
+-                            self.legal_actions[job] = False
++                        self.state[job_id * 7 + 4] = 1.0
++                        if self.legal_actions[job_id]:
++                            self.legal_actions[job_id] = False
++                            self.state[job_id * 7] = False
+                             self.nb_legal_actions -= 1
+             else:
+-                self.total_idle_time_jobs[job] += difference
+-                self.idle_time_jobs_last_op[job] += difference
+-                self.state[job][5] = self.idle_time_jobs_last_op[job] / (self.max_time_jobs * self.jobs)
++                self.state[job_id * 7 + 5] += difference / (self.max_time_jobs * self.jobs)
+         for machine in range(self.machines):
+             if self.time_until_available_machine[machine] < difference:
+                 empty = difference - self.time_until_available_machine[machine]
+@@ -235,9 +226,10 @@ class JSS(gym.Env):
+             self.time_until_available_machine[machine] = max(0, self.time_until_available_machine[
+                 machine] - difference)
+             if self.time_until_available_machine[machine] == 0:
+-                for job in range(self.jobs):
+-                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job]:
+-                        self.legal_actions[job] = True
++                for job_id in range(self.jobs):
++                    if self.needed_machine_jobs[job_id] == machine and not self.legal_actions[job_id]:
++                        self.legal_actions[job_id] = True
++                        self.state[job_id * 7] = True
+                         self.nb_legal_actions += 1
+         return hole_planning
+ 
+diff --git a/JSS/env/__pycache__/JSS.cpython-38.pyc b/JSS/env/__pycache__/JSS.cpython-38.pyc
+index b190093..3946e5c 100644
+Binary files a/JSS/env/__pycache__/JSS.cpython-38.pyc and b/JSS/env/__pycache__/JSS.cpython-38.pyc differ
+diff --git a/JSS/train.py b/JSS/train.py
+index d4ac941..010c6c9 100644
+--- a/JSS/train.py
++++ b/JSS/train.py
+@@ -50,7 +50,7 @@ def train_func():
+     ray.init()
+ 
+     stop = {
+-        "time_total_s": 60 * 60,
++        "time_total_s": 600,
+     }
+ 
+     analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+diff --git a/JSS/wandb/debug-internal.log b/JSS/wandb/debug-internal.log
+index f73d8af..9b97f5c 120000
+--- a/JSS/wandb/debug-internal.log
++++ b/JSS/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20201014_204512-kkype8ue/logs/debug-internal.log
+\ No newline at end of file
++run-20201014_205438-v1jeb89u/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/JSS/wandb/debug.log b/JSS/wandb/debug.log
+index db2ed2e..2921da0 120000
+--- a/JSS/wandb/debug.log
++++ b/JSS/wandb/debug.log
+@@ -1 +1 @@
+-run-20201014_204512-kkype8ue/logs/debug.log
+\ No newline at end of file
++run-20201014_205438-v1jeb89u/logs/debug.log
+\ No newline at end of file
+diff --git a/JSS/wandb/latest-run b/JSS/wandb/latest-run
+index f19e5b0..e329ef0 120000
+--- a/JSS/wandb/latest-run
++++ b/JSS/wandb/latest-run
+@@ -1 +1 @@
+-run-20201014_204512-kkype8ue
+\ No newline at end of file
++run-20201014_205438-v1jeb89u
+\ No newline at end of file
+diff --git a/JSS/wandb/run-20201014_185459-4qedwvw4/logs/debug-internal.log b/JSS/wandb/run-20201014_185459-4qedwvw4/logs/debug-internal.log
+index 62aefa0..a469c27 100644
+--- a/JSS/wandb/run-20201014_185459-4qedwvw4/logs/debug-internal.log
++++ b/JSS/wandb/run-20201014_185459-4qedwvw4/logs/debug-internal.log
+@@ -3791,3 +3791,60 @@
+ 2020-10-14 20:48:22,755 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
+ 2020-10-14 20:48:24,674 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
+ 2020-10-14 20:48:29,293 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:33,903 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:37,761 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:48:37,761 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:48:37,761 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:48:37,765 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:48:37,962 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:48:38,519 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:43,143 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:47,759 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:52,385 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:48:52,968 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:48:52,968 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:48:52,968 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:48:52,975 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:48:53,184 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:48:57,005 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:01,622 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:06,249 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:08,189 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:08,190 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:49:08,190 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:08,195 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:08,392 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:10,874 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:15,492 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:20,107 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:23,398 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:23,398 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:49:23,398 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:23,403 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:23,595 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:24,725 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:29,333 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:33,953 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:38,566 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:38,601 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:38,601 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:49:38,601 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:38,605 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:38,802 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:43,182 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:47,813 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:52,436 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:49:53,808 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:53,809 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:49:53,809 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:53,813 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:54,014 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:57,041 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:50:01,665 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:50:06,273 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
++2020-10-14 20:50:09,020 DEBUG   HandlerThread:30187 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:50:09,020 DEBUG   SenderThread:30187 [sender.py:send():88] send: request
++2020-10-14 20:50:09,020 DEBUG   SenderThread:30187 [sender.py:send_request():97] send_request: status
++2020-10-14 20:50:09,024 DEBUG   SenderThread:30187 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:50:09,226 DEBUG   SenderThread:30187 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:50:10,902 DEBUG   SenderThread:30187 [sender.py:send():88] send: stats
+diff --git a/JSS/wandb/run-20201014_185459-4qedwvw4/run-4qedwvw4.wandb b/JSS/wandb/run-20201014_185459-4qedwvw4/run-4qedwvw4.wandb
+index fe32750..a173876 100644
+Binary files a/JSS/wandb/run-20201014_185459-4qedwvw4/run-4qedwvw4.wandb and b/JSS/wandb/run-20201014_185459-4qedwvw4/run-4qedwvw4.wandb differ
+diff --git a/JSS/wandb/run-20201014_185623-es6i30gb/logs/debug-internal.log b/JSS/wandb/run-20201014_185623-es6i30gb/logs/debug-internal.log
+index 6c28b35..39056d1 100644
+--- a/JSS/wandb/run-20201014_185623-es6i30gb/logs/debug-internal.log
++++ b/JSS/wandb/run-20201014_185623-es6i30gb/logs/debug-internal.log
+@@ -3766,3 +3766,55 @@
+ 2020-10-14 20:48:28,206 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
+ 2020-10-14 20:48:28,210 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
+ 2020-10-14 20:48:28,411 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:48:32,759 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:37,379 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:41,998 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:43,417 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:48:43,417 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:48:43,418 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:48:43,425 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:48:43,622 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:48:46,618 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:51,237 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:55,878 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:48:58,628 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:48:58,629 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:48:58,629 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:48:58,634 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:48:58,828 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:00,486 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:05,100 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:09,717 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:13,834 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:13,834 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:49:13,835 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:13,839 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:14,032 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:14,334 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:18,948 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:23,561 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:28,192 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:29,038 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:29,038 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:49:29,039 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:29,043 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:29,241 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:32,806 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:37,429 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:42,040 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:44,247 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:44,247 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:49:44,247 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:44,252 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:44,453 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:49:46,669 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:51,288 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:55,904 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:49:59,459 DEBUG   HandlerThread:34843 [handler.py:handle_request():54] handle_request: status
++2020-10-14 20:49:59,459 DEBUG   SenderThread:34843 [sender.py:send():88] send: request
++2020-10-14 20:49:59,460 DEBUG   SenderThread:34843 [sender.py:send_request():97] send_request: status
++2020-10-14 20:49:59,464 DEBUG   SenderThread:34843 [connectionpool.py:_new_conn():955] Starting new HTTPS connection (1): api.wandb.ai:443
++2020-10-14 20:49:59,667 DEBUG   SenderThread:34843 [connectionpool.py:_make_request():428] https://api.wandb.ai:443 "POST /graphql HTTP/1.1" 200 None
++2020-10-14 20:50:00,513 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:50:05,125 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
++2020-10-14 20:50:09,744 DEBUG   SenderThread:34843 [sender.py:send():88] send: stats
+diff --git a/JSS/wandb/run-20201014_185623-es6i30gb/run-es6i30gb.wandb b/JSS/wandb/run-20201014_185623-es6i30gb/run-es6i30gb.wandb
+index 6b25ef1..0114685 100644
+Binary files a/JSS/wandb/run-20201014_185623-es6i30gb/run-es6i30gb.wandb and b/JSS/wandb/run-20201014_185623-es6i30gb/run-es6i30gb.wandb differ

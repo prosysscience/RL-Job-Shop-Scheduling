@@ -47,10 +47,10 @@ def train_func():
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
 
-    ray.init()
+    ray.init(num_gpus=1)
 
     stop = {
-        "time_total_s": 60 * 60,
+        "time_total_s": 10 * 60,
     }
 
     analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")

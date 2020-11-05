@@ -6,7 +6,7 @@ default_config = {
     'env': 'jss_env',
     'seed': 0,
     'framework': 'torch',
-    'log_level': 'INFO',
+    'log_level': 'WARN',
     'num_gpus': 1,
     'instance_path': '/JSS/JSS/env/instances/ta51',
     'num_envs_per_worker': 2,
