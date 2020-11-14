@@ -185,7 +185,7 @@ class JSS(gym.Env):
 
     def _reward_scaler(self, reward):
         reward = reward / self.max_time_op
-        return reward
+        return np.exp(reward) - 1.0
 
     def _increase_time_step(self):
         '''

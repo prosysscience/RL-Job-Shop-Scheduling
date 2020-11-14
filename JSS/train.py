@@ -16,7 +16,6 @@ from JSS.env.JSS import JSS
 
 from JSS.models import FCMaskedActionsModel
 
-
 def env_creator(env_config):
     return BestActionsWrapper(JSS(env_config))
 
@@ -30,7 +29,7 @@ def train_func():
     wandb.init(config=default_config)
     config = wandb.config
     config['model'] = {
-        "fcnet_activation": "relu",
+        "fcnet_activation": "tanh",
         "custom_model": "fc_masked_model",
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
     }
@@ -47,7 +46,7 @@ def train_func():
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
 
-    ray.init(num_gpus=1)
+    ray.init()
 
     stop = {
         "time_total_s": 10 * 60,
