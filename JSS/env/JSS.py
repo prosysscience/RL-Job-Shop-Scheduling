@@ -149,13 +149,12 @@ class JSS(gym.Env):
             only_legal = np.where(self.legal_actions)[0][0]
             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
-            scaled_reward = self._reward_scaler(reward)
             if self.nb_legal_actions > 1:
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                     self.legal_actions[self.jobs] = True
-            return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+            return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.needed_machine_jobs[action]
@@ -179,13 +178,10 @@ class JSS(gym.Env):
             self.legal_actions[self.jobs] = True
         elif self.legal_actions[self.jobs]:
             self.legal_actions[self.jobs] = False
-        # we then need to scale the reward
-        scaled_reward = self._reward_scaler(reward)
-        return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+        return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
 
     def _reward_scaler(self, reward):
-        reward = reward / self.max_time_op
-        return np.exp(reward) - 1.0
+        return reward / self.max_time_op
 
     def _increase_time_step(self):
         '''

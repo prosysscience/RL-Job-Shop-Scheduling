@@ -2,7 +2,7 @@ import ray
 import wandb
 from ray import tune
 
-from ray.rllib.agents.ppo import PPOTrainer
+from ray.rllib.agents.impala import ImpalaTrainer
 
 from JSS.CustomCallbacks import CustomCallbacks
 
@@ -26,7 +26,7 @@ register_env("jss_env", env_creator)
 def train_func():
     torch, nn = try_import_torch()
     ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
-    wandb.init(config=default_config)
+    wandb.init(config=default_config, project="impala-jss")
     config = wandb.config
     config['model'] = {
         "fcnet_activation": "tanh",
@@ -52,7 +52,8 @@ def train_func():
         "time_total_s": 10 * 60,
     }
 
-    analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
+    analysis = tune.run(ImpalaTrainer, config=config, stop=stop, name="ppo-jss")
+    wanb.sweep(analysis)
     result = analysis.results_df.to_dict('index')
     last_run_id = list(result.keys())[0]
     result = result[last_run_id]
