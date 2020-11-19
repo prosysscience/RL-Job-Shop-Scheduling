@@ -6,6 +6,7 @@ import numpy as np
 from ray import tune
 from ray.rllib.agents.ppo import PPOTrainer
 from ray.tune.schedulers import PopulationBasedTraining
+from ray.tune.suggest.hyperopt import HyperOptSearch
 from ray.tune.suggest.optuna import OptunaSearch
 
 from JSS.CustomCallbacks import CustomCallbacks
@@ -50,8 +51,7 @@ def train_func():
         'gamma': 1.0,
         'layer_size': 1024,
         'layer_nb': 2,
-        'lr_start': tune.uniform(5e-5, 1e-4),
-        'lr_end': tune.uniform(3e-5, 5e-5),
+        'lr': tune.uniform(3e-5, 1e-4),
         'clip_param': tune.uniform(0.2, 0.4),
         'vf_clip_param': tune.uniform(5.0, 15.0),
         'kl_target': tune.uniform(0.005, 0.2),
@@ -63,8 +63,7 @@ def train_func():
         "shuffle_sequences": True,
         "vf_share_layers": False,
         "vf_loss_coeff": tune.uniform(0.5, 1.5),
-        "entropy_coeff": 5e-4,
-        "entropy_coeff_schedule": None,
+        'entropy_coeff': tune.uniform(5e-5, 1e-3),
         "grad_clip": None,
         "batch_mode": "truncate_episodes",
         "observation_filter": "NoFilter",
@@ -91,11 +90,6 @@ def train_func():
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
 
-    config['lr'] = config['lr_start']
-    config['lr_schedule'] = [[0, config['lr_start']], [4000000, config['lr_end']]]
-
-    config.pop('lr_start', None)
-    config.pop('lr_end', None)
     config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
@@ -103,15 +97,30 @@ def train_func():
     ray.init()
 
     stop = {
-        "episodes_total": 50,
+        "episodes_total": 4000,
     }
+
+    current_best_params = [{
+        'gamma': 1.0,
+        'lr': 5e-5,
+        'entropy_coeff': 5e-4,
+        'clip_param': 0.3,
+        'vf_clip_param': 10.0,
+        'kl_target': 0.01,
+        'lambda': 1.0,
+        "kl_coeff": 0.2,
+        "vf_loss_coeff": 1.0,
+    }]
+
+    hyperopt_search = HyperOptSearch(
+        metric="episode_reward_mean", mode="max",
+        points_to_evaluate=current_best_params)
 
     analysis = tune.run(PPOTrainer,
                         config=config,
                         stop=stop,
-                        metric='episode_reward_mean',
-                        mode='max',
-                        num_samples=1000,
+                        search_alg=hyperopt_search,
+                        num_samples=1200,
                         name="ppo-jss",
                         checkpoint_freq=10,
                         loggers=[WandbLogger])
