@@ -1,20 +1,28 @@
 import ray
 import wandb
-from ray import tune
 
+import numpy as np
+
+from ray import tune
 from ray.rllib.agents.ppo import PPOTrainer
+from ray.tune.schedulers import PopulationBasedTraining
+from ray.tune.suggest.optuna import OptunaSearch
 
 from JSS.CustomCallbacks import CustomCallbacks
 
-from JSS.default_config import default_config
+import multiprocessing as mp
 from ray.rllib.agents import with_common_config
-from ray.rllib.utils import try_import_torch
 from ray.rllib.models import ModelCatalog
-from ray.tune import CLIReporter, register_env
+from ray.tune import register_env
 from JSS.env_wrapper import BestActionsWrapper
 from JSS.env.JSS import JSS
 
 from JSS.models import FCMaskedActionsModel
+
+from ray.tune.integration.wandb import WandbLogger
+
+from ray.tune.suggest.bayesopt import BayesOptSearch
+
 
 def env_creator(env_config):
     return BestActionsWrapper(JSS(env_config))
@@ -24,10 +32,52 @@ register_env("jss_env", env_creator)
 
 
 def train_func():
-    torch, nn = try_import_torch()
     ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
-    wandb.init(config=default_config)
-    config = wandb.config
+
+    config = {
+        'env': 'jss_env',
+        'seed': 0,
+        'framework': 'torch',
+        'log_level': 'WARN',
+        'num_gpus': 0,
+        'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51',
+        'num_envs_per_worker': 2,
+        'rollout_fragment_length': 1024,
+        'num_workers': mp.cpu_count() - 1,
+        'sgd_minibatch_size': 256,
+        'evaluation_interval': None,
+        'metrics_smoothing_episodes': 1000,
+        'gamma': 1.0,
+        'layer_size': 1024,
+        'layer_nb': 2,
+        'lr_start': tune.uniform(5e-5, 1e-4),
+        'lr_end': tune.uniform(3e-5, 5e-5),
+        'clip_param': tune.uniform(0.2, 0.4),
+        'vf_clip_param': tune.uniform(5.0, 15.0),
+        'kl_target': tune.uniform(0.005, 0.2),
+        'num_sgd_iter': 25,
+        'lambda': tune.uniform(0.8, 1.0),
+        "use_critic": True,
+        "use_gae": True,
+        "kl_coeff": tune.uniform(0.2, 0.4),
+        "shuffle_sequences": True,
+        "vf_share_layers": False,
+        "vf_loss_coeff": tune.uniform(0.5, 1.5),
+        "entropy_coeff": 5e-4,
+        "entropy_coeff_schedule": None,
+        "grad_clip": None,
+        "batch_mode": "truncate_episodes",
+        "observation_filter": "NoFilter",
+        "simple_optimizer": False,
+        "_fake_gpus": False,
+        "logger_config": {
+            "wandb": {
+                "project": "JSS_WANDB_PPO",
+                "api_key": "3487a01956bf67cc7882bca2a38f70c8c95f8463"
+            }
+        },
+    }
+
     config['model'] = {
         "fcnet_activation": "tanh",
         "custom_model": "fc_masked_model",
@@ -37,11 +87,15 @@ def train_func():
         'instance_path': config['instance_path']
     }
 
-    config['train_batch_size'] = config['num_workers'] * config['num_envs_per_worker'] * config[
-        'rollout_fragment_length']
+    config['train_batch_size'] = config['num_workers'] * config['num_envs_per_worker'] * config['rollout_fragment_length']
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
 
+    config['lr'] = config['lr_start']
+    config['lr_schedule'] = [[0, config['lr_start']], [4000000, config['lr_end']]]
+
+    config.pop('lr_start', None)
+    config.pop('lr_end', None)
     config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
@@ -49,22 +103,19 @@ def train_func():
     ray.init()
 
     stop = {
-        "time_total_s": 10 * 60,
+        "episodes_total": 50,
     }
 
-    analysis = tune.run(PPOTrainer, config=config, stop=stop, name="ppo-jss")
-    result = analysis.results_df.to_dict('index')
-    last_run_id = list(result.keys())[0]
-    result = result[last_run_id]
-    wandb.log({'time_step_min': result['custom_metrics.time_step_min']})
-    if result['custom_metrics.time_step_max'] != float('inf'):
-        wandb.log({'time_step_max': result['custom_metrics.time_step_max']})
-        wandb.log({'time_step_mean': result['custom_metrics.time_step_mean']})
-    wandb.log({'episode_reward_max': result['episode_reward_max']})
-    wandb.log({'episode_reward_min': result['episode_reward_min']})
-    wandb.log({'episode_reward_mean': result['episode_reward_mean']})
-    wandb.log({'episodes_total': result['episodes_total']})
-    wandb.log({'training_iteration': result['training_iteration']})
+    analysis = tune.run(PPOTrainer,
+                        config=config,
+                        stop=stop,
+                        metric='episode_reward_mean',
+                        mode='max',
+                        num_samples=1000,
+                        name="ppo-jss",
+                        checkpoint_freq=10,
+                        loggers=[WandbLogger])
+    wandb.log(analysis.best_config)
 
     ray.shutdown()
 
