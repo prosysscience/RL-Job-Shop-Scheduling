@@ -107,13 +107,13 @@ class JSS(gym.Env):
         '''
         self.observation_space = gym.spaces.Dict({
             "action_mask": gym.spaces.Box(0, 1, shape=(self.jobs + 1,)),
-            "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs * 7,), dtype=np.float),
+            "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=np.float),
         })
 
     def _get_current_state_representation(self):
         self.state[:, 0] = self.legal_actions[:-1]
         return {
-            "real_obs": self.state.reshape(-1),
+            "real_obs": self.state,
             "action_mask": self.legal_actions,
         }
 
