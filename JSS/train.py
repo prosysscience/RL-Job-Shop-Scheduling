@@ -1,13 +1,9 @@
 import ray
 import wandb
 
-import numpy as np
-
 from ray import tune
 from ray.rllib.agents.ppo import PPOTrainer
-from ray.tune.schedulers import PopulationBasedTraining
 from ray.tune.suggest.hyperopt import HyperOptSearch
-from ray.tune.suggest.optuna import OptunaSearch
 
 from JSS.CustomCallbacks import CustomCallbacks
 

@@ -184,8 +184,7 @@ class JSS(gym.Env):
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
 
     def _reward_scaler(self, reward):
-        reward = reward / self.max_time_op
-        return np.exp(reward) - 1.0
+        return reward / self.max_time_op
 
     def _increase_time_step(self):
         '''
@@ -242,7 +241,7 @@ class JSS(gym.Env):
         return hole_planning
 
     def _is_done(self):
-        if self.action_step > self.max_action_step - 1:
+        if self.nb_legal_actions == 0:
             self.last_time_step = self.current_time_step
             return True
         return False
