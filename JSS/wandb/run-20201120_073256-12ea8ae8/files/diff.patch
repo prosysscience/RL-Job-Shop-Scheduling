@@ -1,0 +1,102 @@
+diff --git a/JSS/__pycache__/__init__.cpython-37.pyc b/JSS/__pycache__/__init__.cpython-37.pyc
+index 47ca035..11c2fef 100644
+Binary files a/JSS/__pycache__/__init__.cpython-37.pyc and b/JSS/__pycache__/__init__.cpython-37.pyc differ
+diff --git a/JSS/__pycache__/env_wrapper.cpython-37.pyc b/JSS/__pycache__/env_wrapper.cpython-37.pyc
+index 4db4b86..3053d69 100644
+Binary files a/JSS/__pycache__/env_wrapper.cpython-37.pyc and b/JSS/__pycache__/env_wrapper.cpython-37.pyc differ
+diff --git a/JSS/default_config.py b/JSS/default_config.py
+index 06432b6..90ed481 100644
+--- a/JSS/default_config.py
++++ b/JSS/default_config.py
+@@ -8,7 +8,7 @@ default_config = {
+     'framework': 'torch',
+     'log_level': 'WARN',
+     'num_gpus': 0,
+-    'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51',
++    'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta51',
+     'num_envs_per_worker': 2,
+     'rollout_fragment_length': 1024,
+     'num_workers': mp.cpu_count() - 1,
+diff --git a/JSS/env/__pycache__/JSS.cpython-37.pyc b/JSS/env/__pycache__/JSS.cpython-37.pyc
+index 846d753..1a7a9ae 100644
+Binary files a/JSS/env/__pycache__/JSS.cpython-37.pyc and b/JSS/env/__pycache__/JSS.cpython-37.pyc differ
+diff --git a/JSS/env/__pycache__/__init__.cpython-37.pyc b/JSS/env/__pycache__/__init__.cpython-37.pyc
+index 4086bef..152c20f 100644
+Binary files a/JSS/env/__pycache__/__init__.cpython-37.pyc and b/JSS/env/__pycache__/__init__.cpython-37.pyc differ
+diff --git a/JSS/train.py b/JSS/train.py
+index 36edcfc..1f21a34 100644
+--- a/JSS/train.py
++++ b/JSS/train.py
+@@ -1,5 +1,6 @@
+ import ray
+ import wandb
++import torch
+ 
+ from ray import tune
+ from ray.rllib.agents.ppo import PPOTrainer
+@@ -16,6 +17,8 @@ from JSS.env.JSS import JSS
+ 
+ from JSS.models import FCMaskedActionsModel
+ 
++from ray.tune.logger import DEFAULT_LOGGERS
++
+ from ray.tune.integration.wandb import WandbLogger
+ 
+ from ray.tune.suggest.bayesopt import BayesOptSearch
+@@ -36,21 +39,21 @@ def train_func():
+         'seed': 0,
+         'framework': 'torch',
+         'log_level': 'WARN',
+-        'num_gpus': 0,
+-        'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51',
+-        'num_envs_per_worker': 2,
++        'num_gpus': 1,
++        'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta51',
++        'num_envs_per_worker': 7,
+         'rollout_fragment_length': 1024,
+         'num_workers': mp.cpu_count() - 1,
+-        'sgd_minibatch_size': 256,
++        'sgd_minibatch_size': 8192,
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 1000,
+         'gamma': 1.0,
+         'layer_size': 1024,
+         'layer_nb': 2,
+-        'lr': tune.uniform(3e-5, 1e-4),
++        'lr': tune.uniform(5e-6, 5e-4),
+         'clip_param': tune.uniform(0.2, 0.4),
+         'vf_clip_param': tune.uniform(5.0, 15.0),
+-        'kl_target': tune.uniform(0.005, 0.2),
++        'kl_target': tune.uniform(0.005, 0.25),
+         'num_sgd_iter': 25,
+         'lambda': tune.uniform(0.8, 1.0),
+         "use_critic": True,
+@@ -59,9 +62,9 @@ def train_func():
+         "shuffle_sequences": True,
+         "vf_share_layers": False,
+         "vf_loss_coeff": tune.uniform(0.5, 1.5),
+-        'entropy_coeff': tune.uniform(5e-5, 1e-3),
++        'entropy_coeff': tune.uniform(1e-5, 1e-3),
+         "grad_clip": None,
+-        "batch_mode": "truncate_episodes",
++        "batch_mode": "complete_episodes",
+         "observation_filter": "NoFilter",
+         "simple_optimizer": False,
+         "_fake_gpus": False,
+@@ -106,6 +109,7 @@ def train_func():
+         'lambda': 1.0,
+         "kl_coeff": 0.2,
+         "vf_loss_coeff": 1.0,
++        "sgd_minibatch_size": 14000,
+     }]
+ 
+     hyperopt_search = HyperOptSearch(
+@@ -119,7 +123,7 @@ def train_func():
+                         num_samples=1200,
+                         name="ppo-jss",
+                         checkpoint_freq=10,
+-                        loggers=[WandbLogger])
++                        loggers=DEFAULT_LOGGERS + (WandbLogger, ))
+     wandb.log(analysis.best_config)
+ 
+     ray.shutdown()
