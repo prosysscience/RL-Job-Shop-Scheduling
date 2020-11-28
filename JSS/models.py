@@ -32,10 +32,7 @@ class FCMaskedActionsModel(TorchModelV2, nn.Module):
         raw_actions, state = self.action_model({
             "obs": input_dict["obs"]["real_obs"]
         })
-        inf_mask = torch.clamp(torch.log(action_mask), min=-1e10)
-        actions = raw_actions + inf_mask
-
-        return actions, state
+        return raw_actions.masked_fill(action_mask == 0, torch.finfo(torch.float).min), state
 
     def value_function(self):
         return self.action_model.value_function()
