@@ -7,7 +7,7 @@ early_terminate:
   type: hyperband
   min_iter: 20
 parameters:
-  sgd_minibatch_size:
+  minibatch_buffer_size:
     min: 4096
     max: 16000
   num_envs_per_worker:
@@ -27,32 +27,40 @@ parameters:
     max: 1-e4
   entropy_coeff_start:
     min: 0.0
-    max: 1-e3
+    max: 1-e2
   entropy_coeff_end:
     min: 0.0
     max: 1-e4
-  clip_param:
-    min: 0.2
-    max: 0.4
-  vf_clip_param:
-    min: 10.0
-    max: 20.0
-  kl_target:
-    min: 0.1
-    max: 0.5
+  vtrace_clip_rho_threshold:
+    min: 0.5
+    max: 1.0
+  vtrace_clip_pg_rho_threshold:
+    min: 0.5
+    max: 1.0
+  train_batch_size:
+    min: 16000
+    max: 120000
   num_sgd_iter:
-    min: 20
+    min: 5
     max: 30
+  replay_proportion:
+    min: 0.0
+    max: 0.5
+  replay_buffer_num_slots:
+    min: 1
+    max: 100
+  learner_queue_size:
+    min: 4
+    max: 32
+  max_sample_requests_in_flight_per_worker:
+    min: 1
+    max: 8
+  broadcast_interval:
+    min: 1
+    max: 8
   vf_loss_coeff:
     min: 0.5
     max: 1.0
-  kl_coeff:
-    min: 0.2
-    max: 0.6
-  batch_mode:
-    values:
-      - 'truncate_episodes'
-      - 'complete_episodes'
   activation_fn:
     values:
       - 'tanh'
