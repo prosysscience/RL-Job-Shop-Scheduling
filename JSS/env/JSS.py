@@ -114,7 +114,7 @@ class JSS(gym.Env):
         self.state[:, 0] = self.legal_actions[:-1]
         return {
             "real_obs": self.state,
-            "action_mask": self.legal_actions,
+            "action_mask": self.legal_actions, #TODO for better performance, output illegal actions
         }
 
     def get_legal_actions(self):

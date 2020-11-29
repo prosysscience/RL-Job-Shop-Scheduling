@@ -1,3 +1,4 @@
+import os
 import time
 
 import ray
@@ -19,7 +20,7 @@ from ray.tune import register_env
 from JSS.env_wrapper import BestActionsWrapper
 from JSS.env.JSS import JSS
 
-from JSS.models import FCMaskedActionsModel
+from JSS.models import FCMaskedActionsModelV1, FCMaskedActionsModelV2
 from ray.tune.utils import flatten_dict
 
 def env_creator(env_config):
@@ -61,22 +62,24 @@ def _handle_result(result: Dict) -> Tuple[Dict, Dict]:
 
 
 def train_func():
+    #os.environ["NVIDIA_VISIBLE_DEVICES"] = 2
+    os.environ["CUDA_VISIBLE_DEVICES"] = 2
     default_config = {
         'env': 'jss_env',
         'seed': 0,
         'framework': 'torch',
         'log_level': 'WARN',
         'num_gpus': 0,
-        'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51',
-        'num_envs_per_worker': 1, # TO TUNE
-        'rollout_fragment_length': 50, # TO TUNE
-        'num_workers': mp.cpu_count(),
-        'sgd_minibatch_size': 256, # TO TUNE
+        'instance_path': '/JSS/JSS/env/instances/ta51',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 1000,
         'gamma': 1.0,
-        'layer_size': 1024, # TO TUNE
+        'num_workers': mp.cpu_count(),
         'layer_nb': 2,
+        'num_envs_per_worker': 1, # TO TUNE
+        'rollout_fragment_length': 700, # TO TUNE
+        'sgd_minibatch_size': 8000, # TO TUNE
+        'layer_size': 1024, # TO TUNE
         'lr_start': 1e-4, # TO TUNE
         'lr_end': 1e-4, # TO TUNE
         'entropy_coeff_start': 1e-5, # TO TUNE
@@ -86,12 +89,14 @@ def train_func():
         'kl_target': 0.2, # TO TUNE
         'num_sgd_iter': 25, # TO TUNE
         "vf_loss_coeff": 0.7, # TO TUNE
-        "grad_clip": None, # TO TUNE
+        "kl_coeff": 0.4, # TO TUNE
         "batch_mode": "truncate_episodes", # TO TUNE
+        "activation_fn": "tanh", # TO TUNE
+        "model_net": "fc_masked_model_v1", # TO TUNE
         'lambda': 1.0,
+        "grad_clip": None,
         "use_critic": True,
         "use_gae": True,
-        "kl_coeff": 0.4, # TO TUNE
         "shuffle_sequences": True,
         "vf_share_layers": False,
         "observation_filter": "NoFilter",
@@ -104,13 +109,12 @@ def train_func():
 
     config = wandb.config
 
-    ModelCatalog.register_custom_model("fc_masked_model", FCMaskedActionsModel)
-
-
+    ModelCatalog.register_custom_model("fc_masked_model_v1", FCMaskedActionsModelV1)
+    ModelCatalog.register_custom_model("fc_masked_model_v2", FCMaskedActionsModelV2)
 
     config['model'] = {
-        "fcnet_activation": "tanh",
-        "custom_model": "fc_masked_model",
+        "fcnet_activation": config["activation_fn"],
+        "custom_model": config["model_net"],
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
     }
     config['env_config'] = {
@@ -120,6 +124,10 @@ def train_func():
     config['train_batch_size'] = config['num_workers'] * config['num_envs_per_worker'] * config['rollout_fragment_length']
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
+    config['lr'] = config['lr_start']
+    config['lr_schedule'] = [[0, config['lr_start']], [10000000, config['lr_end']]]
+    config['entropy_coeff'] = config['entropy_coeff_start']
+    config['entropy_coeff_schedule'] = [[0, config['entropy_coeff_start']], [10000000, config['entropy_coeff_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
@@ -128,9 +136,11 @@ def train_func():
     config.pop('lr_end', None)
     config.pop('entropy_coeff_start', None)
     config.pop('entropy_coeff_end', None)
+    config.pop('activation_fn', None)
+    config.pop('model_net', None)
 
     stop = {
-        "time_total_s": 300,
+        "time_total_s": 1000,
     }
 
     start_time = time.time()
