@@ -32,8 +32,9 @@ class FCMaskedActionsModelTF(DistributionalQTFModel, TFModelV2):
         raw_actions, _ = self.action_embed_model({
             "obs": input_dict["obs"]["real_obs"]
         })
-        inf_mask = tf.maximum(tf.math.log(action_mask), tf.float32.min)
-        return raw_actions + inf_mask, state
+        #inf_mask = tf.maximum(tf.math.log(action_mask), tf.float32.min)
+        logits = tf.where(tf.math.equal(action_mask, 1), raw_actions,  tf.float32.min)
+        return logits, state
 
     def value_function(self):
         return self.action_embed_model.value_function()

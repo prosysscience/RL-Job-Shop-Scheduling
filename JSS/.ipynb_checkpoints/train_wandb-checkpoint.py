@@ -75,14 +75,14 @@ def train_func():
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,
         'train_batch_size': 32001,
-        'num_envs_per_worker': 1, # TO TUNE
-        'rollout_fragment_length': 512, # TO TUNE
-        'sgd_minibatch_size': 56, # TO TUNE
-        'layer_size': 1024, # TO TUNE
-        'lr': 1e-4, # TO TUNE
-        'entropy_coeff': 1e-5, # TO TUNE
-        'clip_param': 0.3, # TO TUNE
-        'vf_clip_param': 15.0, # TO TUNE
+        'num_envs_per_worker': 2, # TO TUNE
+        'rollout_fragment_length': 1064, # TO TUNE
+        'sgd_minibatch_size': 5443, # TO TUNE
+        'layer_size': 853, # TO TUNE
+        'lr': 0.0001798, # TO TUNE
+        'entropy_coeff': 0.00007394, # TO TUNE
+        'clip_param': 0.2604, # TO TUNE
+        'vf_clip_param': 20.0, # TO TUNE
         'kl_target': 0.2, # TO TUNE
         'num_sgd_iter': 25, # TO TUNE
         "vf_loss_coeff": 0.7, # TO TUNE
