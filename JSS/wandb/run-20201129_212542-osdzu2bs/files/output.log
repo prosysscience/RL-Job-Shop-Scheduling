@@ -1,0 +1,11 @@
+2020-11-29 21:25:45,288	INFO services.py:1104 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+Traceback (most recent call last):
+  File "train_wandb_impala.py", line 202, in <module>
+    train_func()
+  File "train_wandb_impala.py", line 161, in train_func
+    'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
+  File "train_wandb_impala.py", line 161, in <listcomp>
+    'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
+  File "/root/miniconda3/lib/python3.8/site-packages/wandb/sdk/wandb_config.py", line 127, in __getitem__
+    return self._items[key]
+KeyError: 'layer_size'

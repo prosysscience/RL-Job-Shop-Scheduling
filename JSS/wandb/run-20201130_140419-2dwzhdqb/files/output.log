@@ -1,0 +1,49 @@
+2020-11-30 14:04:22,593	INFO services.py:1090 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+2020-11-30 14:04:24,135	INFO trainer.py:592 -- Tip: set framework=tfe or the --eager flag to enable TensorFlow eager execution
+[2m[36m(pid=41748)[0m WARNING:tensorflow:From /root/miniconda3/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+[2m[36m(pid=41748)[0m Instructions for updating:
+[2m[36m(pid=41748)[0m non-resource variables are not supported in the long term
+[2m[36m(pid=41748)[0m 2020-11-30 14:04:26,985	INFO catalog.py:306 -- Wrapping <class 'JSS.models.FCMaskedActionsModelTF'> as None
+[2m[36m(pid=41748)[0m WARNING:tensorflow:From /root/miniconda3/lib/python3.8/site-packages/tensorflow/python/ops/resource_variable_ops.py:1659: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+[2m[36m(pid=41748)[0m Instructions for updating:
+[2m[36m(pid=41748)[0m If using Keras pass *_constraint arguments to layers.
+Traceback (most recent call last):
+  File "train_wandb.py", line 142, in <module>
+    train_func()
+  File "train_wandb.py", line 130, in train_func
+    trainer = PPOTrainer(config=config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 106, in __init__
+    Trainer.__init__(self, config, env, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 477, in __init__
+    super().__init__(config, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trainable.py", line 249, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 630, in setup
+    self._init(self.config, self.env_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 133, in _init
+    self.workers = self._make_workers(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 701, in _make_workers
+    return WorkerSet(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/evaluation/worker_set.py", line 79, in __init__
+    remote_spaces = ray.get(self.remote_workers(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/worker.py", line 1452, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(KeyError): [36mray::RolloutWorker.foreach_policy()[39m (pid=41748, ip=172.17.0.16)
+  File "python/ray/_raylet.pyx", line 443, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 477, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 481, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 482, in ray._raylet.execute_task
+  File "python/ray/_raylet.pyx", line 436, in ray._raylet.execute_task.function_executor
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/evaluation/rollout_worker.py", line 454, in __init__
+    self._build_policy_map(policy_dict, policy_config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/evaluation/rollout_worker.py", line 1059, in _build_policy_map
+    policy_map[name] = cls(obs_space, act_space, merged_conf)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/policy/tf_policy_template.py", line 206, in __init__
+    DynamicTFPolicy.__init__(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/policy/dynamic_tf_policy.py", line 251, in __init__
+    dist_inputs, self._state_out = self.model(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/models/modelv2.py", line 208, in __call__
+    res = self.forward(restored, state or [], seq_lens)
+  File "/JSS/JSS/models.py", line 68, in forward
+    "obs": input_dict["obs"]["cart"]
+KeyError: 'cart'

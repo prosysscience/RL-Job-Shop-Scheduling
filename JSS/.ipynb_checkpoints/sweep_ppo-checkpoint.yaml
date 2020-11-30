@@ -1,0 +1,49 @@
+program: train_wandb.py
+method: bayes
+metric:
+  name: episode_reward_mean
+  goal: maximize
+early_terminate:
+  type: hyperband
+  min_iter: 25
+parameters:
+  sgd_minibatch_size:
+    min: 4096
+    max: 32000
+  num_envs_per_worker:
+    min: 1
+    max: 4
+  rollout_fragment_length:
+    min: 256
+    max: 1256
+  layer_size:
+    min: 768
+    max: 1256
+  lr:
+    min: 0.000001
+    max: 0.001
+  entropy_coeff:
+    min: 0.0
+    max: 0.01
+  clip_param:
+    min: 0.2
+    max: 0.4
+  vf_clip_param:
+    min: 10.0
+    max: 20.0
+  kl_target:
+    min: 0.1
+    max: 0.5
+  num_sgd_iter:
+    min: 20
+    max: 30
+  vf_loss_coeff:
+    min: 0.5
+    max: 1.0
+  kl_coeff:
+    min: 0.2
+    max: 0.6
+  batch_mode:
+    values:
+      - 'truncate_episodes'
+      - 'complete_episodes'
