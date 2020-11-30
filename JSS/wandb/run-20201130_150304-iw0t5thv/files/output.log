@@ -1,0 +1,21 @@
+2020-11-30 15:03:06,758	INFO services.py:1090 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+2020-11-30 15:03:09,142	INFO trainer.py:592 -- Tip: set framework=tfe or the --eager flag to enable TensorFlow eager execution
+2020-11-30 15:03:09,143	INFO trainer.py:617 -- Current log_level is WARN. For more information, set 'log_level': 'INFO' / 'DEBUG' or use the -v and -vv flags.
+Traceback (most recent call last):
+  File "train_wandb.py", line 142, in <module>
+    train_func()
+  File "train_wandb.py", line 130, in train_func
+    trainer = PPOTrainer(config=config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 106, in __init__
+    Trainer.__init__(self, config, env, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 477, in __init__
+    super().__init__(config, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trainable.py", line 249, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 630, in setup
+    self._init(self.config, self.env_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 112, in _init
+    validate_config(config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/ppo/ppo.py", line 120, in validate_config
+    raise ValueError("`sgd_minibatch_size` ({}) must be <= "
+ValueError: `sgd_minibatch_size` (13542) must be <= `train_batch_size` (100).

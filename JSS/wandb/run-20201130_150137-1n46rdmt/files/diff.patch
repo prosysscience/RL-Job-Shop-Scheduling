@@ -1,0 +1,90 @@
+diff --git a/JSS.egg-info/SOURCES.txt b/JSS.egg-info/SOURCES.txt
+index 26a5070..f15aace 100644
+--- a/JSS.egg-info/SOURCES.txt
++++ b/JSS.egg-info/SOURCES.txt
+@@ -18,6 +18,7 @@ JSS/multiprocessing_env.py
+ JSS/random_loop.py
+ JSS/train.py
+ JSS/train_wandb.py
++JSS/train_wandb_impala.py
+ JSS.egg-info/PKG-INFO
+ JSS.egg-info/SOURCES.txt
+ JSS.egg-info/dependency_links.txt
+diff --git a/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py b/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
+index 645950c..c8d0d54 100644
+--- a/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
+@@ -66,8 +66,8 @@ def train_func():
+         'env': 'jss_env',
+         'seed': 0,
+         'framework': 'tf',
+-        'log_level': 'INFO',
+-        'num_gpus': 0,
++        'log_level': 'WARN',
++        'num_gpus': 1,
+         'instance_path': '/JSS/JSS/env/instances/ta51',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 1000,
+diff --git a/JSS/__pycache__/CustomCallbacks.cpython-38.pyc b/JSS/__pycache__/CustomCallbacks.cpython-38.pyc
+index d8867e4..db3d095 100644
+Binary files a/JSS/__pycache__/CustomCallbacks.cpython-38.pyc and b/JSS/__pycache__/CustomCallbacks.cpython-38.pyc differ
+diff --git a/JSS/__pycache__/PrioritizedReplayBuffer.cpython-38.pyc b/JSS/__pycache__/PrioritizedReplayBuffer.cpython-38.pyc
+index b792499..c9e1a89 100644
+Binary files a/JSS/__pycache__/PrioritizedReplayBuffer.cpython-38.pyc and b/JSS/__pycache__/PrioritizedReplayBuffer.cpython-38.pyc differ
+diff --git a/JSS/__pycache__/__init__.cpython-38.pyc b/JSS/__pycache__/__init__.cpython-38.pyc
+index b15f5c2..4a3e906 100644
+Binary files a/JSS/__pycache__/__init__.cpython-38.pyc and b/JSS/__pycache__/__init__.cpython-38.pyc differ
+diff --git a/JSS/__pycache__/env_wrapper.cpython-38.pyc b/JSS/__pycache__/env_wrapper.cpython-38.pyc
+index 5d1eee5..c9ff223 100644
+Binary files a/JSS/__pycache__/env_wrapper.cpython-38.pyc and b/JSS/__pycache__/env_wrapper.cpython-38.pyc differ
+diff --git a/JSS/__pycache__/models.cpython-38.pyc b/JSS/__pycache__/models.cpython-38.pyc
+index da2b3d7..0f81fb9 100644
+Binary files a/JSS/__pycache__/models.cpython-38.pyc and b/JSS/__pycache__/models.cpython-38.pyc differ
+diff --git a/JSS/env/__pycache__/JSS.cpython-38.pyc b/JSS/env/__pycache__/JSS.cpython-38.pyc
+index bca43d6..3f55a97 100644
+Binary files a/JSS/env/__pycache__/JSS.cpython-38.pyc and b/JSS/env/__pycache__/JSS.cpython-38.pyc differ
+diff --git a/JSS/env/__pycache__/__init__.cpython-38.pyc b/JSS/env/__pycache__/__init__.cpython-38.pyc
+index 758925f..e094225 100644
+Binary files a/JSS/env/__pycache__/__init__.cpython-38.pyc and b/JSS/env/__pycache__/__init__.cpython-38.pyc differ
+diff --git a/JSS/train_wandb.py b/JSS/train_wandb.py
+index 645950c..c8d0d54 100644
+--- a/JSS/train_wandb.py
++++ b/JSS/train_wandb.py
+@@ -66,8 +66,8 @@ def train_func():
+         'env': 'jss_env',
+         'seed': 0,
+         'framework': 'tf',
+-        'log_level': 'INFO',
+-        'num_gpus': 0,
++        'log_level': 'WARN',
++        'num_gpus': 1,
+         'instance_path': '/JSS/JSS/env/instances/ta51',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 1000,
+diff --git a/JSS/wandb/debug-internal.log b/JSS/wandb/debug-internal.log
+index 8622470..20788b6 120000
+--- a/JSS/wandb/debug-internal.log
++++ b/JSS/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20201130_140528-2zb4hbbp/logs/debug-internal.log
+\ No newline at end of file
++run-20201130_150137-1n46rdmt/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/JSS/wandb/debug.log b/JSS/wandb/debug.log
+index a0b8761..31b0e66 120000
+--- a/JSS/wandb/debug.log
++++ b/JSS/wandb/debug.log
+@@ -1 +1 @@
+-run-20201130_140528-2zb4hbbp/logs/debug.log
+\ No newline at end of file
++run-20201130_150137-1n46rdmt/logs/debug.log
+\ No newline at end of file
+diff --git a/JSS/wandb/latest-run b/JSS/wandb/latest-run
+index 86c02df..bf2784e 120000
+--- a/JSS/wandb/latest-run
++++ b/JSS/wandb/latest-run
+@@ -1 +1 @@
+-run-20201130_140528-2zb4hbbp
+\ No newline at end of file
++run-20201130_150137-1n46rdmt
+\ No newline at end of file

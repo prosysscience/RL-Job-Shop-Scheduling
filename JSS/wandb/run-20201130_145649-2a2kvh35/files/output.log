@@ -1,0 +1,67 @@
+2020-11-30 14:56:53,066	INFO services.py:1090 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+2020-11-30 14:56:55,408	ERROR syncer.py:63 -- Log sync requires rsync to be installed.
+2020-11-30 14:56:55,412	INFO trainer.py:592 -- Tip: set framework=tfe or the --eager flag to enable TensorFlow eager execution
+[2m[36m(pid=4551)[0m WARNING:tensorflow:From /root/miniconda3/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+[2m[36m(pid=4551)[0m Instructions for updating:
+[2m[36m(pid=4551)[0m non-resource variables are not supported in the long term
+[2m[36m(pid=4551)[0m 2020-11-30 14:56:57,824	INFO rollout_worker.py:437 -- Could not seed torch
+[2m[36m(pid=4551)[0m 2020-11-30 14:56:57,879	INFO catalog.py:306 -- Wrapping <class 'JSS.models.FCMaskedActionsModelTF'> as None
+[2m[36m(pid=4551)[0m WARNING:tensorflow:From /root/miniconda3/lib/python3.8/site-packages/tensorflow/python/ops/resource_variable_ops.py:1659: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+[2m[36m(pid=4551)[0m Instructions for updating:
+[2m[36m(pid=4551)[0m If using Keras pass *_constraint arguments to layers.
+2020-11-30 14:56:59,474	INFO rollout_worker.py:429 -- Env doesn't support env.seed(): None
+2020-11-30 14:56:59,474	INFO rollout_worker.py:437 -- Could not seed torch
+2020-11-30 14:56:59,713	INFO catalog.py:306 -- Wrapping <class 'JSS.models.FCMaskedActionsModelTF'> as None
+WARNING:tensorflow:From /root/miniconda3/lib/python3.8/site-packages/tensorflow/python/ops/resource_variable_ops.py:1659: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+2020-11-30 14:57:02,280	INFO rollout_worker.py:1063 -- Built policy map: {'default_policy': <ray.rllib.policy.tf_policy_template.PPOTFPolicy object at 0x7fa6741f0eb0>}
+2020-11-30 14:57:02,280	INFO rollout_worker.py:1064 -- Built preprocessor map: {'default_policy': <ray.rllib.models.preprocessors.NoPreprocessor object at 0x7fa6741f0c10>}
+2020-11-30 14:57:02,280	INFO rollout_worker.py:495 -- Built filter map: {'default_policy': <ray.rllib.utils.filter.NoFilter object at 0x7fa6741f0ac0>}
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1365, in _do_call
+    return fn(*args)
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1348, in _run_fn
+    self._extend_graph()
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1388, in _extend_graph
+    tf_session.ExtendSession(self._session)
+tensorflow.python.framework.errors_impl.InternalError: Constraining by assigned device should not cause an error. Original root's assigned device name: /job:localhost/replica:0/task:0/device:GPU:0 node's assigned device name "/job:localhost/replica:0/task:0/device:CPU:0. Error: Cannot merge devices with incompatible types: '/job:localhost/replica:0/task:0/device:GPU:0' and '/job:localhost/replica:0/task:0/device:CPU:0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train_wandb.py", line 142, in <module>
+    train_func()
+  File "train_wandb.py", line 130, in train_func
+    trainer = PPOTrainer(config=config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 106, in __init__
+    Trainer.__init__(self, config, env, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 477, in __init__
+    super().__init__(config, logger_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/tune/trainable.py", line 249, in __init__
+    self.setup(copy.deepcopy(self.config))
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer.py", line 630, in setup
+    self._init(self.config, self.env_creator)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/trainer_template.py", line 140, in _init
+    self.train_exec_impl = execution_plan(self.workers, config)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/agents/ppo/ppo.py", line 263, in execution_plan
+    TrainTFMultiGPU(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/execution/train_ops.py", line 150, in __init__
+    LocalSyncParallelOptimizer(
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/execution/multi_gpu_impl.py", line 91, in __init__
+    self._setup_device(device, device_placeholders,
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/execution/multi_gpu_impl.py", line 292, in _setup_device
+    graph_obj = self.build_graph(device_input_slices)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/policy/dynamic_tf_policy.py", line 342, in copy
+    TFPolicy._initialize_loss(instance, loss, loss_inputs)
+  File "/root/miniconda3/lib/python3.8/site-packages/ray/rllib/policy/tf_policy.py", line 297, in _initialize_loss
+    self._sess.run(tf1.global_variables_initializer())
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 957, in run
+    result = self._run(None, fetches, feed_dict, options_ptr,
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1180, in _run
+    results = self._do_run(handle, final_targets, final_fetches,
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1358, in _do_run
+    return self._do_call(_run_fn, feeds, fetches, targets, options,
+  File "/root/miniconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py", line 1384, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.InternalError: Constraining by assigned device should not cause an error. Original root's assigned device name: /job:localhost/replica:0/task:0/device:GPU:0 node's assigned device name "/job:localhost/replica:0/task:0/device:CPU:0. Error: Cannot merge devices with incompatible types: '/job:localhost/replica:0/task:0/device:GPU:0' and '/job:localhost/replica:0/task:0/device:CPU:0'

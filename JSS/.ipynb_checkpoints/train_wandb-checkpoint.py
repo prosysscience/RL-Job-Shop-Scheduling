@@ -20,7 +20,7 @@ from ray.tune import register_env
 from JSS.env_wrapper import BestActionsWrapper
 from JSS.env.JSS import JSS
 
-from JSS.models import FCMaskedActionsModelV1, FCMaskedActionsModelTF
+from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
 
 def env_creator(env_config):
@@ -66,15 +66,15 @@ def train_func():
         'env': 'jss_env',
         'seed': 0,
         'framework': 'tf',
-        'log_level': 'INFO',
-        'num_gpus': 0,
+        'log_level': 'WARN',
+        'num_gpus': 1,
         'instance_path': '/JSS/JSS/env/instances/ta51',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 1000,
         'gamma': 1.0,
-        'num_workers': 1,
+        'num_workers': mp.cpu_count(),
         'layer_nb': 2,
-        'train_batch_size': 100,
+        'train_batch_size': 32001,
         'num_envs_per_worker': 1, # TO TUNE
         'rollout_fragment_length': 512, # TO TUNE
         'sgd_minibatch_size': 56, # TO TUNE
