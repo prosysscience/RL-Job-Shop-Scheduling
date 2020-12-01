@@ -68,13 +68,13 @@ def train_func():
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': '/JSS/JSS/env/instances/ta51',
+        'instance_path': '/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 1000,
         'gamma': 1.0,
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,
-        'train_batch_size': 32001,
+        'train_batch_size': 32000,
         'num_envs_per_worker': 2, # TO TUNE
         'rollout_fragment_length': 1064, # TO TUNE
         'sgd_minibatch_size': 5443, # TO TUNE
@@ -83,11 +83,11 @@ def train_func():
         'entropy_coeff': 0.00007394, # TO TUNE
         'clip_param': 0.2604, # TO TUNE
         'vf_clip_param': 20.0, # TO TUNE
-        'kl_target': 0.2088, # TO TUNE
         'num_sgd_iter': 22, # TO TUNE
         "vf_loss_coeff": 0.9394, # TO TUNE
         "kl_coeff": 0.5021, # TO TUNE
         "batch_mode": "truncate_episodes", # TO TUNE
+        'kl_target': 0.2,
         'lambda': 1.0,
         "grad_clip": None,
         "use_critic": True,

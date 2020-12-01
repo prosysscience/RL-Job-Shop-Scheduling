@@ -17,13 +17,13 @@ parameters:
     min: 256
     max: 1256
   layer_size:
-    min: 768
-    max: 1256
+    min: 500
+    max: 1000
   lr:
     min: 0.000001
-    max: 0.001
+    max: 0.005
   entropy_coeff:
-    min: 0.0
+    min: 0.00000001
     max: 0.01
   clip_param:
     min: 0.2
@@ -31,12 +31,9 @@ parameters:
   vf_clip_param:
     min: 10.0
     max: 20.0
-  kl_target:
-    min: 0.1
-    max: 0.5
   num_sgd_iter:
     min: 20
-    max: 30
+    max: 40
   vf_loss_coeff:
     min: 0.5
     max: 1.0
