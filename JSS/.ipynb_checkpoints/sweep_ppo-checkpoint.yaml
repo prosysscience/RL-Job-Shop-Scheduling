@@ -3,44 +3,40 @@ method: bayes
 metric:
   name: episode_reward_mean
   goal: maximize
-early_terminate:
-  type: hyperband
-  min_iter: 25
 parameters:
   sgd_minibatch_size:
-    min: 4096
-    max: 32000
+    min: 16000
+    max: 36000
   num_envs_per_worker:
-    min: 1
-    max: 4
+    min: 2
+    max: 6
   rollout_fragment_length:
-    min: 256
-    max: 1256
+    min: 512
+    max: 1024
   layer_size:
-    min: 500
-    max: 1000
-  lr:
-    min: 0.000001
-    max: 0.005
-  entropy_coeff:
-    min: 0.00000001
-    max: 0.01
+    min: 512
+    max: 1024
+  lr_start:
+    min: 0.00001
+    max: 0.001
+  lr_end:
+    min: 0.000005
+    max: 0.0005
   clip_param:
-    min: 0.2
+    min: 0.1
     max: 0.4
   vf_clip_param:
     min: 10.0
-    max: 20.0
+    max: 30.0
   num_sgd_iter:
-    min: 20
-    max: 40
+    min: 15
+    max: 30
   vf_loss_coeff:
     min: 0.5
     max: 1.0
   kl_coeff:
-    min: 0.2
+    min: 0.1
     max: 0.6
-  batch_mode:
-    values:
-      - 'truncate_episodes'
-      - 'complete_episodes'
+  kl_target:
+    min: 0.01
+    max: 0.2

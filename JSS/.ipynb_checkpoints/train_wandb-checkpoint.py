@@ -70,7 +70,7 @@ def train_func():
         'num_gpus': 1,
         'instance_path': '/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
-        'metrics_smoothing_episodes': 1000,
+        'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,
@@ -80,15 +80,17 @@ def train_func():
         'sgd_minibatch_size': 5443, # TO TUNE
         'layer_size': 853, # TO TUNE
         'lr': 0.0001798, # TO TUNE
-        'entropy_coeff': 0.00007394, # TO TUNE
+        'lr_start': 0.0001798, # TO TUNE
+        'lr_end': 0.0001798, # TO TUNE
         'clip_param': 0.2604, # TO TUNE
         'vf_clip_param': 20.0, # TO TUNE
         'num_sgd_iter': 22, # TO TUNE
         "vf_loss_coeff": 0.9394, # TO TUNE
         "kl_coeff": 0.5021, # TO TUNE
-        "batch_mode": "truncate_episodes", # TO TUNE
-        'kl_target': 0.2,
+        'kl_target': 0.2, # TO TUNE
         'lambda': 1.0,
+        'entropy_coeff': 0.0, # TUNE LATER
+        "batch_mode": "truncate_episodes",
         "grad_clip": None,
         "use_critic": True,
         "use_gae": True,
@@ -110,6 +112,7 @@ def train_func():
         "fcnet_activation": "relu",
         "custom_model": "fc_masked_model_tf",
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
+        "vf_share_layers": False,
     }
     config['env_config'] = {
         'instance_path': config['instance_path']
@@ -117,10 +120,15 @@ def train_func():
 
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
+    
+    config['lr'] = config['lr_start']
+    config['lr_schedule'] = [[0, config['lr_start']], [10000000, config['lr_end']]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
+    config.pop('lr_start', None)
+    config.pop('lr_end', None)
 
     stop = {
         "time_total_s": 600,
