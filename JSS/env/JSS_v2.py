@@ -56,6 +56,7 @@ class JSSv2(gym.Env):
         self.machine_can_perform_job = None
         self.number_jobs_need_machine = None
         self.state = None
+        self.current_machine = -1
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
         instance_file = open(instance_path, 'r')
@@ -122,6 +123,17 @@ class JSSv2(gym.Env):
     def get_legal_actions(self):
         return self.legal_actions
 
+    def _next_machine(self):
+        reward = 0
+        machine_found = False
+        while not machine_found:
+            self.current_machine += 1
+            if self.current_machine >= self.machines:
+                reward -= self._increase_time_step()
+                self.current_machine = 0
+            machine_found = self.number_jobs_need_machine[self.current_machine] > 0 and self.time_until_available_machine[self.current_machine] == 0
+        return reward
+
     def reset(self):
         self.action_step = 0
         self.current_time_step = 0
@@ -148,6 +160,8 @@ class JSSv2(gym.Env):
             self.machine_can_perform_job[machine_needed][job] = True
             self.number_jobs_need_machine[machine_needed] += 1
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
+        self.current_machine = -1
+        self._next_machine()
         return self._get_current_state_representation()
 
     def step(self, action: int):
@@ -181,11 +195,10 @@ class JSSv2(gym.Env):
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
         # if we can't allocate new job in the current timestep, we pass to the next one
-        while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
-            reward -= self._increase_time_step()
-        if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+        reward -= self._next_machine()
+        if len(self.next_time_step) > 0:
             self.legal_actions[self.jobs] = True
-        elif self.legal_actions[self.jobs]:
+        else:
             self.legal_actions[self.jobs] = False
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
