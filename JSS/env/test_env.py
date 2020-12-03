@@ -1,10 +1,12 @@
+from JSS.env.JSS_v2 import JSSv2
 from JSS.env.JSS import JSS
 
+import numpy as np
 
 class TestEnv:
 
     def test_optimum_ta01(self):
-        env = JSS({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta01'})
+        env = JSSv2({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta01'})
         env.reset()
         assert env.current_time_step == 0
         # for every machine give the jobs to process in order for every machine
@@ -60,3 +62,15 @@ class TestEnv:
         assert env.current_time_step == 1231
         env.reset()
         assert env.current_time_step == 0
+
+    def test_random(self):
+        env = JSSv2({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta01'})
+        state = env.reset()
+        assert env.current_time_step == 0
+        legal_actions = env.get_legal_actions()
+        done = False
+        while not done:
+            print(env.current_machine)
+            actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
+            state, rewards, done, _ = env.step(actions)
+            legal_actions = env.get_legal_actions()

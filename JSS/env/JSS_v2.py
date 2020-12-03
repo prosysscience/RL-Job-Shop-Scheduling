@@ -114,7 +114,7 @@ class JSSv2(gym.Env):
         })
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.legal_actions[:-1]
+        self.state[:, 0] = self.legal_actions
         return {
             "real_obs": self.state,
             "action_mask": self.legal_actions, #TODO for better performance, output illegal actions
@@ -123,25 +123,14 @@ class JSSv2(gym.Env):
     def get_legal_actions(self):
         return self.legal_actions
 
-    def _next_machine(self):
-        reward = 0
-        machine_found = False
-        while not machine_found:
-            self.current_machine += 1
-            if self.current_machine >= self.machines:
-                reward -= self._increase_time_step()
-                self.current_machine = 0
-            machine_found = self.number_jobs_need_machine[self.current_machine] > 0 and self.time_until_available_machine[self.current_machine] == 0
-        return reward
-
     def reset(self):
         self.action_step = 0
         self.current_time_step = 0
+        self.current_machine = self.machines
         self.next_time_step = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
-        self.legal_actions[self.jobs] = False
+        self.legal_actions = np.ones(self.jobs, dtype=np.bool)
         # used to represent the solution
         self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -151,17 +140,15 @@ class JSSv2(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.machine_can_perform_job = np.zeros((self.machines, self.jobs + 1), dtype=np.bool)
-        self.machine_can_perform_job[:, self.jobs] = True
+        self.machine_can_perform_job = np.zeros((self.machines, self.jobs), dtype=np.bool)
         self.number_jobs_need_machine = np.zeros(self.machines, dtype=np.int)
         for job in range(self.jobs):
             machine_needed = self.instance_matrix[job][0][0]
+            self.current_machine = min(machine_needed, self.current_machine)
             self.needed_machine_jobs[job] = machine_needed
             self.machine_can_perform_job[machine_needed][job] = True
             self.number_jobs_need_machine[machine_needed] += 1
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
-        self.current_machine = -1
-        self._next_machine()
         return self._get_current_state_representation()
 
     def step(self, action: int):
@@ -171,13 +158,12 @@ class JSSv2(gym.Env):
             only_legal = np.where(self.legal_actions)[0][0]
             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
-            scaled_reward = self._reward_scaler(reward)
             if self.nb_legal_actions > 1:
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                     self.legal_actions[self.jobs] = True
-            return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+            return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.needed_machine_jobs[action]
@@ -194,15 +180,22 @@ class JSSv2(gym.Env):
             if self.machine_can_perform_job[machine_needed][job] and self.legal_actions[job]:
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
-        # if we can't allocate new job in the current timestep, we pass to the next one
-        reward -= self._next_machine()
-        if len(self.next_time_step) > 0:
-            self.legal_actions[self.jobs] = True
-        else:
-            self.legal_actions[self.jobs] = False
-        # we then need to scale the reward
-        scaled_reward = self._reward_scaler(reward)
-        return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+        not_found = True
+        for machine in range(self.current_machine + 1, self.machines):
+            if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
+                self.current_machine = machine
+                not_found = False
+                break
+        if not_found:
+            reward -= self._increase_time_step()
+            self.current_machine = 0
+            for machine in range(0, self.machines):
+                if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
+                    self.current_machine = machine
+                    break
+        while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+            reward -= self._increase_time_step()
+        return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
 
     def _reward_scaler(self, reward):
         return reward / self.max_time_op
