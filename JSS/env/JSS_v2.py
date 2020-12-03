@@ -8,7 +8,7 @@ import numpy as np
 import plotly.figure_factory as ff
 
 
-class JSS(gym.Env):
+class JSSv2(gym.Env):
 
     def __init__(self, env_config=None):
         """
@@ -144,18 +144,6 @@ class JSS(gym.Env):
 
     def step(self, action: int):
         reward = 0.0
-        if action == self.jobs:
-            self.legal_actions[self.jobs] = False
-            only_legal = np.where(self.legal_actions)[0][0]
-            while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-                reward -= self._increase_time_step()
-            scaled_reward = self._reward_scaler(reward)
-            if self.nb_legal_actions > 1:
-                self.legal_actions[only_legal] = False
-                self.nb_legal_actions -= 1
-                if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-                    self.legal_actions[self.jobs] = True
-            return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.needed_machine_jobs[action]
@@ -175,10 +163,6 @@ class JSS(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-            self.legal_actions[self.jobs] = True
-        elif self.legal_actions[self.jobs]:
-            self.legal_actions[self.jobs] = False
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
