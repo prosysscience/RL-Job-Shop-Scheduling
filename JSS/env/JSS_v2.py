@@ -54,6 +54,7 @@ class JSSv2(gym.Env):
         self.total_idle_time_jobs = None
         self.idle_time_jobs_last_op = None
         self.machine_can_perform_job = None
+        self.number_jobs_need_machine = None
         self.state = None
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
@@ -140,10 +141,12 @@ class JSSv2(gym.Env):
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
         self.machine_can_perform_job = np.zeros((self.machines, self.jobs + 1), dtype=np.bool)
         self.machine_can_perform_job[:, self.jobs] = True
+        self.number_jobs_need_machine = np.zeros(self.machines, dtype=np.int)
         for job in range(self.jobs):
             machine_needed = self.instance_matrix[job][0][0]
             self.needed_machine_jobs[job] = machine_needed
             self.machine_can_perform_job[machine_needed][job] = True
+            self.number_jobs_need_machine[machine_needed] += 1
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
         return self._get_current_state_representation()
 
@@ -219,10 +222,12 @@ class JSSv2(gym.Env):
                     self.state[job][2] = self.todo_time_step_job[job] / self.machines
                     machine_needed = self.needed_machine_jobs[job]
                     self.machine_can_perform_job[machine_needed][job] = False
+                    self.number_jobs_need_machine[machine_needed] -= 1
                     if self.todo_time_step_job[job] < self.machines:
                         machine_needed = self.instance_matrix[job][self.todo_time_step_job[job]][0]
                         self.needed_machine_jobs[job] = machine_needed
                         self.machine_can_perform_job[machine_needed][job] = True
+                        self.number_jobs_need_machine[machine_needed] += 1
                         self.state[job][4] = max(0, self.time_until_available_machine[
                                                  self.needed_machine_jobs[job]] - difference) / self.max_time_op
                     else:
