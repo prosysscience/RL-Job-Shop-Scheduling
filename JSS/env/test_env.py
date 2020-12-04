@@ -74,3 +74,5 @@ class TestEnv:
             actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
             state, rewards, done, _ = env.step(actions)
             legal_actions = env.get_legal_actions()
+        assert env.nb_legal_actions == 0
+        assert min(env.solution.flatten()) != -1
