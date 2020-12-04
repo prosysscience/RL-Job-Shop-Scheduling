@@ -169,9 +169,6 @@ class JSSv2(gym.Env):
             if self.machine_can_perform_job[machine_needed][job] and self.legal_actions[job]:
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
-
-        while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
-            reward -= self._increase_time_step()
         not_found = True
         for machine in range(self.current_machine + 1, self.machines):
             if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
@@ -180,7 +177,6 @@ class JSSv2(gym.Env):
                 break
         if not_found and not self._is_done():
             reward -= self._increase_time_step()
-            self.current_machine = 0
             for machine in range(0, self.machines):
                 if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
                     self.current_machine = machine
