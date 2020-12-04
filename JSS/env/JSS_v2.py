@@ -114,10 +114,11 @@ class JSSv2(gym.Env):
         })
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.legal_actions * self.machine_can_perform_job[self.current_machine]
+        mask = self.legal_actions * self.machine_can_perform_job[self.current_machine]
+        self.state[:, 0] = mask[:-1]
         return {
             "real_obs": self.state,
-            "action_mask": self.legal_actions * self.machine_can_perform_job[self.current_machine], #TODO for better performance, output illegal actions
+            "action_mask": mask, #TODO for better performance, output illegal actions
         }
 
     def get_legal_actions(self):
@@ -128,9 +129,10 @@ class JSSv2(gym.Env):
         self.current_time_step = 0
         self.current_machine = self.machines
         self.next_time_step = list()
+        self.next_jobs = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs, dtype=np.bool)
+        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
         # used to represent the solution
         self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -140,7 +142,8 @@ class JSSv2(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.machine_can_perform_job = np.zeros((self.machines, self.jobs), dtype=np.bool)
+        self.machine_can_perform_job = np.zeros((self.machines, self.jobs + 1), dtype=np.bool)
+        self.machine_can_perform_job[:, self.jobs] = False
         self.number_jobs_need_machine = np.zeros(self.machines, dtype=np.int)
         for job in range(self.jobs):
             machine_needed = self.instance_matrix[job][0][0]
@@ -151,8 +154,29 @@ class JSSv2(gym.Env):
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
         return self._get_current_state_representation()
 
+    def _go_to_next_machine(self):
+        reward = 0.0
+        for machine in range(self.current_machine + 1, self.machines):
+            if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
+                self.current_machine = machine
+                return reward
+        previous_number_actions = self.nb_legal_actions
+        while self.nb_legal_actions == previous_number_actions and len(self.next_time_step) > 0:
+            reward -= self._increase_time_step()
+        for machine in range(0, self.machines):
+            if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
+                self.current_machine = machine
+                return reward
+        return reward
+
     def step(self, action: int):
         reward = 0.0
+        if action == self.jobs:
+            only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
+            self.legal_actions[only_legal] = False
+            self.nb_legal_actions -= 1
+            reward -= self._go_to_next_machine()
+            return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.needed_machine_jobs[action]
@@ -163,25 +187,15 @@ class JSSv2(gym.Env):
         self.state[action][1] = time_needed / self.max_time_op
         to_add_time_step = self.current_time_step + time_needed
         if to_add_time_step not in self.next_time_step:
-            bisect.insort_left(self.next_time_step, to_add_time_step)
+            index_addition = bisect.bisect_left(self.next_time_step, to_add_time_step)
+            self.next_time_step.insert(index_addition, to_add_time_step)
+            self.next_jobs.insert(index_addition, action)
         self.solution[action][current_time_step_job] = self.current_time_step
         for job in range(self.jobs):
             if self.machine_can_perform_job[machine_needed][job] and self.legal_actions[job]:
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
-        not_found = True
-        for machine in range(self.current_machine + 1, self.machines):
-            if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
-                self.current_machine = machine
-                not_found = False
-                break
-        if not_found and len(self.next_time_step) > 0:
-            while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
-                reward -= self._increase_time_step()
-            for machine in range(0, self.machines):
-                if self.time_until_available_machine[machine] == 0 and self.number_jobs_need_machine[machine] > 0:
-                    self.current_machine = machine
-                    break
+        reward -= self._go_to_next_machine()
         return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
 
     def _reward_scaler(self, reward):
@@ -195,6 +209,7 @@ class JSSv2(gym.Env):
         '''
         hole_planning = 0
         next_time_step_to_pick = self.next_time_step.pop(0)
+        self.next_jobs.pop(0)
         difference = next_time_step_to_pick - self.current_time_step
         self.current_time_step = next_time_step_to_pick
         for job in range(self.jobs):
@@ -245,6 +260,17 @@ class JSSv2(gym.Env):
                     if self.machine_can_perform_job[machine][job] and not self.legal_actions[job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
+            if len(self.next_time_step) > 0 and self.number_jobs_need_machine[machine] == 1: # TODO check next timestep
+                another_job_can_do_it = False
+                for job in self.next_jobs[:5]:
+                    if self.todo_time_step_job[job] + 1 < self.machines:
+                        machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                        if machine_needed == machine:
+                            another_job_can_do_it = True
+                if another_job_can_do_it:
+                    self.machine_can_perform_job[machine][self.jobs] = True
+            else:
+                self.machine_can_perform_job[machine][self.jobs] = False
         return hole_planning
 
     def _is_done(self):
