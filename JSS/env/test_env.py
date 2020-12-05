@@ -70,11 +70,10 @@ class TestEnv:
         legal_actions = env.get_legal_actions()
         done = False
         while not done:
-            #print(env.current_machine)
-            print(legal_actions)
             actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
+            print(env.current_machine)
             state, rewards, done, _ = env.step(actions)
             legal_actions = env.get_legal_actions()
         assert env.nb_legal_actions == 0
-        print(env.solution)
+        assert len(env.next_time_step) == 0
         assert min(env.solution.flatten()) != -1

@@ -44,6 +44,7 @@ class JSS(gym.Env):
         self.last_time_step = float('inf')
         self.current_time_step = float('inf')
         self.next_time_step = list()
+        self.next_jobs = list()
         self.legal_actions = None
         self.action_step = 0
         self.time_until_available_machine = None
@@ -124,6 +125,7 @@ class JSS(gym.Env):
         self.action_step = 0
         self.current_time_step = 0
         self.next_time_step = list()
+        self.next_jobs = list()
         self.nb_legal_actions = self.jobs
         # represent all the legal actions
         self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
@@ -166,7 +168,9 @@ class JSS(gym.Env):
         self.state[action][1] = time_needed / self.max_time_op
         to_add_time_step = self.current_time_step + time_needed
         if to_add_time_step not in self.next_time_step:
-            bisect.insort_left(self.next_time_step, to_add_time_step)
+            index = bisect.bisect_left(self.next_time_step, to_add_time_step)
+            self.next_time_step.insert(index, to_add_time_step)
+            self.next_jobs.insert(index, action)
         self.solution[action][current_time_step_job] = self.current_time_step
         for job in range(self.jobs):
             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
@@ -176,8 +180,24 @@ class JSS(gym.Env):
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
         if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-            self.legal_actions[self.jobs] = True
-        elif self.legal_actions[self.jobs]:
+            only_legal = np.where(self.legal_actions)[0][0]
+            machine = self.needed_machine_jobs[only_legal]
+            another_job_need_machine = False
+            current_time_step_only_legal = self.todo_time_step_job[only_legal]
+            time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
+            end_only_time_step = self.current_time_step + time_needed_legal
+            for time_step, job in zip(self.next_time_step, self.next_jobs):
+                if time_step >= end_only_time_step:
+                    break
+                if self.todo_time_step_job[job] + 1 < self.machines:
+                    machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                    if machine_needed == machine:
+                        another_job_need_machine = True
+            if another_job_need_machine:
+                self.legal_actions[self.jobs] = True
+            else:
+                self.legal_actions[self.jobs] = False
+        else:
             self.legal_actions[self.jobs] = False
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
@@ -194,6 +214,7 @@ class JSS(gym.Env):
         '''
         hole_planning = 0
         next_time_step_to_pick = self.next_time_step.pop(0)
+        self.next_jobs.pop(0)
         difference = next_time_step_to_pick - self.current_time_step
         self.current_time_step = next_time_step_to_pick
         for job in range(self.jobs):
