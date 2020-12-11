@@ -108,12 +108,12 @@ class JSSv2(gym.Env):
             -Total IDLE time in the schedule
         '''
         self.observation_space = gym.spaces.Dict({
-            "action_mask": gym.spaces.Box(0, 1, shape=(self.jobs,)),
+            "action_mask": gym.spaces.Box(0, 1, shape=(self.jobs + 1,)),
             "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=np.float),
         })
 
     def _get_current_state_representation(self):
-        self.state[:, 0] = self.machine_can_perform_job[self.current_machine % self.machines]
+        self.state[:, 0] = self.machine_can_perform_job[self.current_machine % self.machines][:-1]
         return {
             "real_obs": self.state,
             "action_mask": self.machine_can_perform_job[self.current_machine % self.machines],
@@ -136,7 +136,7 @@ class JSSv2(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.machine_can_perform_job = np.zeros((self.machines, self.jobs), dtype=np.bool)
+        self.machine_can_perform_job = np.zeros((self.machines, self.jobs + 1), dtype=np.bool)
         for job in range(self.jobs):
             machine_needed = self.instance_matrix[job][0][0]
             self.needed_machine_jobs[job] = machine_needed
@@ -147,7 +147,7 @@ class JSSv2(gym.Env):
 
     def _go_next_machine(self):
         for machine in range(self.current_machine, self.machines):
-            if sum(self.machine_can_perform_job[machine]) > 0:
+            if sum(self.machine_can_perform_job[machine][:-1]) > 0:
                 self.current_machine = machine
                 return machine
         self.current_machine = self.machines
@@ -155,6 +155,14 @@ class JSSv2(gym.Env):
 
     def step(self, action: int):
         reward = 0.0
+        if action == self.jobs:
+            self.machine_can_perform_job[self.current_machine][self.jobs] = False
+            only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
+            self.machine_can_perform_job[self.current_machine][only_legal] = False
+            self._go_next_machine()
+            while self.current_machine == self.machines and len(self.next_time_step) > 0:
+                reward -= self._increase_time_step()
+            return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
         current_time_step_job = self.todo_time_step_job[action]
         time_needed = self.instance_matrix[action][current_time_step_job][1]
         reward += time_needed
@@ -174,9 +182,26 @@ class JSSv2(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.current_machine == self.machines and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        # we then need to scale the reward
-        scaled_reward = self._reward_scaler(reward)
-        return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+        if self.current_machine < self.machines and sum(self.machine_can_perform_job[self.current_machine][:-1]) == 1 and len(self.next_time_step) > 0:
+            only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
+            another_job_need_machine = False
+            current_time_step_only_legal = self.todo_time_step_job[only_legal]
+            time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
+            end_only_time_step = self.current_time_step + time_needed_legal
+            for time_step, job in zip(self.next_time_step, self.next_jobs):
+                if time_step >= end_only_time_step:
+                    break
+                if self.todo_time_step_job[job] + 1 < self.machines:
+                    machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                    if machine_needed == self.current_machine:
+                        another_job_need_machine = True
+            if another_job_need_machine:
+                self.machine_can_perform_job[self.current_machine][self.jobs] = True
+            else:
+                self.machine_can_perform_job[self.current_machine][self.jobs] = False
+        elif self.current_machine < self.machines:
+            self.machine_can_perform_job[self.current_machine][self.jobs] = False
+        return self._get_current_state_representation(), self._reward_scaler(reward), self._is_done(), {}
 
     def _reward_scaler(self, reward):
         return reward / self.max_time_op
@@ -212,7 +237,7 @@ class JSSv2(gym.Env):
                     self.machine_can_perform_job[machine_needed][job] = False
                     if self.todo_time_step_job[job] < self.machines:
                         self.needed_machine_jobs[job] = self.instance_matrix[job][self.todo_time_step_job[job]][0]
-                        self.needed_machine_jobs[job] = machine_needed
+                        machine_needed = self.needed_machine_jobs[job]
                         self.machine_can_perform_job[machine_needed][job] = True
                         self.state[job][4] = max(0, self.time_until_available_machine[
                                                  self.needed_machine_jobs[job]] - difference) / self.max_time_op
