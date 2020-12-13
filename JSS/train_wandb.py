@@ -10,21 +10,20 @@ from ray.rllib.agents.ppo import PPOTrainer
 
 from JSS.CustomCallbacks import CustomCallbacks
 
-from typing import Callable, Dict, List, Tuple
+from typing import Dict, Tuple
 
 
 import multiprocessing as mp
 from ray.rllib.agents import with_common_config
 from ray.rllib.models import ModelCatalog
 from ray.tune import register_env
-from JSS.env_wrapper import BestActionsWrapper
-from JSS.env.JSS import JSS
+from JSS.env.JSS_v2 import JSSv2
 
 from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
 
 def env_creator(env_config):
-    return BestActionsWrapper(JSS(env_config))
+    return JSSv2(env_config)
 
 
 register_env("jss_env", env_creator)
@@ -77,7 +76,7 @@ def train_func():
         'train_batch_size': 32000,
         'num_envs_per_worker': 2, # TO TUNE
         'rollout_fragment_length': 1064, # TO TUNE
-        'sgd_minibatch_size': 5443, # TO TUNE
+        'sgd_minibatch_size': 25443, # TO TUNE
         'layer_size': 853, # TO TUNE
         'lr': 0.0001798, # TO TUNE
         'lr_start': 0.0001798, # TO TUNE
@@ -122,7 +121,7 @@ def train_func():
     config['callbacks'] = CustomCallbacks
     
     config['lr'] = config['lr_start']
-    config['lr_schedule'] = [[0, config['lr_start']], [10000000, config['lr_end']]
+    config['lr_schedule'] = [[0, config['lr_start']], [10000000, config['lr_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
