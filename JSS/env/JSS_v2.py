@@ -87,6 +87,7 @@ class JSSv2(gym.Env):
         instance_file.close()
         self.max_time_jobs = max(self.jobs_length)
         self.max_action_step = self.machines * self.jobs
+        self.reward_scaler_factor = self.max_time_op * self.machines
         # check the parsed data are correct
         assert self.max_time_op > 0
         assert self.max_time_jobs > 0
@@ -185,7 +186,7 @@ class JSSv2(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.current_machine == self.machines and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        if self.current_machine < self.machines and self.number_job_machine[self.current_machine] == 1 and len(self.next_time_step) > 0:
+        if self.current_machine < self.machines and len(self.next_time_step) > 0 and self.number_job_machine[self.current_machine] == 1:
             only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
             another_job_need_machine = False
             current_time_step_only_legal = self.todo_time_step_job[only_legal]
@@ -209,7 +210,7 @@ class JSSv2(gym.Env):
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
 
     def _reward_scaler(self, reward):
-        return reward / self.max_time_op
+        return reward / self.reward_scaler_factor
 
     def _increase_time_step(self):
         '''
