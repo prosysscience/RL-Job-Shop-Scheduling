@@ -45,7 +45,6 @@ class JSSv2(gym.Env):
         self.current_time_step = float('inf')
         self.next_time_step = list()
         self.next_jobs = list()
-        self.legal_actions = None
         self.action_step = 0
         self.time_until_available_machine = None
         self.time_until_finish_current_op_jobs = None
@@ -137,9 +136,6 @@ class JSSv2(gym.Env):
         self.next_time_step = list()
         self.next_jobs = list()
         self.nb_legal_actions = self.jobs
-        # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
-        self.legal_actions[self.jobs] = False
         # used to represent the solution
         self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
         self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
@@ -160,16 +156,13 @@ class JSSv2(gym.Env):
     def step(self, action: int):
         reward = 0.0
         if action == self.jobs:
-            self.legal_actions[self.jobs] = False
-            only_legal = np.where(self.legal_actions)[0][0]
-            while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+            self.machine_can_perform_job[self.current_machine] = False
+            self.current_machine += 1
+            self._go_next_machine()
+            # if we can't allocate new job in the current timestep, we pass to the next one
+            while self.current_machine == self.machines and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
             scaled_reward = self._reward_scaler(reward)
-            if self.nb_legal_actions > 1:
-                self.legal_actions[only_legal] = False
-                self.nb_legal_actions -= 1
-                if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-                    self.legal_actions[self.jobs] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
@@ -191,9 +184,8 @@ class JSSv2(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.current_machine == self.machines and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
-        if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-            only_legal = np.where(self.legal_actions)[0][0]
-            machine = self.needed_machine_jobs[only_legal]
+        if self.current_machine < self.machines and sum(self.machine_can_perform_job[self.current_machine][:-1]) == 1 and len(self.next_time_step) > 0:
+            only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
             another_job_need_machine = False
             current_time_step_only_legal = self.todo_time_step_job[only_legal]
             time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
@@ -203,14 +195,14 @@ class JSSv2(gym.Env):
                     break
                 if self.todo_time_step_job[job] + 1 < self.machines:
                     machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
-                    if machine_needed == machine:
+                    if machine_needed == self.current_machine:
                         another_job_need_machine = True
             if another_job_need_machine:
-                self.legal_actions[self.jobs] = True
+                self.machine_can_perform_job[self.current_machine][self.jobs] = True
             else:
-                self.legal_actions[self.jobs] = False
-        else:
-            self.legal_actions[self.jobs] = False
+                self.machine_can_perform_job[self.current_machine][self.jobs] = False
+        elif self.current_machine < self.machines:
+            self.machine_can_perform_job[self.current_machine][self.jobs] = False
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
