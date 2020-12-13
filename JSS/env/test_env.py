@@ -64,16 +64,22 @@ class TestEnv:
         assert env.current_time_step == 0
 
     def test_random(self):
-        env = JSSv2({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta01'})
+        env = JSSv2({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta41'})
         state = env.reset()
         assert env.current_time_step == 0
         legal_actions = env.get_legal_actions()
         done = False
+        total_reward = 0
+        assert max(state['real_obs'].flatten()) <= 1.0
+        assert min(state['real_obs'].flatten()) >= 0.0
         while not done:
             actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
-            print(env.current_machine)
+            print(actions)
             state, rewards, done, _ = env.step(actions)
             legal_actions = env.get_legal_actions()
-        assert env.nb_legal_actions == 0
+            total_reward += rewards
+            assert max(state['real_obs'].flatten()) <= 1.0
+            assert min(state['real_obs'].flatten()) >= 0.0
+        print(env.last_time_step)
         assert len(env.next_time_step) == 0
         assert min(env.solution.flatten()) != -1
