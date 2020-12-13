@@ -186,9 +186,9 @@ class JSSv2(gym.Env):
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.current_machine == self.machines and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
+        self.machine_can_perform_job[self.current_machine][self.jobs] = False
         if self.current_machine < self.machines and len(self.next_time_step) > 0 and self.number_job_machine[self.current_machine] == 1:
             only_legal = np.where(self.machine_can_perform_job[self.current_machine])[0][0]
-            another_job_need_machine = False
             current_time_step_only_legal = self.todo_time_step_job[only_legal]
             time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
             end_only_time_step = self.current_time_step + time_needed_legal
@@ -198,13 +198,8 @@ class JSSv2(gym.Env):
                 if self.todo_time_step_job[job] + 1 < self.machines:
                     machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
                     if machine_needed == self.current_machine:
-                        another_job_need_machine = True
-            if another_job_need_machine:
-                self.machine_can_perform_job[self.current_machine][self.jobs] = True
-            else:
-                self.machine_can_perform_job[self.current_machine][self.jobs] = False
-        elif self.current_machine < self.machines:
-            self.machine_can_perform_job[self.current_machine][self.jobs] = False
+                        self.machine_can_perform_job[self.current_machine][self.jobs] = True
+                        break
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
