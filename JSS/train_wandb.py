@@ -12,7 +12,6 @@ from JSS.CustomCallbacks import CustomCallbacks
 
 from typing import Dict, Tuple
 
-
 import multiprocessing as mp
 from ray.rllib.agents import with_common_config
 from ray.rllib.models import ModelCatalog
@@ -21,6 +20,7 @@ from JSS.env.JSS_v2 import JSSv2
 
 from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
+
 
 def env_creator(env_config):
     return JSSv2(env_config)
@@ -32,8 +32,8 @@ _exclude_results = ["done", "should_checkpoint", "config"]
 
 # Use these result keys to update `wandb.config`
 _config_results = [
-        "trial_id", "experiment_tag", "node_ip", "experiment_id", "hostname",
-        "pid", "date",
+    "trial_id", "experiment_tag", "node_ip", "experiment_id", "hostname",
+    "pid", "date",
 ]
 
 
@@ -67,28 +67,28 @@ def train_func():
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': '/JSS/JSS/env/instances/ta41',
+        'instance_path': '/home/jovyan/pierre/JSS/JSS/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,
-        'train_batch_size': 32000,
-        'num_envs_per_worker': 2, # TO TUNE
-        'rollout_fragment_length': 1064, # TO TUNE
-        'sgd_minibatch_size': 25443, # TO TUNE
-        'layer_size': 853, # TO TUNE
-        'lr': 0.0001798, # TO TUNE
-        'lr_start': 0.0001798, # TO TUNE
-        'lr_end': 0.0001798, # TO TUNE
-        'clip_param': 0.2604, # TO TUNE
-        'vf_clip_param': 20.0, # TO TUNE
-        'num_sgd_iter': 22, # TO TUNE
-        "vf_loss_coeff": 0.9394, # TO TUNE
-        "kl_coeff": 0.5021, # TO TUNE
-        'kl_target': 0.2, # TO TUNE
+        'train_batch_size': 80 * 4 * 704,
+        'num_envs_per_worker': 4,
+        'rollout_fragment_length': 704,  # TO TUNE
+        'sgd_minibatch_size': 33000,
+        'layer_size': 470,
+        'lr': 0.000479,  # TO TUNE
+        'lr_start': 0.000479,  # TO TUNE
+        'lr_end': 0.00002832,  # TO TUNE
+        'clip_param': 0.5337,  # TO TUNE
+        'vf_clip_param': 18.0,  # TO TUNE
+        'num_sgd_iter': 10,  # TO TUNE
+        "vf_loss_coeff": 0.75,
+        "kl_coeff": 0.15,
+        'kl_target': 0.1202,  # TO TUNE
         'lambda': 1.0,
-        'entropy_coeff': 0.0, # TUNE LATER
+        'entropy_coeff': 0.0,  # TUNE LATER
         "batch_mode": "truncate_episodes",
         "grad_clip": None,
         "use_critic": True,
@@ -119,9 +119,10 @@ def train_func():
 
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
-    
+    config['train_batch_size'] = config['sgd_minibatch_size']
+
     config['lr'] = config['lr_start']
-    config['lr_schedule'] = [[0, config['lr_start']], [10000000, config['lr_end']]]
+    config['lr_schedule'] = [[0, config['lr_start']], [100000000, config['lr_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
@@ -130,7 +131,7 @@ def train_func():
     config.pop('lr_end', None)
 
     stop = {
-        "time_total_s": 600,
+        "time_total_s": 4 * 600,
     }
 
     start_time = time.time()
