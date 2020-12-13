@@ -74,12 +74,10 @@ class TestEnv:
         assert min(state['real_obs'].flatten()) >= 0.0
         while not done:
             actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
-            print(actions)
             state, rewards, done, _ = env.step(actions)
             legal_actions = env.get_legal_actions()
             total_reward += rewards
             assert max(state['real_obs'].flatten()) <= 1.0
             assert min(state['real_obs'].flatten()) >= 0.0
-        print(env.last_time_step)
         assert len(env.next_time_step) == 0
         assert min(env.solution.flatten()) != -1
