@@ -130,6 +130,7 @@ class JSSv2(gym.Env):
         return self.machines
 
     def reset(self):
+        self.current_machine = 0
         self.current_time_step = 0
         self.next_time_step = list()
         self.next_jobs = list()
