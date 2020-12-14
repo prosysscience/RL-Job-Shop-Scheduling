@@ -158,7 +158,7 @@ class JSS(gym.Env):
             if self.nb_legal_actions > 1:
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
-                self.illegal_job_machine[needed_machine][only_legal] = False
+                self.illegal_job_machine[needed_machine][only_legal] = True
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                     self.legal_actions[self.jobs] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
