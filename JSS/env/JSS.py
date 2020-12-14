@@ -176,6 +176,7 @@ class JSS(gym.Env):
                             if machine_needed == machine:
                                 self.legal_actions[self.jobs] = True
                                 break
+            if self.nb_legal_actions > 1:
                 for machine in range(self.machines):
                     if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
                         final_job = list()
