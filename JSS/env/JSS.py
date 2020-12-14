@@ -55,7 +55,8 @@ class JSS(gym.Env):
         self.total_idle_time_jobs = None
         self.idle_time_jobs_last_op = None
         self.state = None
-        self.illegal_job_machine = None
+        self.illegal_actions = None
+        self.machine_has_illegal = None
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
         instance_file = open(instance_path, 'r')
@@ -140,7 +141,8 @@ class JSS(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.illegal_job_machine = np.zeros((self.machines, self.jobs), dtype=np.bool)
+        self.illegal_actions = np.zeros((self.machines, self.jobs), dtype=np.bool)
+        self.machine_has_illegal = np.zeros(self.machines, dtype=np.bool)
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
@@ -151,16 +153,44 @@ class JSS(gym.Env):
         if action == self.jobs:
             self.legal_actions[self.jobs] = False
             only_legal = np.where(self.legal_actions)[0][0]
-            needed_machine = self.needed_machine_jobs[only_legal]
             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
             scaled_reward = self._reward_scaler(reward)
             if self.nb_legal_actions > 1:
+                needed_machine = self.needed_machine_jobs[only_legal]
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
-                self.illegal_job_machine[needed_machine][only_legal] = True
+                self.illegal_actions[needed_machine][only_legal] = True
+                self.machine_has_illegal[needed_machine] = True
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
-                    self.legal_actions[self.jobs] = True
+                    only_legal = np.where(self.legal_actions)[0][0]
+                    machine = self.needed_machine_jobs[only_legal]
+                    current_time_step_only_legal = self.todo_time_step_job[only_legal]
+                    time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
+                    end_only_time_step = self.current_time_step + time_needed_legal
+                    for time_step, job in zip(self.next_time_step, self.next_jobs):
+                        if time_step >= end_only_time_step:
+                            break
+                        if self.todo_time_step_job[job] + 1 < self.machines:
+                            machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                            if machine_needed == machine:
+                                self.legal_actions[self.jobs] = True
+                                break
+                for machine in range(self.machines):
+                    if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
+                        final_job = list()
+                        non_final_job = list()
+                        for job in range(self.jobs):
+                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+                                if self.todo_time_step_job[job] == (self.machines - 1):
+                                    final_job.append(job)
+                                else:
+                                    non_final_job.append(job)
+                        if len(non_final_job) > 0 and len(final_job) > 0:
+                            for job in final_job:
+                                self.legal_actions[job] = False
+                                self.nb_legal_actions -= 1
+                                self.illegal_actions[machine][job] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
@@ -180,7 +210,8 @@ class JSS(gym.Env):
             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
-        self.illegal_job_machine[machine_needed] = False
+        self.illegal_actions[machine_needed] = False
+        self.machine_has_illegal[machine_needed] = False
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
@@ -188,17 +219,34 @@ class JSS(gym.Env):
         if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
             only_legal = np.where(self.legal_actions)[0][0]
             machine = self.needed_machine_jobs[only_legal]
-            current_time_step_only_legal = self.todo_time_step_job[only_legal]
-            time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
-            end_only_time_step = self.current_time_step + time_needed_legal
-            for time_step, job in zip(self.next_time_step, self.next_jobs):
-                if time_step >= end_only_time_step:
-                    break
-                if self.todo_time_step_job[job] + 1 < self.machines:
-                    machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
-                    if machine_needed == machine:
-                        self.legal_actions[self.jobs] = True
+            if sum(self.illegal_actions[machine]) == 0:
+                current_time_step_only_legal = self.todo_time_step_job[only_legal]
+                time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
+                end_only_time_step = self.current_time_step + time_needed_legal
+                for time_step, job in zip(self.next_time_step, self.next_jobs):
+                    if time_step >= end_only_time_step:
                         break
+                    if self.todo_time_step_job[job] + 1 < self.machines:
+                        machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                        if machine_needed == machine:
+                            self.legal_actions[self.jobs] = True
+                            break
+        if self.nb_legal_actions > 1:
+            for machine in range(self.machines):
+                if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
+                    final_job = list()
+                    non_final_job = list()
+                    for job in range(self.jobs):
+                        if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+                            if self.todo_time_step_job[job] == (self.machines - 1):
+                                final_job.append(job)
+                            else:
+                                non_final_job.append(job)
+                    if len(non_final_job) > 0 and len(final_job) > 0:
+                        for job in final_job:
+                            self.legal_actions[job] = False
+                            self.nb_legal_actions -= 1
+                            self.illegal_actions[machine][job] = True
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -256,9 +304,10 @@ class JSS(gym.Env):
                 machine] - difference)
             if self.time_until_available_machine[machine] == 0:
                 for job in range(self.jobs):
-                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_job_machine[machine][job]:
+                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
+
         return hole_planning
 
     def _is_done(self):
