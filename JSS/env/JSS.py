@@ -55,6 +55,7 @@ class JSS(gym.Env):
         self.total_idle_time_jobs = None
         self.idle_time_jobs_last_op = None
         self.state = None
+        self.illegal_job_machine = None
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
         instance_file = open(instance_path, 'r')
@@ -139,6 +140,7 @@ class JSS(gym.Env):
         self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
+        self.illegal_job_machine = np.zeros((self.machines, self.jobs), dtype=np.bool)
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
@@ -149,12 +151,14 @@ class JSS(gym.Env):
         if action == self.jobs:
             self.legal_actions[self.jobs] = False
             only_legal = np.where(self.legal_actions)[0][0]
+            needed_machine = self.needed_machine_jobs[only_legal]
             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
             scaled_reward = self._reward_scaler(reward)
             if self.nb_legal_actions > 1:
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
+                self.illegal_job_machine[needed_machine][only_legal] = False
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                     self.legal_actions[self.jobs] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -176,6 +180,7 @@ class JSS(gym.Env):
             if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
                 self.legal_actions[job] = False
                 self.nb_legal_actions -= 1
+        self.illegal_job_machine[machine_needed] = False
         # if we can't allocate new job in the current timestep, we pass to the next one
         while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
             reward -= self._increase_time_step()
@@ -256,7 +261,7 @@ class JSS(gym.Env):
                 machine] - difference)
             if self.time_until_available_machine[machine] == 0:
                 for job in range(self.jobs):
-                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job]:
+                    if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_job_machine[machine][job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
         return hole_planning
