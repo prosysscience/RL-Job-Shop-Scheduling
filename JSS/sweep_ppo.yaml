@@ -4,33 +4,33 @@ metric:
   name: episode_reward_mean
   goal: maximize
 parameters:
-  rollout_fragment_length:
-    min: 512
-    max: 1024
-  layer_size:
-    min: 512
-    max: 1024
-  lr_start:
-    min: 0.00001
-    max: 0.001
-  lr_end:
-    min: 0.000005
-    max: 0.0005
   clip_param:
-    min: 0.1
-    max: 0.4
-  vf_clip_param:
-    min: 10.0
-    max: 30.0
-  num_sgd_iter:
-    min: 15
-    max: 30
-  vf_loss_coeff:
-    min: 0.5
-    max: 1.0
-  kl_coeff:
-    min: 0.1
     max: 0.6
+    min: 0.3
+  kl_coeff:
+    max: 0.5
+    min: 0.1
   kl_target:
-    min: 0.01
     max: 0.2
+    min: 0.05
+  layer_size:
+    max: 700
+    min: 400
+  lr_end:
+    max: 0.00001
+    min: 0.0000001
+  lr_start:
+    max: 0.001
+    min: 0.00001
+  num_sgd_iter:
+    max: 20
+    min: 10
+  rollout_fragment_length:
+    max: 900
+    min: 600
+  vf_clip_param:
+    max: 30
+    min: 15
+  vf_loss_coeff:
+    max: 1
+    min: 0.5
