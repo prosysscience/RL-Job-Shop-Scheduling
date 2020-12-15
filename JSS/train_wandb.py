@@ -16,14 +16,14 @@ import multiprocessing as mp
 from ray.rllib.agents import with_common_config
 from ray.rllib.models import ModelCatalog
 from ray.tune import register_env
-from JSS.env.JSS_v2 import JSSv2
+from JSS.env.JSS import JSS
 
 from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
 
 
 def env_creator(env_config):
-    return JSSv2(env_config)
+    return JSS(env_config)
 
 
 register_env("jss_env", env_creator)
@@ -67,7 +67,7 @@ def train_func():
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': '/home/jovyan/pierre/JSS/JSS/JSS/JSS/env/instances/ta41',
+        'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,

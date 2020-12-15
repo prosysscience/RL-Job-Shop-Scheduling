@@ -74,6 +74,8 @@ class TestEnv:
             total_reward = 0
             assert max(state['real_obs'].flatten()) <= 1.0
             assert min(state['real_obs'].flatten()) >= 0.0
+            assert not np.isnan(state['real_obs']).any()
+            assert not np.isinf(state['real_obs']).any()
             while not done:
                 actions = np.random.choice(len(legal_actions), 1, p=(legal_actions / legal_actions.sum()))[0]
                 assert legal_actions[:-1].sum() == env.nb_legal_actions
@@ -82,6 +84,8 @@ class TestEnv:
                 total_reward += rewards
                 assert max(state['real_obs'].flatten()) <= 1.0
                 assert min(state['real_obs'].flatten()) >= 0.0
+                assert not np.isnan(state['real_obs']).any()
+                assert not np.isinf(state['real_obs']).any()
             average += env.last_time_step
             assert len(env.next_time_step) == 0
             assert min(env.solution.flatten()) != -1
