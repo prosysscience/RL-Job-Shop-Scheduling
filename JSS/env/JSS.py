@@ -37,7 +37,6 @@ class JSS(gym.Env):
         self.jobs_length = None
         self.max_time_op = 0
         self.max_time_jobs = 0
-        self.max_action_step = 0
         self.nb_legal_actions = 0
         # initial values for variables used for solving (to reinitialize when reset() is called)
         self.solution = None
@@ -46,7 +45,6 @@ class JSS(gym.Env):
         self.next_time_step = list()
         self.next_jobs = list()
         self.legal_actions = None
-        self.action_step = 0
         self.time_until_available_machine = None
         self.time_until_finish_current_op_jobs = None
         self.todo_time_step_job = None
@@ -88,13 +86,11 @@ class JSS(gym.Env):
             line_cnt += 1
         instance_file.close()
         self.max_time_jobs = max(self.jobs_length)
-        self.max_action_step = self.machines * self.jobs
         # check the parsed data are correct
         assert self.max_time_op > 0
         assert self.max_time_jobs > 0
         assert self.jobs > 0
         assert self.machines > 1, 'We need at least 2 machines'
-        assert self.max_action_step > 0
         assert self.instance_matrix is not None
         # allocate a job + one to wait
         self.action_space = gym.spaces.Discrete(self.jobs + 1)
@@ -117,14 +113,13 @@ class JSS(gym.Env):
         self.state[:, 0] = self.legal_actions[:-1]
         return {
             "real_obs": self.state,
-            "action_mask": self.legal_actions, #TODO for better performance, output illegal actions
+            "action_mask": self.legal_actions,
         }
 
     def get_legal_actions(self):
         return self.legal_actions
 
     def reset(self):
-        self.action_step = 0
         self.current_time_step = 0
         self.next_time_step = list()
         self.next_jobs = list()
@@ -188,14 +183,13 @@ class JSS(gym.Env):
                                     final_job.append(job)
                                 else:
                                     non_final_job.append(job)
-                        if len(non_final_job) > 0 and len(final_job) > 0:
+                        if len(non_final_job) > 0:
                             for job in final_job:
                                 self.legal_actions[job] = False
                                 self.nb_legal_actions -= 1
                                 self.illegal_actions[machine][job] = True
                                 self.machine_has_illegal[machine] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
-        self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
         machine_needed = self.needed_machine_jobs[action]
         time_needed = self.instance_matrix[action][current_time_step_job][1]
@@ -245,7 +239,7 @@ class JSS(gym.Env):
                                 final_job.append(job)
                             else:
                                 non_final_job.append(job)
-                    if len(non_final_job) > 0 and len(final_job) > 0:
+                    if len(non_final_job) > 0:
                         for job in final_job:
                             self.legal_actions[job] = False
                             self.nb_legal_actions -= 1

@@ -85,4 +85,6 @@ class TestEnv:
             average += env.last_time_step
             assert len(env.next_time_step) == 0
             assert min(env.solution.flatten()) != -1
+            for job in range(env.jobs):
+                assert env.todo_time_step_job[job] == env.machines
         print(average / 100)

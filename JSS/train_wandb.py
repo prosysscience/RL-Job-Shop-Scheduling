@@ -122,7 +122,7 @@ def train_func():
     config['train_batch_size'] = config['sgd_minibatch_size']
 
     config['lr'] = config['lr_start']
-    config['lr_schedule'] = [[0, config['lr_start']], [100000000, config['lr_end']]]
+    config['lr_schedule'] = [[0, config['lr_start']], [15000000, config['lr_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
@@ -131,7 +131,7 @@ def train_func():
     config.pop('lr_end', None)
 
     stop = {
-        "time_total_s": 4 * 600,
+        "time_total_s": 600,
     }
 
     start_time = time.time()
