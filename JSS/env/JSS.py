@@ -165,17 +165,18 @@ class JSS(gym.Env):
                 if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                     only_legal = np.where(self.legal_actions)[0][0]
                     machine = self.needed_machine_jobs[only_legal]
-                    current_time_step_only_legal = self.todo_time_step_job[only_legal]
-                    time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
-                    end_only_time_step = self.current_time_step + time_needed_legal
-                    for time_step, job in zip(self.next_time_step, self.next_jobs):
-                        if time_step >= end_only_time_step:
-                            break
-                        if self.todo_time_step_job[job] + 1 < self.machines:
-                            machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
-                            if machine_needed == machine:
-                                self.legal_actions[self.jobs] = True
+                    if not self.machine_has_illegal[machine]:
+                        current_time_step_only_legal = self.todo_time_step_job[only_legal]
+                        time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
+                        end_only_time_step = self.current_time_step + time_needed_legal
+                        for time_step, job in zip(self.next_time_step, self.next_jobs):
+                            if time_step >= end_only_time_step:
                                 break
+                            if self.todo_time_step_job[job] + 1 < self.machines:
+                                machine_needed = self.instance_matrix[job][self.todo_time_step_job[job] + 1][0]
+                                if machine_needed == machine:
+                                    self.legal_actions[self.jobs] = True
+                                    break
             if self.nb_legal_actions > 1:
                 for machine in range(self.machines):
                     if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
@@ -192,6 +193,7 @@ class JSS(gym.Env):
                                 self.legal_actions[job] = False
                                 self.nb_legal_actions -= 1
                                 self.illegal_actions[machine][job] = True
+                                self.machine_has_illegal[machine] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         self.action_step += 1
         current_time_step_job = self.todo_time_step_job[action]
@@ -220,7 +222,7 @@ class JSS(gym.Env):
         if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
             only_legal = np.where(self.legal_actions)[0][0]
             machine = self.needed_machine_jobs[only_legal]
-            if sum(self.illegal_actions[machine]) == 0:
+            if not self.machine_has_illegal[machine]:
                 current_time_step_only_legal = self.todo_time_step_job[only_legal]
                 time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
                 end_only_time_step = self.current_time_step + time_needed_legal
@@ -248,6 +250,7 @@ class JSS(gym.Env):
                             self.legal_actions[job] = False
                             self.nb_legal_actions -= 1
                             self.illegal_actions[machine][job] = True
+                            self.machine_has_illegal[machine] = True
         # we then need to scale the reward
         scaled_reward = self._reward_scaler(reward)
         return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -308,7 +311,6 @@ class JSS(gym.Env):
                     if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
-
         return hole_planning
 
     def _is_done(self):

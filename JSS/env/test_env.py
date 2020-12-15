@@ -6,7 +6,7 @@ import numpy as np
 class TestEnv:
 
     def test_optimum_ta01(self):
-        env = JSSv2({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta01'})
+        env = JSS({'instance_path': 'instances/ta01'})
         env.reset()
         assert env.current_time_step == 0
         # for every machine give the jobs to process in order for every machine
@@ -64,7 +64,7 @@ class TestEnv:
         assert env.current_time_step == 0
 
     def test_random(self):
-        env = JSS({'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta41'})
+        env = JSS({'instance_path': 'instances/ta41'})
         average = 0
         for _ in range(100):
             state = env.reset()
