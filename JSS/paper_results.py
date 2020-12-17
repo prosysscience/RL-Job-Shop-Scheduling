@@ -1,3 +1,4 @@
+import os
 import time
 
 import ray
@@ -59,14 +60,14 @@ def _handle_result(result: Dict) -> Tuple[Dict, Dict]:
     return log, config_update
 
 
-def train_func(instance='/home/jovyan/pierre/JSS/JSS/env/instances/ta41'):
+def train_func():
     default_config = {
         'env': 'jss_env',
         'seed': 0,
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': instance,
+        'instance_path': '/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 20000,
         'gamma': 1.0,
@@ -79,7 +80,7 @@ def train_func(instance='/home/jovyan/pierre/JSS/JSS/env/instances/ta41'):
         'layer_size': 470,
         'lr': 0.000479,  # TO TUNE
         'lr_start': 0.000479,  # TO TUNE
-        'lr_end': 0.00007832,  # TO TUNE
+        'lr_end': 0.00002832,  # TO TUNE
         'clip_param': 0.5337,  # TO TUNE
         'vf_clip_param': 18.0,  # TO TUNE
         'num_sgd_iter': 10,  # TO TUNE
@@ -99,7 +100,7 @@ def train_func(instance='/home/jovyan/pierre/JSS/JSS/env/instances/ta41'):
         "_fake_gpus": False,
     }
 
-    run = wandb.init(config=default_config, project='PPOJss', group='10Minutes', name=instance.split('/')[-1])
+    wandb.init(config=default_config, group='10Minutes', project='PPOJss', name=default_config['instance_path'].split('/')[-1])
     ray.init()
 
     config = wandb.config
@@ -130,35 +131,20 @@ def train_func(instance='/home/jovyan/pierre/JSS/JSS/env/instances/ta41'):
     config.pop('lr_end', None)
 
     stop = {
-        "time_total_s": 600,
+        "time_total_s": 100,
     }
 
     start_time = time.time()
     trainer = PPOTrainer(config=config)
-    result = {}
     while start_time + stop['time_total_s'] > time.time():
         result = trainer.train()
-    result = wandb_tune._clean_log(result)
-    log, config_update = _handle_result(result)
-    wandb.log(log)
-    wandb.config.update(config_update, allow_val_change=True)
+        result = wandb_tune._clean_log(result)
+        log, config_update = _handle_result(result)
+        wandb.log(log)
+        wandb.config.update(config_update, allow_val_change=True)
 
     ray.shutdown()
-    run.finish()
 
 
 if __name__ == "__main__":
-    instances = [
-        '/JSS/JSS/env/instances/ta41',
-        '/JSS/JSS/env/instances/ta42',
-        '/JSS/JSS/env/instances/ta43',
-        '/JSS/JSS/env/instances/ta44',
-        '/JSS/JSS/env/instances/ta45',
-        '/JSS/JSS/env/instances/ta46',
-        '/JSS/JSS/env/instances/ta47',
-        '/JSS/JSS/env/instances/ta48',
-        '/JSS/JSS/env/instances/ta49',
-        '/JSS/JSS/env/instances/ta50'
-    ]
-    for instance in instances:
-        train_func(instance)
+    train_func()
