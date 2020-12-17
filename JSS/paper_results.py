@@ -100,7 +100,7 @@ def train_func():
         "_fake_gpus": False,
     }
 
-    wandb.init(config=default_config, group='10Minutes', project='PPOJss', name=default_config['instance_path'].split('/')[-1])
+    wandb.init(config=default_config, group='10Minutes', project='PPOJss')
     ray.init()
 
     config = wandb.config
