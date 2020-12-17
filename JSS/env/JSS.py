@@ -260,6 +260,7 @@ class JSS(gym.Env):
         :return: time elapsed
         '''
         hole_planning = 0
+        self.legal_actions[self.jobs] = False
         next_time_step_to_pick = self.next_time_step.pop(0)
         self.next_jobs.pop(0)
         difference = next_time_step_to_pick - self.current_time_step
