@@ -69,7 +69,7 @@ def train_func():
         'num_gpus': 1,
         'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
-        'metrics_smoothing_episodes': 20000,
+        'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,

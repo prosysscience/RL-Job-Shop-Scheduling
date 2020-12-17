@@ -1,0 +1,108 @@
+diff --git a/JSS/.ipynb_checkpoints/paper_result-checkpoint.yaml b/JSS/.ipynb_checkpoints/paper_result-checkpoint.yaml
+index 9403b9a..071611f 100644
+--- a/JSS/.ipynb_checkpoints/paper_result-checkpoint.yaml
++++ b/JSS/.ipynb_checkpoints/paper_result-checkpoint.yaml
+@@ -1,36 +1,16 @@
+ program: paper_results.py
+ method: grid
+-metric:
+-  name: episode_reward_mean
+-  goal: maximize
++project: PPOJss
+ parameters:
+-  clip_param:
+-    max: 0.6
+-    min: 0.3
+-  kl_coeff:
+-    max: 0.5
+-    min: 0.1
+-  kl_target:
+-    max: 0.2
+-    min: 0.05
+-  layer_size:
+-    max: 700
+-    min: 400
+-  lr_end:
+-    max: 0.00001
+-    min: 0.0000001
+-  lr_start:
+-    max: 0.001
+-    min: 0.00001
+-  num_sgd_iter:
+-    max: 20
+-    min: 10
+-  rollout_fragment_length:
+-    max: 900
+-    min: 600
+-  vf_clip_param:
+-    max: 30
+-    min: 15
+-  vf_loss_coeff:
+-    max: 1
+-    min: 0.5
+\ No newline at end of file
++  instance_path:
++      values:
++        - /JSS/JSS/env/instances/ta41
++        - /JSS/JSS/env/instances/ta42
++        - /JSS/JSS/env/instances/ta43
++        - /JSS/JSS/env/instances/ta44
++        - /JSS/JSS/env/instances/ta45
++        - /JSS/JSS/env/instances/ta46
++        - /JSS/JSS/env/instances/ta47
++        - /JSS/JSS/env/instances/ta48
++        - /JSS/JSS/env/instances/ta49
++        - /JSS/JSS/env/instances/ta50
+\ No newline at end of file
+diff --git a/JSS/.ipynb_checkpoints/paper_results-checkpoint.py b/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
+index c41682f..5f4a18d 100755
+--- a/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
+@@ -99,8 +99,7 @@ def train_func():
+         "simple_optimizer": False,
+         "_fake_gpus": False,
+     }
+-
+-    wandb.init(config=default_config, group='10Minutes')
++    wandb.init(config=default_config, group='10Minutes', project='PPOJss')
+     ray.init()
+ 
+     config = wandb.config
+diff --git a/JSS/.ipynb_checkpoints/script_paper-checkpoint.sh b/JSS/.ipynb_checkpoints/script_paper-checkpoint.sh
+deleted file mode 100755
+index 891a445..0000000
+--- a/JSS/.ipynb_checkpoints/script_paper-checkpoint.sh
++++ /dev/null
+@@ -1,6 +0,0 @@
+-INSTANCES=('/JSS/JSS/env/instances/ta41' '/JSS/JSS/env/instances/ta42' '/JSS/JSS/env/instances/ta43' '/JSS/JSS/env/instances/ta44' '/JSS/JSS/env/instances/ta45'  '/JSS/JSS/env/instances/ta46' '/JSS/JSS/env/instances/ta47' '/JSS/JSS/env/instances/ta48' '/JSS/JSS/env/instances/ta49' '/JSS/JSS/env/instances/ta50')
+- 
+-for inst in "${INSTANCES[@]}"
+-do
+-  python paper_results.py --instance_path="$inst"
+-done
+\ No newline at end of file
+diff --git a/JSS/paper_results.py b/JSS/paper_results.py
+index 099fd74..5f4a18d 100755
+--- a/JSS/paper_results.py
++++ b/JSS/paper_results.py
+@@ -99,7 +99,6 @@ def train_func():
+         "simple_optimizer": False,
+         "_fake_gpus": False,
+     }
+-
+     wandb.init(config=default_config, group='10Minutes', project='PPOJss')
+     ray.init()
+ 
+diff --git a/JSS/script_paper.sh b/JSS/script_paper.sh
+deleted file mode 100755
+index 891a445..0000000
+--- a/JSS/script_paper.sh
++++ /dev/null
+@@ -1,6 +0,0 @@
+-INSTANCES=('/JSS/JSS/env/instances/ta41' '/JSS/JSS/env/instances/ta42' '/JSS/JSS/env/instances/ta43' '/JSS/JSS/env/instances/ta44' '/JSS/JSS/env/instances/ta45'  '/JSS/JSS/env/instances/ta46' '/JSS/JSS/env/instances/ta47' '/JSS/JSS/env/instances/ta48' '/JSS/JSS/env/instances/ta49' '/JSS/JSS/env/instances/ta50')
+- 
+-for inst in "${INSTANCES[@]}"
+-do
+-  python paper_results.py --instance_path="$inst"
+-done
+\ No newline at end of file
