@@ -100,7 +100,7 @@ def train_func():
         "_fake_gpus": False,
     }
 
-    wandb.init(config=default_config, group='10Minutes')
+    wandb.init(config=default_config)
     ray.init()
 
     config = wandb.config
