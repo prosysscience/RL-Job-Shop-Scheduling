@@ -67,7 +67,7 @@ def train_func():
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta41',
+        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 20000,
         'gamma': 1.0,
@@ -130,7 +130,7 @@ def train_func():
     config.pop('lr_end', None)
 
     stop = {
-        "time_total_s": 600,
+        "time_total_s": 1000,
     }
 
     start_time = time.time()
@@ -140,7 +140,7 @@ def train_func():
         result = wandb_tune._clean_log(result)
         log, config_update = _handle_result(result)
         wandb.log(log)
-        wandb.config.update(config_update, allow_val_change=True)
+        #wandb.config.update(config_update, allow_val_change=True)
 
     ray.shutdown()
 

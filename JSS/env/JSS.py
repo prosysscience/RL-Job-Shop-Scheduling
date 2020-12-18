@@ -156,7 +156,6 @@ class JSS(gym.Env):
                 self.legal_actions[only_legal] = False
                 self.nb_legal_actions -= 1
                 self.illegal_actions[needed_machine][only_legal] = True
-                self.machine_has_illegal[needed_machine] = True
             if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 only_legal = np.where(self.legal_actions)[0][0]
                 machine = self.needed_machine_jobs[only_legal]
@@ -174,7 +173,7 @@ class JSS(gym.Env):
                                 break
             elif self.nb_legal_actions > 1:
                 for machine in range(self.machines):
-                    if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
+                    if self.time_until_available_machine[machine] == 0:
                         final_job = list()
                         non_final_job = list()
                         for job in range(self.jobs):
@@ -231,7 +230,7 @@ class JSS(gym.Env):
                                 break
             elif self.nb_legal_actions > 1:
                 for machine in range(self.machines):
-                    if self.time_until_available_machine[machine] == 0 and not self.machine_has_illegal[machine]:
+                    if self.time_until_available_machine[machine] == 0:
                         final_job = list()
                         non_final_job = list()
                         for job in range(self.jobs):
@@ -307,6 +306,7 @@ class JSS(gym.Env):
                     if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
+
         return hole_planning
 
     def _is_done(self):
