@@ -1,0 +1,143 @@
+diff --git a/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py b/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
+index 7b11e3c..1b97b39 100644
+--- a/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/train_wandb-checkpoint.py
+@@ -67,7 +67,7 @@ def train_func():
+         'framework': 'tf',
+         'log_level': 'WARN',
+         'num_gpus': 1,
+-        'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta41',
++        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 2000,
+         'gamma': 1.0,
+diff --git a/JSS/.ipynb_checkpoints/train_wandb_impala-checkpoint.py b/JSS/.ipynb_checkpoints/train_wandb_impala-checkpoint.py
+index 29b0137..0ce4a74 100644
+--- a/JSS/.ipynb_checkpoints/train_wandb_impala-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/train_wandb_impala-checkpoint.py
+@@ -20,11 +20,12 @@ from ray.tune import register_env
+ from JSS.env_wrapper import BestActionsWrapper
+ from JSS.env.JSS import JSS
+ 
+-from JSS.models import FCMaskedActionsModelV1, FCMaskedActionsModelV2
++from JSS.models import FCMaskedActionsModelTF
++
+ from ray.tune.utils import flatten_dict
+ 
+ def env_creator(env_config):
+-    return BestActionsWrapper(JSS(env_config))
++    return JSS(env_config)
+ 
+ 
+ register_env("jss_env", env_creator)
+@@ -65,10 +66,10 @@ def train_func():
+     default_config = {
+         'env': 'jss_env',
+         'seed': 0,
+-        'framework': 'torch',
++        'framework': 'tf',
+         'log_level': 'WARN',
+         'num_gpus': 0,
+-        'instance_path': '/JSS/JSS/env/instances/ta51',
++        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 3000,
+         'gamma': 1.0,
+@@ -150,8 +151,7 @@ def train_func():
+ 
+     config = wandb.config
+ 
+-    ModelCatalog.register_custom_model("fc_masked_model_v1", FCMaskedActionsModelV1)
+-    ModelCatalog.register_custom_model("fc_masked_model_v2", FCMaskedActionsModelV2)
++    ModelCatalog.register_custom_model("fc_masked_model_tf", FCMaskedActionsModelTF)
+ 
+     config['model'] = {
+         "fcnet_activation": "relu",
+diff --git a/JSS/__pycache__/env_wrapper.cpython-37.pyc b/JSS/__pycache__/env_wrapper.cpython-37.pyc
+index 3053d69..181c548 100644
+Binary files a/JSS/__pycache__/env_wrapper.cpython-37.pyc and b/JSS/__pycache__/env_wrapper.cpython-37.pyc differ
+diff --git a/JSS/env/__pycache__/JSS.cpython-37.pyc b/JSS/env/__pycache__/JSS.cpython-37.pyc
+index 2baf40f..b65e088 100644
+Binary files a/JSS/env/__pycache__/JSS.cpython-37.pyc and b/JSS/env/__pycache__/JSS.cpython-37.pyc differ
+diff --git a/JSS/train_wandb.py b/JSS/train_wandb.py
+index 7b11e3c..1b97b39 100644
+--- a/JSS/train_wandb.py
++++ b/JSS/train_wandb.py
+@@ -67,7 +67,7 @@ def train_func():
+         'framework': 'tf',
+         'log_level': 'WARN',
+         'num_gpus': 1,
+-        'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta41',
++        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 2000,
+         'gamma': 1.0,
+diff --git a/JSS/train_wandb_impala.py b/JSS/train_wandb_impala.py
+index 29b0137..0ce4a74 100644
+--- a/JSS/train_wandb_impala.py
++++ b/JSS/train_wandb_impala.py
+@@ -20,11 +20,12 @@ from ray.tune import register_env
+ from JSS.env_wrapper import BestActionsWrapper
+ from JSS.env.JSS import JSS
+ 
+-from JSS.models import FCMaskedActionsModelV1, FCMaskedActionsModelV2
++from JSS.models import FCMaskedActionsModelTF
++
+ from ray.tune.utils import flatten_dict
+ 
+ def env_creator(env_config):
+-    return BestActionsWrapper(JSS(env_config))
++    return JSS(env_config)
+ 
+ 
+ register_env("jss_env", env_creator)
+@@ -65,10 +66,10 @@ def train_func():
+     default_config = {
+         'env': 'jss_env',
+         'seed': 0,
+-        'framework': 'torch',
++        'framework': 'tf',
+         'log_level': 'WARN',
+         'num_gpus': 0,
+-        'instance_path': '/JSS/JSS/env/instances/ta51',
++        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
+         'evaluation_interval': None,
+         'metrics_smoothing_episodes': 3000,
+         'gamma': 1.0,
+@@ -150,8 +151,7 @@ def train_func():
+ 
+     config = wandb.config
+ 
+-    ModelCatalog.register_custom_model("fc_masked_model_v1", FCMaskedActionsModelV1)
+-    ModelCatalog.register_custom_model("fc_masked_model_v2", FCMaskedActionsModelV2)
++    ModelCatalog.register_custom_model("fc_masked_model_tf", FCMaskedActionsModelTF)
+ 
+     config['model'] = {
+         "fcnet_activation": "relu",
+diff --git a/JSS/wandb/debug-internal.log b/JSS/wandb/debug-internal.log
+index d488660..bef3baa 120000
+--- a/JSS/wandb/debug-internal.log
++++ b/JSS/wandb/debug-internal.log
+@@ -1 +1 @@
+-run-20201218_153538-wqlnswkf/logs/debug-internal.log
+\ No newline at end of file
++run-20201218_162136-1c9rhd6j/logs/debug-internal.log
+\ No newline at end of file
+diff --git a/JSS/wandb/debug.log b/JSS/wandb/debug.log
+index 4931039..983f8a6 120000
+--- a/JSS/wandb/debug.log
++++ b/JSS/wandb/debug.log
+@@ -1 +1 @@
+-run-20201218_153538-wqlnswkf/logs/debug.log
+\ No newline at end of file
++run-20201218_162136-1c9rhd6j/logs/debug.log
+\ No newline at end of file
+diff --git a/JSS/wandb/latest-run b/JSS/wandb/latest-run
+index 4f1f6a6..109dc1c 120000
+--- a/JSS/wandb/latest-run
++++ b/JSS/wandb/latest-run
+@@ -1 +1 @@
+-run-20201218_153538-wqlnswkf
+\ No newline at end of file
++run-20201218_162136-1c9rhd6j
+\ No newline at end of file

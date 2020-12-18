@@ -171,6 +171,23 @@ class JSS(gym.Env):
                             if machine_needed == machine:
                                 self.legal_actions[self.jobs] = True
                                 break
+            elif self.nb_legal_actions > 1:
+                for machine in range(self.machines):
+                    if self.time_until_available_machine[machine] == 0:
+                        final_job = list()
+                        non_final_job = list()
+                        for job in range(self.jobs):
+                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+                                if self.todo_time_step_job[job] == (self.machines - 1):
+                                    final_job.append(job)
+                                else:
+                                    non_final_job.append(job)
+                        if len(non_final_job) > 0:
+                            for job in final_job:
+                                self.legal_actions[job] = False
+                                self.nb_legal_actions -= 1
+                                self.illegal_actions[machine][job] = True
+                                self.masked_final_action_machine[machine] = True
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
         else:
             current_time_step_job = self.todo_time_step_job[action]
@@ -211,6 +228,23 @@ class JSS(gym.Env):
                             if machine_needed == machine:
                                 self.legal_actions[self.jobs] = True
                                 break
+            elif self.nb_legal_actions > 1:
+                for machine in range(self.machines):
+                    if self.time_until_available_machine[machine] == 0:
+                        final_job = list()
+                        non_final_job = list()
+                        for job in range(self.jobs):
+                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+                                if self.todo_time_step_job[job] == (self.machines - 1):
+                                    final_job.append(job)
+                                else:
+                                    non_final_job.append(job)
+                        if len(non_final_job) > 0:
+                            for job in final_job:
+                                self.legal_actions[job] = False
+                                self.nb_legal_actions -= 1
+                                self.illegal_actions[machine][job] = True
+                                self.masked_final_action_machine[machine] = True
             # we then need to scale the reward
             scaled_reward = self._reward_scaler(reward)
             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
@@ -272,23 +306,6 @@ class JSS(gym.Env):
                     if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
                         self.legal_actions[job] = True
                         self.nb_legal_actions += 1
-        if self.nb_legal_actions > 1:
-            for machine in range(self.machines):
-                if self.time_until_available_machine[machine] == 0:
-                    final_job = list()
-                    non_final_job = list()
-                    for job in range(self.jobs):
-                        if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
-                            if self.todo_time_step_job[job] == (self.machines - 1):
-                                final_job.append(job)
-                            else:
-                                non_final_job.append(job)
-                    if len(non_final_job) > 0:
-                        for job in final_job:
-                            self.legal_actions[job] = False
-                            self.nb_legal_actions -= 1
-                            self.illegal_actions[machine][job] = True
-                            self.masked_final_action_machine[machine] = True
         return hole_planning
 
     def _is_done(self):

@@ -20,11 +20,12 @@ from ray.tune import register_env
 from JSS.env_wrapper import BestActionsWrapper
 from JSS.env.JSS import JSS
 
-from JSS.models import FCMaskedActionsModelV1, FCMaskedActionsModelV2
+from JSS.models import FCMaskedActionsModelTF
+
 from ray.tune.utils import flatten_dict
 
 def env_creator(env_config):
-    return BestActionsWrapper(JSS(env_config))
+    return JSS(env_config)
 
 
 register_env("jss_env", env_creator)
@@ -65,15 +66,16 @@ def train_func():
     default_config = {
         'env': 'jss_env',
         'seed': 0,
-        'framework': 'torch',
+        'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 0,
-        'instance_path': '/JSS/JSS/env/instances/ta51',
+        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 3000,
         'gamma': 1.0,
         'num_workers': mp.cpu_count(),
         'layer_nb': 2,
+        'layer_size': 470,
         "min_iter_time_s": 10,
         # set >1 to load data into GPUs in parallel. Increases GPU memory usage
         # proportionally with the number of buffers.
@@ -150,13 +152,13 @@ def train_func():
 
     config = wandb.config
 
-    ModelCatalog.register_custom_model("fc_masked_model_v1", FCMaskedActionsModelV1)
-    ModelCatalog.register_custom_model("fc_masked_model_v2", FCMaskedActionsModelV2)
+    ModelCatalog.register_custom_model("fc_masked_model_tf", FCMaskedActionsModelTF)
 
     config['model'] = {
         "fcnet_activation": "relu",
-        "custom_model": "fc_masked_model_v1",
+        "custom_model": "fc_masked_model_tf",
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
+        "vf_share_layers": False,
     }
     config['env_config'] = {
         'instance_path': config['instance_path']
@@ -164,16 +166,13 @@ def train_func():
 
     config = with_common_config(config)
     config['callbacks'] = CustomCallbacks
-    config['lr'] = config['lr_start']
-    config['lr_schedule'] = [[0, config['lr_start']], [100000000, config['lr_end']]]
+    
     config['entropy_coeff'] = config['entropy_coeff_start']
     config['entropy_coeff_schedule'] = [[0, config['entropy_coeff_start']], [10000000, config['entropy_coeff_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
-    config.pop('lr_start', None)
-    config.pop('lr_end', None)
     config.pop('entropy_coeff_start', None)
     config.pop('entropy_coeff_end', None)
 
