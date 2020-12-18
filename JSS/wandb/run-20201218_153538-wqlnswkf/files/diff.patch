@@ -1,0 +1,217 @@
+diff --git a/JSS/.ipynb_checkpoints/paper_results-checkpoint.py b/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
+index fe23e69..0163456 100755
+--- a/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
++++ b/JSS/.ipynb_checkpoints/paper_results-checkpoint.py
+@@ -130,7 +130,7 @@ def train_func():
+     config.pop('lr_end', None)
+ 
+     stop = {
+-        "time_total_s": 1000,
++        "time_total_s":  3 * 60 * 60,
+     }
+ 
+     start_time = time.time()
+diff --git a/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py b/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
+index 732eac7..91ae329 100644
+--- a/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
++++ b/JSS/env/.ipynb_checkpoints/JSS-checkpoint.py
+@@ -151,7 +151,7 @@ class JSS(gym.Env):
+             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+                 reward -= self._increase_time_step()
+             scaled_reward = self._reward_scaler(reward)
+-            if self.nb_legal_actions > 1 and self.legal_actions[only_legal]:
++            if self.nb_legal_actions > 1:
+                 needed_machine = self.needed_machine_jobs[only_legal]
+                 self.legal_actions[only_legal] = False
+                 self.nb_legal_actions -= 1
+@@ -171,6 +171,23 @@ class JSS(gym.Env):
+                             if machine_needed == machine:
+                                 self.legal_actions[self.jobs] = True
+                                 break
++            elif self.nb_legal_actions > 1:
++                for machine in range(self.machines):
++                    if self.time_until_available_machine[machine] == 0:
++                        final_job = list()
++                        non_final_job = list()
++                        for job in range(self.jobs):
++                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
++                                if self.todo_time_step_job[job] == (self.machines - 1):
++                                    final_job.append(job)
++                                else:
++                                    non_final_job.append(job)
++                        if len(non_final_job) > 0:
++                            for job in final_job:
++                                self.legal_actions[job] = False
++                                self.nb_legal_actions -= 1
++                                self.illegal_actions[machine][job] = True
++                                self.machine_has_illegal[machine] = True
+             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+         else:
+             current_time_step_job = self.todo_time_step_job[action]
+@@ -190,7 +207,7 @@ class JSS(gym.Env):
+                 if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
+                     self.legal_actions[job] = False
+                     self.nb_legal_actions -= 1
+-            self.illegal_actions[machine_needed].fill(False)
++            self.illegal_actions[machine_needed] = False
+             self.machine_has_illegal[machine_needed] = False
+             # if we can't allocate new job in the current timestep, we pass to the next one
+             while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+@@ -211,6 +228,23 @@ class JSS(gym.Env):
+                             if machine_needed == machine:
+                                 self.legal_actions[self.jobs] = True
+                                 break
++            elif self.nb_legal_actions > 1:
++                for machine in range(self.machines):
++                    if self.time_until_available_machine[machine] == 0:
++                        final_job = list()
++                        non_final_job = list()
++                        for job in range(self.jobs):
++                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
++                                if self.todo_time_step_job[job] == (self.machines - 1):
++                                    final_job.append(job)
++                                else:
++                                    non_final_job.append(job)
++                        if len(non_final_job) > 0:
++                            for job in final_job:
++                                self.legal_actions[job] = False
++                                self.nb_legal_actions -= 1
++                                self.illegal_actions[machine][job] = True
++                                self.machine_has_illegal[machine] = True
+             # we then need to scale the reward
+             scaled_reward = self._reward_scaler(reward)
+             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+@@ -272,23 +306,6 @@ class JSS(gym.Env):
+                     if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
+                         self.legal_actions[job] = True
+                         self.nb_legal_actions += 1
+-        if self.nb_legal_actions > 1:
+-            for machine in range(self.machines):
+-                if self.time_until_available_machine[machine] == 0:
+-                    final_job = list()
+-                    non_final_job = list()
+-                    for job in range(self.jobs):
+-                        if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+-                            if self.todo_time_step_job[job] == (self.machines - 1):
+-                                final_job.append(job)
+-                            else:
+-                                non_final_job.append(job)
+-                    if len(non_final_job) > 0:
+-                        for job in final_job:
+-                            self.legal_actions[job] = False
+-                            self.nb_legal_actions -= 1
+-                            self.illegal_actions[machine][job] = True
+-                            self.machine_has_illegal[machine] = True
+         return hole_planning
+ 
+     def _is_done(self):
+diff --git a/JSS/env/JSS.py b/JSS/env/JSS.py
+index 732eac7..91ae329 100644
+--- a/JSS/env/JSS.py
++++ b/JSS/env/JSS.py
+@@ -151,7 +151,7 @@ class JSS(gym.Env):
+             while self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
+                 reward -= self._increase_time_step()
+             scaled_reward = self._reward_scaler(reward)
+-            if self.nb_legal_actions > 1 and self.legal_actions[only_legal]:
++            if self.nb_legal_actions > 1:
+                 needed_machine = self.needed_machine_jobs[only_legal]
+                 self.legal_actions[only_legal] = False
+                 self.nb_legal_actions -= 1
+@@ -171,6 +171,23 @@ class JSS(gym.Env):
+                             if machine_needed == machine:
+                                 self.legal_actions[self.jobs] = True
+                                 break
++            elif self.nb_legal_actions > 1:
++                for machine in range(self.machines):
++                    if self.time_until_available_machine[machine] == 0:
++                        final_job = list()
++                        non_final_job = list()
++                        for job in range(self.jobs):
++                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
++                                if self.todo_time_step_job[job] == (self.machines - 1):
++                                    final_job.append(job)
++                                else:
++                                    non_final_job.append(job)
++                        if len(non_final_job) > 0:
++                            for job in final_job:
++                                self.legal_actions[job] = False
++                                self.nb_legal_actions -= 1
++                                self.illegal_actions[machine][job] = True
++                                self.machine_has_illegal[machine] = True
+             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+         else:
+             current_time_step_job = self.todo_time_step_job[action]
+@@ -190,7 +207,7 @@ class JSS(gym.Env):
+                 if self.needed_machine_jobs[job] == machine_needed and self.legal_actions[job]:
+                     self.legal_actions[job] = False
+                     self.nb_legal_actions -= 1
+-            self.illegal_actions[machine_needed].fill(False)
++            self.illegal_actions[machine_needed] = False
+             self.machine_has_illegal[machine_needed] = False
+             # if we can't allocate new job in the current timestep, we pass to the next one
+             while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
+@@ -211,6 +228,23 @@ class JSS(gym.Env):
+                             if machine_needed == machine:
+                                 self.legal_actions[self.jobs] = True
+                                 break
++            elif self.nb_legal_actions > 1:
++                for machine in range(self.machines):
++                    if self.time_until_available_machine[machine] == 0:
++                        final_job = list()
++                        non_final_job = list()
++                        for job in range(self.jobs):
++                            if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
++                                if self.todo_time_step_job[job] == (self.machines - 1):
++                                    final_job.append(job)
++                                else:
++                                    non_final_job.append(job)
++                        if len(non_final_job) > 0:
++                            for job in final_job:
++                                self.legal_actions[job] = False
++                                self.nb_legal_actions -= 1
++                                self.illegal_actions[machine][job] = True
++                                self.machine_has_illegal[machine] = True
+             # we then need to scale the reward
+             scaled_reward = self._reward_scaler(reward)
+             return self._get_current_state_representation(), scaled_reward, self._is_done(), {}
+@@ -272,23 +306,6 @@ class JSS(gym.Env):
+                     if self.needed_machine_jobs[job] == machine and not self.legal_actions[job] and not self.illegal_actions[machine][job]:
+                         self.legal_actions[job] = True
+                         self.nb_legal_actions += 1
+-        if self.nb_legal_actions > 1:
+-            for machine in range(self.machines):
+-                if self.time_until_available_machine[machine] == 0:
+-                    final_job = list()
+-                    non_final_job = list()
+-                    for job in range(self.jobs):
+-                        if self.needed_machine_jobs[job] == machine and self.legal_actions[job]:
+-                            if self.todo_time_step_job[job] == (self.machines - 1):
+-                                final_job.append(job)
+-                            else:
+-                                non_final_job.append(job)
+-                    if len(non_final_job) > 0:
+-                        for job in final_job:
+-                            self.legal_actions[job] = False
+-                            self.nb_legal_actions -= 1
+-                            self.illegal_actions[machine][job] = True
+-                            self.machine_has_illegal[machine] = True
+         return hole_planning
+ 
+     def _is_done(self):
+diff --git a/JSS/env/__pycache__/JSS.cpython-37.pyc b/JSS/env/__pycache__/JSS.cpython-37.pyc
+index b896a7e..2baf40f 100644
+Binary files a/JSS/env/__pycache__/JSS.cpython-37.pyc and b/JSS/env/__pycache__/JSS.cpython-37.pyc differ
+diff --git a/JSS/paper_results.py b/JSS/paper_results.py
+index fe23e69..0163456 100755
+--- a/JSS/paper_results.py
++++ b/JSS/paper_results.py
+@@ -130,7 +130,7 @@ def train_func():
+     config.pop('lr_end', None)
+ 
+     stop = {
+-        "time_total_s": 1000,
++        "time_total_s":  3 * 60 * 60,
+     }
+ 
+     start_time = time.time()

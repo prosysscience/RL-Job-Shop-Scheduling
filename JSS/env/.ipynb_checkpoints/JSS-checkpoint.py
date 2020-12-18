@@ -54,7 +54,7 @@ class JSS(gym.Env):
         self.idle_time_jobs_last_op = None
         self.state = None
         self.illegal_actions = None
-        self.machine_has_illegal = None
+        self.masked_final_action_machine = None
         # initial values for variables used for representation
         self.start_timestamp = datetime.datetime.now().timestamp()
         instance_file = open(instance_path, 'r')
@@ -137,7 +137,7 @@ class JSS(gym.Env):
         self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
         self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
         self.illegal_actions = np.zeros((self.machines, self.jobs), dtype=np.bool)
-        self.machine_has_illegal = np.zeros(self.machines, dtype=np.bool)
+        self.masked_final_action_machine = np.zeros(self.machines, dtype=np.bool)
         for job in range(self.jobs):
             self.needed_machine_jobs[job] = self.instance_matrix[job][0][0]
         self.state = np.zeros((self.jobs, 7), dtype=np.float)
@@ -159,7 +159,7 @@ class JSS(gym.Env):
             if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 only_legal = np.where(self.legal_actions)[0][0]
                 machine = self.needed_machine_jobs[only_legal]
-                if not self.machine_has_illegal[machine]:
+                if not self.masked_final_action_machine[machine]:
                     current_time_step_only_legal = self.todo_time_step_job[only_legal]
                     time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
                     end_only_time_step = self.current_time_step + time_needed_legal
@@ -191,7 +191,7 @@ class JSS(gym.Env):
                     self.legal_actions[job] = False
                     self.nb_legal_actions -= 1
             self.illegal_actions[machine_needed].fill(False)
-            self.machine_has_illegal[machine_needed] = False
+            self.masked_final_action_machine[machine_needed] = False
             # if we can't allocate new job in the current timestep, we pass to the next one
             while self.nb_legal_actions == 0 and len(self.next_time_step) > 0:
                 reward -= self._increase_time_step()
@@ -199,7 +199,7 @@ class JSS(gym.Env):
             if self.nb_legal_actions == 1 and len(self.next_time_step) > 0:
                 only_legal = np.where(self.legal_actions)[0][0]
                 machine = self.needed_machine_jobs[only_legal]
-                if not self.machine_has_illegal[machine]:
+                if not self.masked_final_action_machine[machine]:
                     current_time_step_only_legal = self.todo_time_step_job[only_legal]
                     time_needed_legal = self.instance_matrix[only_legal][current_time_step_only_legal][1]
                     end_only_time_step = self.current_time_step + time_needed_legal
@@ -288,7 +288,7 @@ class JSS(gym.Env):
                             self.legal_actions[job] = False
                             self.nb_legal_actions -= 1
                             self.illegal_actions[machine][job] = True
-                            self.machine_has_illegal[machine] = True
+                            self.masked_final_action_machine[machine] = True
         return hole_planning
 
     def _is_done(self):

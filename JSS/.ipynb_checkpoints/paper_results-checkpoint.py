@@ -130,7 +130,7 @@ def train_func():
     config.pop('lr_end', None)
 
     stop = {
-        "time_total_s": 1000,
+        "time_total_s":  3 * 60 * 60,
     }
 
     start_time = time.time()
