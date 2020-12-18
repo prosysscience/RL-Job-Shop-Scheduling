@@ -141,7 +141,7 @@ def train_func():
         result = wandb_tune._clean_log(result)
         log, config_update = _handle_result(result)
         wandb.log(log)
-        wandb.config.update(config_update, allow_val_change=True)
+        #wandb.config.update(config_update, allow_val_change=True)
 
     ray.shutdown()
 
