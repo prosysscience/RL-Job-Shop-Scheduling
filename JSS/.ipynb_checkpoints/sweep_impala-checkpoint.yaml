@@ -1,0 +1,63 @@
+program: train_wandb_impala.py
+method: bayes
+metric:
+  name: episode_reward_mean
+  goal: maximize
+early_terminate:
+  type: hyperband
+  min_iter: 25
+parameters:
+  minibatch_buffer_size:
+    min: 4096
+    max: 16000
+  num_envs_per_worker:
+    min: 1
+    max: 8
+  rollout_fragment_length:
+    min: 512
+    max: 1256
+  layer_size:
+    min: 768
+    max: 1256
+  lr_start:
+    min: 0.00001
+    max: 0.001
+  lr_end:
+    min: 0.0000001
+    max: 0.00001
+  entropy_coeff_start:
+    min: 0.0
+    max: 0.01
+  entropy_coeff_end:
+    min: 0.0
+    max: 0.0001
+  vtrace_clip_rho_threshold:
+    min: 0.3
+    max: 1.0
+  vtrace_clip_pg_rho_threshold:
+    min: 0.3
+    max: 1.0
+  train_batch_size:
+    min: 16000
+    max: 120000
+  num_sgd_iter:
+    min: 5
+    max: 30
+  replay_proportion:
+    min: 0.0
+    max: 0.5
+  replay_buffer_num_slots:
+    min: 1
+    max: 32
+  learner_queue_size:
+    min: 4
+    max: 16
+  max_sample_requests_in_flight_per_worker:
+    min: 1
+    max: 8
+  broadcast_interval:
+    min: 1
+    max: 8
+  vf_loss_coeff:
+    min: 0.5
+    max: 1.0

@@ -4,6 +4,10 @@ import time
 import ray
 import wandb
 
+import random
+
+import numpy as np
+
 import ray.tune.integration.wandb as wandb_tune
 
 from ray.rllib.agents.ppo import PPOTrainer
@@ -20,7 +24,9 @@ from JSS.env.JSS import JSS
 
 from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
+from ray.rllib.utils.framework import try_import_tf
 
+tf1, tf, tfv = try_import_tf()
 
 def env_creator(env_config):
     return JSS(env_config)
@@ -67,7 +73,7 @@ def train_func():
         'framework': 'tf',
         'log_level': 'WARN',
         'num_gpus': 1,
-        'instance_path': '/home/jupyter/JSS/JSS/env/instances/ta41',
+        'instance_path': '/home/jupyter/JSS/JSS/env/instances/rcmax_30_20_7.txt',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
@@ -77,18 +83,21 @@ def train_func():
         'num_envs_per_worker': 4,
         'rollout_fragment_length': 704,  # TO TUNE
         'sgd_minibatch_size': 33000,
-        'layer_size': 470,
-        'lr': 0.000479,  # TO TUNE
-        'lr_start': 0.000479,  # TO TUNE
-        'lr_end': 0.00002832,  # TO TUNE
-        'clip_param': 0.5337,  # TO TUNE
-        'vf_clip_param': 18.0,  # TO TUNE
-        'num_sgd_iter': 10,  # TO TUNE
-        "vf_loss_coeff": 0.75,
-        "kl_coeff": 0.15,
-        'kl_target': 0.1202,  # TO TUNE
+        'layer_size': 319,
+        'lr': 0.0006861,  # TO TUNE
+        'lr_start': 0.0006861,  # TO TUNE
+        'lr_end': 0.00007783,  # TO TUNE
+        'clip_param': 0.541,  # TO TUNE
+        'vf_clip_param': 26,  # TO TUNE
+        'num_sgd_iter': 12,  # TO TUNE
+        "vf_loss_coeff": 0.7918,
+        "kl_coeff": 0.496,
+        'kl_target': 0.05047,  # TO TUNE
         'lambda': 1.0,
-        'entropy_coeff': 0.0,  # TUNE LATER
+        'entropy_coeff': 0.0002458,  # TUNE LATER
+        'entropy_start': 0.0002458,
+        'entropy_end': 0.002042,
+        'entropy_coeff_schedule': None,
         "batch_mode": "truncate_episodes",
         "grad_clip": None,
         "use_critic": True,
@@ -102,6 +111,9 @@ def train_func():
 
     wandb.init(config=default_config)
     ray.init()
+    tf.random.set_seed(0)
+    np.random.seed(0)
+    random.seed(0)
 
     config = wandb.config
 
@@ -118,22 +130,28 @@ def train_func():
     }
 
     config = with_common_config(config)
+    config['seed'] = 0
     config['callbacks'] = CustomCallbacks
     config['train_batch_size'] = config['sgd_minibatch_size']
 
     config['lr'] = config['lr_start']
     config['lr_schedule'] = [[0, config['lr_start']], [15000000, config['lr_end']]]
 
+    config['entropy_coeff'] = config['entropy_start']
+    config['entropy_coeff_schedule'] = [[0, config['entropy_start']], [15000000, config['entropy_end']]]
+
     config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
     config.pop('lr_start', None)
     config.pop('lr_end', None)
+    config.pop('entropy_start', None)
+    config.pop('entropy_end', None)
 
     stop = {
-        "time_total_s": 600,
+        "time_total_s": 10 * 60,
     }
-
+    
     start_time = time.time()
     trainer = PPOTrainer(config=config)
     while start_time + stop['time_total_s'] > time.time():
@@ -142,6 +160,7 @@ def train_func():
         log, config_update = _handle_result(result)
         wandb.log(log)
         #wandb.config.update(config_update, allow_val_change=True)
+    #trainer.export_policy_model("/home/jupyter/JSS/JSS/models/")
 
     ray.shutdown()
 
