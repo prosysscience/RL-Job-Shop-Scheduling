@@ -3,12 +3,12 @@ import multiprocessing as mp
 from ray.rllib.agents.ppo import ppo
 
 default_config = {
-    'env': 'jss_env',
+    'env': 'JSSEnv:jss-v1',
     'seed': 0,
     'framework': 'torch',
     'log_level': 'WARN',
     'num_gpus': 0,
-    'instance_path': '/home/jovyan/pierre/JSS/JSS/env/instances/ta51',
+    'instance_path': '../instances/ta51',
     'num_envs_per_worker': 2,
     'rollout_fragment_length': 1024,
     'num_workers': mp.cpu_count() - 1,

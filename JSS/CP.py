@@ -30,7 +30,8 @@ class WandbCallback(CpSolverSolutionCallback):
         """Returns the number of solutions found."""
         return self.__solution_count
 
-def MinimalJobshopSat(instance_config= {'instance_path': '/home/local/IWAS/pierre/PycharmProjects/JSS/JSS/env/instances/ta51'}):
+
+def MinimalJobshopSat(instance_config= {'instance_path': 'instances/ta51'}):
     wandb.init(config=instance_config)
     config = wandb.config
     """Minimal jobshop problem."""
