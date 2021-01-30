@@ -64,7 +64,7 @@ def train_func():
         'seed': 0,
         'framework': 'tf',
         'log_level': 'WARN',
-        'num_gpus': 0,
+        'num_gpus': 1,
         'instance_path': 'instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
