@@ -32,10 +32,16 @@ Project Organization
 
     ├── README.md                 <- The top-level README for developers using this project.
     └── JSS
-        |── dispatching_rules      <- Contains the code to run the disptaching rule FIFO and MWTR
-        |── randomLoop             <- A random loop with action mask, usefull to debug environment and
-        |                             to check if our agent learn
-        └── instances              <- All Taillard's instances + 5 Demirkol instances
+        ├── dispatching_rules/      <- Contains the code to run the disptaching rule FIFO and MWTR.
+        ├── instances/              <- All Taillard's instances + 5 Demirkol instances.
+        ├── randomLoop/             <- A random loop with action mask, usefull to debug environment and
+        |                             to check if our agent learn.
+        ├── CP.py                   <- OR-Tool's cp model for the JSS problem.
+        ├── CustomCallbacks.py      <- A special RLLib's callback used to save the best solution found.
+        ├── default_config.py       <- default config used for the disptaching rules.
+        ├── env_wrapper.py          <- Envrionment wrapper to save the action's of the best solution found
+        ├── main.py                 <- PPO approach, the main file to call to reproduce our approach.
+        └── models.py               <- Tensorflow model who mask logits of illegal actions.
 
 --------
 
