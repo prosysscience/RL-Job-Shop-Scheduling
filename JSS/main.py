@@ -11,7 +11,8 @@ import ray.tune.integration.wandb as wandb_tune
 
 from ray.rllib.agents.ppo import PPOTrainer
 
-from JSS.CustomCallbacks import CustomCallbacks
+from CustomCallbacks import *
+from models import *
 
 from typing import Dict, Tuple
 
@@ -19,7 +20,6 @@ import multiprocessing as mp
 from ray.rllib.agents import with_common_config
 from ray.rllib.models import ModelCatalog
 
-from JSS.models import FCMaskedActionsModelTF
 from ray.tune.utils import flatten_dict
 from ray.rllib.utils.framework import try_import_tf
 
