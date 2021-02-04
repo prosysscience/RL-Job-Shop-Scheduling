@@ -14,10 +14,10 @@ Getting Started
 
 This work uses Ray's RLLib, Tensorflow and Wandb.
 
-Make sure you `git`, `cmake`, `zlib1g`, and, on Linux, `zlib1g-dev` installed.
+Make sure you have `git`, `cmake`, `zlib1g`, and, on Linux, `zlib1g-dev` installed.
 
-You need also to have a Weight and Bias account to log your metrics. 
-Otherwise, just remove all occurrence of wandb and log the metrics another way.
+You also need to have a Weight and Bias account to log your metrics. 
+Otherwise, just remove all occurrence of wandb and log the metrics in another way.
 
 ```shell
 git clone LINK_TO_REPOSITORY
