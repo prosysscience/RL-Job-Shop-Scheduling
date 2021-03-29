@@ -64,16 +64,16 @@ def train_func():
     default_config = {
         'env': 'JSSEnv:jss-v1',
         'seed': 0,
-        'framework': 'torch',
+        'framework': 'tf',
         'log_level': 'WARN',
-        'num_gpus': 0,
+        'num_gpus': 1,
         'instance_path': 'instances/ta41',
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
-        #'num_workers': mp.cpu_count(),
+        'num_workers': mp.cpu_count(),
         'layer_nb': 2,
         #'train_batch_size': mp.cpu_count() * 4 * 704,
-        'num_envs_per_worker': 1,
+        'num_envs_per_worker': 4,
         'layer_size': 319,
         'lr': 0.0006861,  # TO TUNE
         'lr_start': 0.0006861,  # TO TUNE
@@ -108,7 +108,7 @@ def train_func():
             # Config for the Exploration class' constructor:
             "initial_epsilon": 1.0,
             "final_epsilon": 0.02,
-            "epsilon_timesteps": 10000,  # Timesteps over which to anneal epsilon.
+            "epsilon_timesteps": 100000,  # Timesteps over which to anneal epsilon.
 
             # For soft_q, use:
             # "exploration_config" = {
@@ -129,7 +129,7 @@ def train_func():
         # === Replay buffer ===
         # Size of the replay buffer. Note that if async_updates is set, then
         # each worker will have a replay buffer of this size.
-        "buffer_size": 50000,
+        "buffer_size": 5000000,
         # If True prioritized replay buffer will be used.
         "prioritized_replay": True,
         # Alpha parameter for prioritized replay buffer.
@@ -165,17 +165,17 @@ def train_func():
         "learning_starts": 1000,
         # Update the replay buffer with this many samples at once. Note that
         # this setting applies per-worker if num_workers > 1.
-        "rollout_fragment_length": 4,
+        "rollout_fragment_length": 704,
         # Size of a batch sampled from replay buffer for training. Note that
         # if async_updates is set, then each worker returns gradients for a
         # batch of this size.
-        "train_batch_size": 32,
+        "train_batch_size": mp.cpu_count() * 4 * 704,
 
         # === Parallelism ===
         # Number of workers for collecting samples with. This only makes sense
         # to increase if your environment is particularly slow to sample, or if
         # you"re using the Async or Ape-X optimizers.
-        "num_workers": 0,
+        #"num_workers": 0,
         # Whether to compute priorities on workers.
         "worker_side_prioritization": False,
         # Prevent iterations from going lower than this time span
@@ -195,7 +195,7 @@ def train_func():
 
     config['model'] = {
         "fcnet_activation": "relu",
-        "custom_model": "fc_masked_model_torch",
+        "custom_model": "fc_masked_model_tf",
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
     }
 
@@ -205,11 +205,11 @@ def train_func():
 
     config = with_common_config(config)
     config['seed'] = 0
-    #config['callbacks'] = CustomCallbacks
+    config['callbacks'] = CustomCallbacks
     #config['train_batch_size'] = config['sgd_minibatch_size'] 33000
 
     config['lr'] = config['lr_start']
-    #config['lr_schedule'] = [[0, config['lr_start']], [15000000, config['lr_end']]]
+    config['lr_schedule'] = [[0, config['lr_start']], [15000000, config['lr_end']]]
 
     config.pop('instance_path', None)
     config.pop('layer_size', None)
