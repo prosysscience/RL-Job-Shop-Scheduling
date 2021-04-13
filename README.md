@@ -1,13 +1,26 @@
-A Good Environment Is All You Need
+A Reinforcement Learning Environment For Job-Shop Scheduling
 ==============================
 
-This folder contains the implementation of the paper "A Good Environment Is All You Need".
+This folder contains the implementation of the paper "A Reinforcement Learning Environment For Job-Shop Scheduling".
 
 It contains the deep reinforcement learning approach we have developed to solve the Job-Shop Scheduling problem.
 
 The optimized environment is available as a separate [repository](https://github.com/prosysscience/JSSEnv).
 
 ![til](./ta01.gif)
+
+If you've found our work useful for your research, you can cite the [paper](https://arxiv.org/abs/2104.03760) as follows:
+
+```
+@misc{tassel2021reinforcement,
+      title={A Reinforcement Learning Environment For Job-Shop Scheduling}, 
+      author={Pierre Tassel and Martin Gebser and Konstantin Schekotihin},
+      year={2021},
+      eprint={2104.03760},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
 
 Getting Started
 ------------
@@ -20,7 +33,7 @@ You also need to have a Weight and Bias account to log your metrics.
 Otherwise, just remove all occurrence of wandb and log the metrics in another way.
 
 ```shell
-git clone LINK_TO_REPOSITORY
+git clone https://github.com/prosysscience/JSS
 cd JSS
 pip install -r requirements.txt
 ```
