@@ -25,12 +25,16 @@ If you've found our work useful for your research, you can cite the [paper](http
 Getting Started
 ------------
 
+**This code has been tested on Ubuntu 18.04 and MacOs 10.15. 
+Some users have reported difficulties running this program on Windows.**
+
 This work uses Ray's RLLib, Tensorflow and Wandb.
 
 Make sure you have `git`, `cmake`, `zlib1g`, and, on Linux, `zlib1g-dev` installed.
 
 You also need to have a Weight and Bias account to log your metrics. 
 Otherwise, just remove all occurrence of wandb and log the metrics in another way.
+
 
 ```shell
 git clone https://github.com/prosysscience/JSS
