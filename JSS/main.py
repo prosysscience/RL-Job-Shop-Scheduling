@@ -10,6 +10,7 @@ import numpy as np
 import ray.tune.integration.wandb as wandb_tune
 
 from ray.rllib.agents.ppo import PPOTrainer
+from ray.tune import register_env
 
 from CustomCallbacks import *
 from models import *
@@ -57,10 +58,15 @@ def _handle_result(result: Dict) -> Tuple[Dict, Dict]:
     config_update.pop("callbacks", None)  # Remove callbacks
     return log, config_update
 
+def env_creator(env_config):
+    from env.JssEnv import JssEnv
+    return JssEnv(**env_config)
+
+register_env("jss_env", env_creator)
 
 def train_func():
     default_config = {
-        'env': 'JSSEnv:jss-v1',
+        'env': 'jss_env',
         'seed': 0,
         'framework': 'tf',
         'log_level': 'WARN',
@@ -123,7 +129,10 @@ def train_func():
 
     config = with_common_config(config)
     config['seed'] = 0
-    config['callbacks'] = CustomCallbacks
+
+    storage = Storage.options(name="global_storage").remote()
+    my_callback = CustomCallbacks()
+    config['callbacks'] = lambda : my_callback
     config['train_batch_size'] = config['sgd_minibatch_size']
 
     config['lr'] = config['lr_start']
@@ -153,7 +162,9 @@ def train_func():
         wandb.log(log)
         # wandb.config.update(config_update, allow_val_change=True)
     # trainer.export_policy_model("/home/jupyter/JSS/JSS/models/")
-
+    best_makespan, best_solution = ray.get(storage.get_best_solution.remote())
+    print(best_makespan)
+    print(best_solution)
     ray.shutdown()
 
 
