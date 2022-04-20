@@ -103,9 +103,9 @@ class JssEnv(gym.Env):
             if line_cnt == 1:
                 self.jobs, self.machines = int(split_data[0]), int(split_data[1])
                 # matrix which store tuple of (machine, length of the job)
-                self.instance_matrix = np.zeros((self.jobs, self.machines), dtype=(np.int, 2))
+                self.instance_matrix = np.zeros((self.jobs, self.machines), dtype=(int, 2))
                 # contains all the time to complete jobs
-                self.jobs_length = np.zeros(self.jobs, dtype=np.int)
+                self.jobs_length = np.zeros(self.jobs, dtype=int)
             else:
                 # couple (machine, time)
                 assert len(split_data) % 2 == 0
@@ -149,7 +149,7 @@ class JssEnv(gym.Env):
         '''
         self.observation_space = gym.spaces.Dict({
             "action_mask": gym.spaces.Box(0, 1, shape=(self.jobs + 1,)),
-            "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=np.float),
+            "real_obs": gym.spaces.Box(low=0.0, high=1.0, shape=(self.jobs, 7), dtype=float),
         })
 
     def _get_current_state_representation(self):
@@ -169,27 +169,27 @@ class JssEnv(gym.Env):
         self.nb_legal_actions = self.jobs
         self.nb_machine_legal = 0
         # represent all the legal actions
-        self.legal_actions = np.ones(self.jobs + 1, dtype=np.bool)
+        self.legal_actions = np.ones(self.jobs + 1, dtype=bool)
         self.legal_actions[self.jobs] = False
         # used to represent the solution
-        self.solution = np.full((self.jobs, self.machines), -1, dtype=np.int)
-        self.time_until_available_machine = np.zeros(self.machines, dtype=np.int)
-        self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=np.int)
-        self.todo_time_step_job = np.zeros(self.jobs, dtype=np.int)
-        self.total_perform_op_time_jobs = np.zeros(self.jobs, dtype=np.int)
-        self.needed_machine_jobs = np.zeros(self.jobs, dtype=np.int)
-        self.total_idle_time_jobs = np.zeros(self.jobs, dtype=np.int)
-        self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=np.int)
-        self.illegal_actions = np.zeros((self.machines, self.jobs), dtype=np.bool)
-        self.action_illegal_no_op = np.zeros(self.jobs, dtype=np.bool)
-        self.machine_legal = np.zeros(self.machines, dtype=np.bool)
+        self.solution = np.full((self.jobs, self.machines), -1, dtype=int)
+        self.time_until_available_machine = np.zeros(self.machines, dtype=int)
+        self.time_until_finish_current_op_jobs = np.zeros(self.jobs, dtype=int)
+        self.todo_time_step_job = np.zeros(self.jobs, dtype=int)
+        self.total_perform_op_time_jobs = np.zeros(self.jobs, dtype=int)
+        self.needed_machine_jobs = np.zeros(self.jobs, dtype=int)
+        self.total_idle_time_jobs = np.zeros(self.jobs, dtype=int)
+        self.idle_time_jobs_last_op = np.zeros(self.jobs, dtype=int)
+        self.illegal_actions = np.zeros((self.machines, self.jobs), dtype=bool)
+        self.action_illegal_no_op = np.zeros(self.jobs, dtype=bool)
+        self.machine_legal = np.zeros(self.machines, dtype=bool)
         for job in range(self.jobs):
             needed_machine = self.instance_matrix[job][0][0]
             self.needed_machine_jobs[job] = needed_machine
             if not self.machine_legal[needed_machine]:
                 self.machine_legal[needed_machine] = True
                 self.nb_machine_legal += 1
-        self.state = np.zeros((self.jobs, 7), dtype=np.float)
+        self.state = np.zeros((self.jobs, 7), dtype=float)
         return self._get_current_state_representation()
 
     def _prioritization_non_final(self):
@@ -452,13 +452,13 @@ def train_func():
     register_env("JSSEnv-v1", env_creator)
     
     default_config = {
-        'env': "JSSEnv-v1",   # 'JSSEnv:jss-v1',
-        'env_config' : {'instance_path': 'C:/Users/phili/git/JSSEnv/JSSEnv/envs/instances/ta80'},
+        'env': "JSSEnv-v1",   # formerly 'JSSEnv:jss-v1',
+        'env_config' : {'instance_path': 'instances/ta41'},
         'seed': 0,
         'framework': 'tf',
         'log_level': 'WARN',
-        # 'num_gpus': 1,  --> deactivated for laptop
-        # 'instance_path': 'instances/ta41',  --> replaced by env_config
+        # 'num_gpus': 1,                       
+        # 'instance_path': 'instances/ta41',    --> replaced by env_config
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
@@ -510,6 +510,7 @@ def train_func():
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
         "vf_share_layers": False,
     }
+    
     # Deactivated because passing as env_config dictionary item in master config
     # config['env_config'] = {
     #    'env_config': {'instance_path': config['instance_path']}
@@ -547,8 +548,7 @@ def train_func():
         result = wandb_tune._clean_log(result)
         log, config_update = _handle_result(result)
         wandb.log(log)
-        # wandb.config.update(config_update, allow_val_change=True)
-    # trainer.export_policy_model("/home/jupyter/JSS/JSS/models/")
+        wandb.config.update(config_update, allow_val_change=True)
 
     ray.shutdown()
 
