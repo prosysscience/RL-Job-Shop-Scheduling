@@ -1,30 +1,32 @@
 import time
 
-import ray
-import wandb
-
 import random
+
+import multiprocessing as mp
 
 import numpy as np
 
-import ray.tune.integration.wandb as wandb_tune
-
-from ray.rllib.agents.ppo import PPOTrainer
-
-from CustomCallbacks import *
-from models import *
-
 from typing import Dict, Tuple
 
-import multiprocessing as mp
-from ray.rllib.agents import with_common_config
-from ray.rllib.models import ModelCatalog
+from CustomCallbacks import *
+from models import FCMaskedActionsModelTF
 
+from JSSEnv.envs import JssEnv
+
+import ray
 from ray.tune.utils import flatten_dict
 from ray.rllib.utils.framework import try_import_tf
+from ray.rllib.agents.ppo import PPOTrainer
+from ray.rllib.agents import with_common_config
+from ray.rllib.models import ModelCatalog
+from ray.tune.registry import register_env
+
+import wandb
+import ray.tune.integration.wandb as wandb_tune
+
+
 
 tf1, tf, tfv = try_import_tf()
-
 
 _exclude_results = ["done", "should_checkpoint", "config"]
 
@@ -59,13 +61,18 @@ def _handle_result(result: Dict) -> Tuple[Dict, Dict]:
 
 
 def train_func():
+    
+    # Following alternative to class-name in config, i.e. registering the env and connecting to the callable constructor
+    register_env("JSSEnv-v1", lambda config: JssEnv(config))
+    
     default_config = {
-        'env': 'JSSEnv:jss-v1',
+        'env': "JSSEnv-v1",     # the name defined in register_env        
+        'env_config' : {
+            'instance_path': '/instances/ta41'},
         'seed': 0,
         'framework': 'tf',
         'log_level': 'WARN',
-        'num_gpus': 1,
-        'instance_path': 'instances/ta41',
+        'num_gpus': 1,                       
         'evaluation_interval': None,
         'metrics_smoothing_episodes': 2000,
         'gamma': 1.0,
@@ -95,7 +102,7 @@ def train_func():
         "use_critic": True,
         "use_gae": True,
         "shuffle_sequences": True,
-        "vf_share_layers": False,
+        # "vf_share_layers": False,            # leads to deprecated warning and run issues 
         "observation_filter": "NoFilter",
         "simple_optimizer": False,
         "_fake_gpus": False,
@@ -110,16 +117,18 @@ def train_func():
     config = wandb.config
 
     ModelCatalog.register_custom_model("fc_masked_model_tf", FCMaskedActionsModelTF)
-
+    
     config['model'] = {
         "fcnet_activation": "relu",
         "custom_model": "fc_masked_model_tf",
         'fcnet_hiddens': [config['layer_size'] for k in range(config['layer_nb'])],
         "vf_share_layers": False,
     }
-    config['env_config'] = {
-        'env_config': {'instance_path': config['instance_path']}
-    }
+    
+    # Deactivated because passing as env_config dictionary item in master config
+    # config['env_config'] = {
+    #    'env_config': {'instance_path': config['instance_path']}
+    #}
 
     config = with_common_config(config)
     config['seed'] = 0
@@ -132,7 +141,8 @@ def train_func():
     config['entropy_coeff'] = config['entropy_start']
     config['entropy_coeff_schedule'] = [[0, config['entropy_start']], [15000000, config['entropy_end']]]
 
-    config.pop('instance_path', None)
+    # Deactivated because passing it as env_config dictionary item in master config
+    # config.pop('instance_path', None)
     config.pop('layer_size', None)
     config.pop('layer_nb', None)
     config.pop('lr_start', None)
@@ -144,6 +154,7 @@ def train_func():
         "time_total_s": 10 * 60,
     }
 
+    
     start_time = time.time()
     trainer = PPOTrainer(config=config)
     while start_time + stop['time_total_s'] > time.time():
@@ -151,8 +162,7 @@ def train_func():
         result = wandb_tune._clean_log(result)
         log, config_update = _handle_result(result)
         wandb.log(log)
-        # wandb.config.update(config_update, allow_val_change=True)
-    # trainer.export_policy_model("/home/jupyter/JSS/JSS/models/")
+        wandb.config.update(config_update, allow_val_change=True)
 
     ray.shutdown()
 

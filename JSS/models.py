@@ -23,7 +23,7 @@ class FCMaskedActionsModelTF(DistributionalQTFModel, TFModelV2):
         self.action_embed_model = FullyConnectedNetwork(
             obs_space=true_obs_space, action_space=action_space, num_outputs=action_space.n,
             model_config=model_config, name=name + "action_model")
-        self.register_variables(self.action_embed_model.variables())
+        # self.register_variables(self.action_embed_model.variables())
 
     def forward(self, input_dict, state, seq_lens):
         action_mask = input_dict["obs"]["action_mask"]
@@ -32,7 +32,7 @@ class FCMaskedActionsModelTF(DistributionalQTFModel, TFModelV2):
         raw_actions, _ = self.action_embed_model({
             "obs": input_dict["obs"]["real_obs"]
         })
-        #inf_mask = tf.maximum(tf.math.log(action_mask), tf.float32.min)
+        # inf_mask = tf.maximum(tf.math.log(action_mask), tf.float32.min)
         logits = tf.where(tf.math.equal(action_mask, 1), raw_actions,  tf.float32.min)
         return logits, state
 
